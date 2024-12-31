@@ -125,8 +125,13 @@ local function createKeyValidationGUI()
 
     -- Fungsi Tombol Copy Link
     copyLinkButton.MouseButton1Click:Connect(function()
-        print("Salin link manual: " .. linkUrl)
-    end)
+    if setclipboard then
+        setclipboard(linkUrl)
+        print("Link berhasil disalin ke clipboard!")
+    else
+        print("Executor Anda tidak mendukung setclipboard. Salin link secara manual: " .. linkUrl)
+    end
+end)
 
     -- Fungsi Verifikasi Key
     verifyKeyButton.MouseButton1Click:Connect(function()
