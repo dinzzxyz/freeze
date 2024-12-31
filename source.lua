@@ -211,7 +211,7 @@ local function createKeyValidationGUI()
     copyLinkButton.Parent = frame
     copyLinkButton.Size = UDim2.new(1, -20, 0, 40)
     copyLinkButton.Position = UDim2.new(0, 10, 0, 180)
-    copyLinkButton.Text = "Salin Link untuk Mendapatkan Key"
+    copyLinkButton.Text = "Get Key"
     copyLinkButton.Font = Enum.Font.SourceSansBold
     copyLinkButton.TextSize = 16
     copyLinkButton.BackgroundColor3 = Color3.fromRGB(0, 0, 200)
@@ -234,7 +234,7 @@ local function createKeyValidationGUI()
             gui:Destroy()
             createLoginGUI() -- Memanggil GUI kedua
         else
-            errorLabel.Text = "Key salah! Silakan coba lagi."
+            errorLabel.Text = "Key salah! Silahkan Get Key."
         end
     end)
 end
