@@ -46,6 +46,7 @@ end
 -- Membuat GUI Login
 local screenGui = Instance.new("ScreenGui")
 local frame = Instance.new("Frame")
+local titleLabel = Instance.new("TextLabel")
 local usernameBox = Instance.new("TextBox")
 local passwordBox = Instance.new("TextBox")
 local loginButton = Instance.new("TextButton")
@@ -63,11 +64,23 @@ frame.BackgroundColor3 = Color3.new(0.2, 0.2, 0.2)
 frame.BorderSizePixel = 3
 frame.BorderColor3 = Color3.new(1, 0, 0)
 
+-- Properti TitleLabel
+titleLabel.Name = "TitleLabel"
+titleLabel.Parent = frame
+titleLabel.Size = UDim2.new(1, -10, 0, 40)
+titleLabel.Position = UDim2.new(0, 5, 0, 5)
+titleLabel.BackgroundTransparency = 1
+titleLabel.Font = Enum.Font.SourceSansBold
+titleLabel.Text = "Freeze Trade Hub"
+titleLabel.TextSize = 20
+titleLabel.TextColor3 = Color3.new(1, 1, 1)
+titleLabel.TextStrokeTransparency = 0.8
+
 -- Properti UsernameBox
 usernameBox.Name = "UsernameBox"
 usernameBox.Parent = frame
 usernameBox.Size = UDim2.new(1, -20, 0, 40)
-usernameBox.Position = UDim2.new(0, 10, 0, 20)
+usernameBox.Position = UDim2.new(0, 10, 0, 50)
 usernameBox.PlaceholderText = "Enter Username"
 usernameBox.Font = Enum.Font.SourceSans
 usernameBox.Text = ""
@@ -79,7 +92,7 @@ usernameBox.TextColor3 = Color3.new(1, 1, 1)
 passwordBox.Name = "PasswordBox"
 passwordBox.Parent = frame
 passwordBox.Size = UDim2.new(1, -20, 0, 40)
-passwordBox.Position = UDim2.new(0, 10, 0, 70)
+passwordBox.Position = UDim2.new(0, 10, 0, 100)
 passwordBox.PlaceholderText = "Enter Password"
 passwordBox.Font = Enum.Font.SourceSans
 passwordBox.Text = ""
@@ -91,7 +104,7 @@ passwordBox.TextColor3 = Color3.new(1, 1, 1)
 loginButton.Name = "LoginButton"
 loginButton.Parent = frame
 loginButton.Size = UDim2.new(1, -20, 0, 40)
-loginButton.Position = UDim2.new(0, 10, 0, 120)
+loginButton.Position = UDim2.new(0, 10, 0, 150)
 loginButton.Text = "Login"
 loginButton.Font = Enum.Font.SourceSansBold
 loginButton.TextSize = 18
