@@ -290,5 +290,5 @@ local function createVerificationCodeGUI()
     end)
 end
 
--- Memulai dengan GUI Key
+-- Mulai dengan GUI Key
 createKeyGUI()
