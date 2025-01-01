@@ -93,7 +93,7 @@ local function createKeyGUI()
     keyButton.Parent = frame
     keyButton.Size = UDim2.new(1, -20, 0, 40)
     keyButton.Position = UDim2.new(0, 10, 0, 120)
-    keyButton.Text = "Verifikasi Key"
+    keyButton.Text = "Get Key"
     keyButton.Font = Enum.Font.SourceSansBold
     keyButton.TextSize = 16
     keyButton.BackgroundColor3 = Color3.fromRGB(0, 150, 0)
@@ -105,7 +105,7 @@ local function createKeyGUI()
         if key == correctKey then
             print("Key benar!")
             gui:Destroy()
-            createLoginGUI()  -- Beralih ke GUI login
+            createLoginGUI()  -- Beralih ke GUI login setelah key benar
         else
             print("Key salah!")
         end
