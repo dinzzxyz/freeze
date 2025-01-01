@@ -181,7 +181,7 @@ local function createLoginGUI()
     usernameBox.Name = "UsernameBox"
     usernameBox.Parent = frame
     usernameBox.Size = UDim2.new(1, -20, 0, 40)
-    usernameBox.Position = UDim2.new(0, 10, 0, 90)
+    usernameBox.Position = UDim2.new(0, 10, 0, 60)
     usernameBox.PlaceholderText = "Masukkan Username"
     usernameBox.Font = Enum.Font.SourceSans
     usernameBox.Text = ""
@@ -193,20 +193,19 @@ local function createLoginGUI()
     passwordBox.Name = "PasswordBox"
     passwordBox.Parent = frame
     passwordBox.Size = UDim2.new(1, -20, 0, 40)
-    passwordBox.Position = UDim2.new(0, 10, 0, 140)
+    passwordBox.Position = UDim2.new(0, 10, 0, 110)
     passwordBox.PlaceholderText = "Masukkan Password"
     passwordBox.Font = Enum.Font.SourceSans
     passwordBox.Text = ""
     passwordBox.TextSize = 14
     passwordBox.BackgroundColor3 = Color3.fromRGB(40, 40, 40)
     passwordBox.TextColor3 = Color3.fromRGB(255, 255, 255)
-    passwordBox.TextTransparency = 0.5  -- Make the text slightly transparent
 
     -- Login Button
     loginButton.Name = "LoginButton"
     loginButton.Parent = frame
     loginButton.Size = UDim2.new(1, -20, 0, 40)
-    loginButton.Position = UDim2.new(0, 10, 0, 200)
+    loginButton.Position = UDim2.new(0, 10, 0, 160)
     loginButton.Text = "Login"
     loginButton.Font = Enum.Font.SourceSansBold
     loginButton.TextSize = 16
@@ -329,4 +328,3 @@ end
 
 -- Memulai Script dengan GUI Pertama
 createKeyValidationGUI()
-
