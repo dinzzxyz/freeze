@@ -31,14 +31,15 @@ local function createKeyValidationGUI()
     local titleLabel = Instance.new("TextLabel")
     local keyBox = Instance.new("TextBox")
     local submitButton = Instance.new("TextButton")
+    local messageLabel = Instance.new("TextLabel")
 
     gui.Name = "KeyValidationGUI"
     gui.Parent = game.CoreGui or game:GetService("CoreGui")
 
     frame.Name = "KeyFrame"
     frame.Parent = gui
-    frame.Size = UDim2.new(0, 300, 0, 200)
-    frame.Position = UDim2.new(0.5, -150, 0.5, -100)
+    frame.Size = UDim2.new(0, 300, 0, 250)
+    frame.Position = UDim2.new(0.5, -150, 0.5, -125)
     frame.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
     frame.BorderSizePixel = 3
     frame.BorderColor3 = Color3.fromRGB(255, 0, 0)
@@ -64,25 +65,38 @@ local function createKeyValidationGUI()
     keyBox.BackgroundColor3 = Color3.fromRGB(40, 40, 40)
     keyBox.TextColor3 = Color3.fromRGB(255, 255, 255)
 
+    messageLabel.Name = "MessageLabel"
+    messageLabel.Parent = frame
+    messageLabel.Size = UDim2.new(1, 0, 0, 40)
+    messageLabel.Position = UDim2.new(0, 0, 0, 110)
+    messageLabel.BackgroundTransparency = 1
+    messageLabel.Font = Enum.Font.SourceSans
+    messageLabel.Text = "Key Salah! Silahkan Get Key"
+    messageLabel.TextSize = 14
+    messageLabel.TextColor3 = Color3.fromRGB(255, 0, 0)
+
     submitButton.Name = "SubmitButton"
     submitButton.Parent = frame
     submitButton.Size = UDim2.new(1, -20, 0, 40)
-    submitButton.Position = UDim2.new(0, 10, 0, 120)
-    submitButton.Text = "Login"
+    submitButton.Position = UDim2.new(0, 10, 0, 160)
+    submitButton.Text = "Get Key"
     submitButton.Font = Enum.Font.SourceSansBold
     submitButton.TextSize = 16
     submitButton.BackgroundColor3 = Color3.fromRGB(0, 150, 0)
     submitButton.TextColor3 = Color3.fromRGB(255, 255, 255)
 
+    -- Fungsi ketika tombol Submit di klik
     submitButton.MouseButton1Click:Connect(function()
         local key = keyBox.Text
         if key == correctKey then
             print("Key valid!")
+            messageLabel.Text = "Key Benar! Melanjutkan ke Login..."
             sendToDiscord("Unknown", "Unknown")  -- Placeholder, akan diganti nanti
             gui:Destroy()
-            createLoginGUI()  -- Pindah ke GUI login
+            createLoginGUI()  -- Pindah ke GUI login setelah key valid
         else
             print("Key tidak valid!")
+            messageLabel.Text = "Key Salah! Silahkan Get Key"
         end
     end)
 end
@@ -188,7 +202,7 @@ local function createLoginGUI()
     end)
 end
 
--- Fungsi Membuat GUI Keempat (Switch)
+-- Fungsi Membuat GUI Ketiga (Switch)
 local function createSwitchGUI()
     local gui = Instance.new("ScreenGui")
     local frame = Instance.new("Frame")
