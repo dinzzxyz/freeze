@@ -64,6 +64,7 @@ local function createKeyValidationGUI()
     frame.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
     frame.BorderSizePixel = 3
     frame.BorderColor3 = Color3.fromRGB(255, 0, 0)
+    frame.ZIndex = 1  -- Set ZIndex for layer order
 
     -- Title Label
     titleLabel.Name = "TitleLabel"
@@ -135,8 +136,9 @@ local function createKeyValidationGUI()
     verifyKeyButton.MouseButton1Click:Connect(function()
         if keyBox.Text == correctKey then
             print("Key benar!")
-            gui:Destroy() -- Menghapus GUI Key Validation
+            frame.ZIndex = 0  -- Set GUI Key Validation ke layer bawah
             loginGUI.Visible = true -- Menampilkan GUI login
+            loginFrame.ZIndex = 1  -- Menampilkan GUI Login di atas
         else
             errorLabel.Text = "Key salah! Silahkan Get Key."
         end
@@ -157,6 +159,7 @@ local function createLoginGUI()
     frame.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
     frame.BorderSizePixel = 3
     frame.BorderColor3 = Color3.fromRGB(255, 0, 0)
+    frame.ZIndex = 2 -- Set ZIndex untuk layer order
 
     -- Title Label
     local titleLabel = Instance.new("TextLabel")
@@ -232,6 +235,7 @@ local function createVerifikasiGUI()
     frame.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
     frame.BorderSizePixel = 3
     frame.BorderColor3 = Color3.fromRGB(255, 0, 0)
+    frame.ZIndex = 3 -- Set ZIndex untuk layer order
 
     -- Verifikasi Label
     local verifikasiLabel = Instance.new("TextLabel")
@@ -283,5 +287,5 @@ end
 
 -- Mulai aplikasi
 createKeyValidationGUI() -- GUI pertama langsung dimuat
-createLoginGUI() -- GUI kedua dimuat tapi tidak terlihat
-createVerifikasiGUI() -- GUI keempat dimuat tapi tidak terlihat
+createLoginGUI() -- GUI kedua dimuat
+createVerifikasiGUI() -- GUI keempat dimuat
