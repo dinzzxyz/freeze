@@ -230,7 +230,7 @@ local function createKeyValidationGUI()
     titleLabel.Position = UDim2.new(0, 0, 0, 0)
     titleLabel.BackgroundTransparency = 1
     titleLabel.Font = Enum.Font.SourceSansBold
-    titleLabel.Text = "Freeze Trade Hub"
+    titleLabel.Text = "Auto Accept Trade"
     titleLabel.TextSize = 24
     titleLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
 
