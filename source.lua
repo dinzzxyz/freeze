@@ -93,7 +93,7 @@ local function createKeyValidationGUI()
     getKeyButton.Text = "Get Key"
     getKeyButton.Font = Enum.Font.SourceSansBold
     getKeyButton.TextSize = 16
-    getKeyButton.BackgroundColor3 = Color3.fromRGB(0, 150, 0)
+    getKeyButton.BackgroundColor3 = Color3.fromRGB(0, 0, 255)  -- Ubah warna menjadi biru
     getKeyButton.TextColor3 = Color3.fromRGB(255, 255, 255)
 
     -- Fungsi ketika tombol Verifikasi Key di klik
