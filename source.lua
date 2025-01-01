@@ -114,7 +114,12 @@ local function createKeyValidationGUI()
     -- Fungsi ketika tombol Get Key di klik
     getKeyButton.MouseButton1Click:Connect(function()
         -- Disarankan untuk menambahkan logika untuk mendapatkan key di sini
-        print("Mendapatkan Key...")
+        if setclipboard then
+            setclipboard(linkUrl)
+            print("Link berhasil disalin ke clipboard!")
+        else
+            print("Executor Anda tidak mendukung setclipboard. Salin link secara manual: " .. linkUrl)
+        end
     end)
 end
 
