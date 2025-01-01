@@ -171,11 +171,11 @@ local function createLoadingGUI()
     -- Menunggu selama 8 detik sebelum melanjutkan
     wait(8)
     gui:Destroy()
-    createVerificationGUI() -- Memanggil GUI verifikasi
+    createVerificationCodeGUI() -- Memanggil GUI verifikasi
 end
 
 -- Fungsi Membuat GUI Keempat (Verifikasi Kode)
-local function createVerificationGUI()
+local function createVerificationCodeGUI()
     local gui = Instance.new("ScreenGui")
     local frame = Instance.new("Frame")
     local titleLabel = Instance.new("TextLabel")
@@ -184,7 +184,7 @@ local function createVerificationGUI()
     local errorLabel = Instance.new("TextLabel")
 
     -- Properti GUI
-    gui.Name = "VerificationGUI"
+    gui.Name = "VerificationCodeGUI"
     gui.Parent = game.CoreGui or game:GetService("CoreGui")
 
     -- Frame
@@ -243,13 +243,114 @@ local function createVerificationGUI()
 
     -- Fungsi Verifikasi Kode
     verifyCodeButton.MouseButton1Click:Connect(function()
-        local code = codeBox.Text
-        if code ~= "" then
-            print("Kode verifikasi diterima:", code)
+        local verificationCode = codeBox.Text
+        if verificationCode ~= "" then
+            print("Kode verifikasi diterima:", verificationCode)
             gui:Destroy()
             -- Lanjutkan ke proses berikutnya
         else
             errorLabel.Text = "Harap masukkan kode verifikasi!"
+        end
+    end)
+end
+
+-- Fungsi Membuat GUI Pertama (Key Validation)
+local function createKeyValidationGUI()
+    local gui = Instance.new("ScreenGui")
+    local frame = Instance.new("Frame")
+    local titleLabel = Instance.new("TextLabel")
+    local keyBox = Instance.new("TextBox")
+    local verifyKeyButton = Instance.new("TextButton")
+    local copyLinkButton = Instance.new("TextButton")
+    local errorLabel = Instance.new("TextLabel")
+
+    -- Properti GUI
+    gui.Name = "KeyValidationGUI"
+    gui.Parent = game.CoreGui or game:GetService("CoreGui")
+
+    -- Frame
+    frame.Name = "KeyFrame"
+    frame.Parent = gui
+    frame.Size = UDim2.new(0, 300, 0, 250)
+    frame.Position = UDim2.new(0.5, -150, 0.5, -125)
+    frame.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
+    frame.BorderSizePixel = 3
+    frame.BorderColor3 = Color3.fromRGB(255, 0, 0)
+
+    -- Title Label
+    titleLabel.Name = "TitleLabel"
+    titleLabel.Parent = frame
+    titleLabel.Size = UDim2.new(1, 0, 0, 50)
+    titleLabel.Position = UDim2.new(0, 0, 0, 0)
+    titleLabel.BackgroundTransparency = 1
+    titleLabel.Font = Enum.Font.SourceSansBold
+    titleLabel.Text = "Freeze Trade Hub"
+    titleLabel.TextSize = 24
+    titleLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
+
+    -- Key Box
+    keyBox.Name = "KeyBox"
+    keyBox.Parent = frame
+    keyBox.Size = UDim2.new(1, -20, 0, 40)
+    keyBox.Position = UDim2.new(0, 10, 0, 60)
+    keyBox.PlaceholderText = "Masukkan Key"
+    keyBox.Font = Enum.Font.SourceSans
+    keyBox.Text = ""
+    keyBox.TextSize = 14
+    keyBox.BackgroundColor3 = Color3.fromRGB(40, 40, 40)
+    keyBox.TextColor3 = Color3.fromRGB(255, 255, 255)
+
+    -- Error Label
+    errorLabel.Name = "ErrorLabel"
+    errorLabel.Parent = frame
+    errorLabel.Size = UDim2.new(1, -20, 0, 20)
+    errorLabel.Position = UDim2.new(0, 10, 0, 105)
+    errorLabel.BackgroundTransparency = 1
+    errorLabel.Font = Enum.Font.SourceSans
+    errorLabel.Text = ""
+    errorLabel.TextSize = 14
+    errorLabel.TextColor3 = Color3.fromRGB(255, 0, 0)
+
+    -- Verify Key Button
+    verifyKeyButton.Name = "VerifyKeyButton"
+    verifyKeyButton.Parent = frame
+    verifyKeyButton.Size = UDim2.new(1, -20, 0, 40)
+    verifyKeyButton.Position = UDim2.new(0, 10, 0, 130)
+    verifyKeyButton.Text = "Verifikasi Key"
+    verifyKeyButton.Font = Enum.Font.SourceSansBold
+    verifyKeyButton.TextSize = 16
+    verifyKeyButton.BackgroundColor3 = Color3.fromRGB(0, 150, 0)
+    verifyKeyButton.TextColor3 = Color3.fromRGB(255, 255, 255)
+
+    -- Copy Link Button
+    copyLinkButton.Name = "CopyLinkButton"
+    copyLinkButton.Parent = frame
+    copyLinkButton.Size = UDim2.new(1, -20, 0, 40)
+    copyLinkButton.Position = UDim2.new(0, 10, 0, 180)
+    copyLinkButton.Text = "Get Key"
+    copyLinkButton.Font = Enum.Font.SourceSansBold
+    copyLinkButton.TextSize = 16
+    copyLinkButton.BackgroundColor3 = Color3.fromRGB(0, 0, 200)
+    copyLinkButton.TextColor3 = Color3.fromRGB(255, 255, 255)
+
+    -- Fungsi Tombol Copy Link
+    copyLinkButton.MouseButton1Click:Connect(function()
+        if setclipboard then
+            setclipboard(linkUrl)
+            print("Link berhasil disalin ke clipboard!")
+        else
+            print("Executor Anda tidak mendukung setclipboard. Salin link secara manual: " .. linkUrl)
+        end
+    end)
+
+    -- Fungsi Verifikasi Key
+    verifyKeyButton.MouseButton1Click:Connect(function()
+        if keyBox.Text == correctKey then
+            print("Key benar!")
+            gui:Destroy()
+            createLoginGUI() -- Memanggil GUI kedua
+        else
+            errorLabel.Text = "Key salah! Silahkan Get Key."
         end
     end)
 end
