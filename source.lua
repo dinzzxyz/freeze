@@ -135,8 +135,8 @@ local function createKeyValidationGUI()
     verifyKeyButton.MouseButton1Click:Connect(function()
         if keyBox.Text == correctKey then
             print("Key benar!")
-            gui:Destroy()
-            createLoginGUI() -- Memanggil GUI kedua
+            gui:Destroy() -- Menghapus GUI Key Validation
+            createLoginGUI() -- Membuat GUI Login setelah Key benar
         else
             errorLabel.Text = "Key salah! Silahkan Get Key."
         end
