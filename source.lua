@@ -105,7 +105,6 @@ switchButton.Size = UDim2.new(0, 50, 0, 30)
 switchButton.Position = UDim2.new(0.8, 0, 0.5, -15)
 switchButton.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
 switchButton.Text = ""
-switchButton.BorderSizePixel = 3
 switchButton.BorderColor3 = Color3.fromRGB(255, 0, 0)
 
 -- Dragging Functionality
@@ -155,7 +154,7 @@ local switchState = false
 switchButton.MouseButton1Click:Connect(function()
 switchState = not switchState
 if switchState then
-switchButton.BackgroundColor3 = Color3.fromRGB(0, 255, 0) -- Merah (Aktif)
+switchButton.BackgroundColor3 = Color3.fromRGB(0, 255, 0) -- Hijau (Aktif)
 else
 switchButton.BackgroundColor3 = Color3.fromRGB(255, 255, 255) -- Putih (Nonaktif)
 end
