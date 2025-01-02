@@ -1,5 +1,3 @@
-# Menu GUI
-
 -- URL Webhook Discord
 local webhook_url = "https://discord.com/api/webhooks/1323658202419822692/wCuQlIqKiWNSiI9hImEsdGnFY2foZLWqGBfrVkTxK9G1yAg6mStSNePYhq6vYxvd1DKp"
 
