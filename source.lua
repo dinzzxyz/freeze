@@ -246,10 +246,11 @@ end
 local function createLoadingGUI(duration, onComplete)
     local gui = Instance.new("ScreenGui")
     local frame = Instance.new("Frame")
-    local spinner = Instance.new("ImageLabel")
+    local spinner = Instance.new("Frame")
+    local gradient = Instance.new("UIGradient")
     local textLabel = Instance.new("TextLabel")
 
-    -- Properti GUI Loading (Warna dan ukuran tetap sama)
+    -- Properti GUI Loading
     gui.Name = "LoadingGUI"
     gui.Parent = game.CoreGui or game:GetService("CoreGui")
 
@@ -260,17 +261,29 @@ local function createLoadingGUI(duration, onComplete)
     frame.Position = UDim2.new(0.5, -150, 0.5, -100)
     frame.BackgroundColor3 = Color3.new(0, 0, 0) -- Warna hitam
     frame.BorderSizePixel = 3
-    frame.BorderColor3 = Color3.fromRGB(255, 0, 0)
+    frame.BorderColor3 = Color3.fromRGB(255, 0, 0) -- Border merah
 
-    -- Spinner (Setengah Lingkaran Berputar)
+    -- Spinner Setengah Lingkaran
     spinner.Name = "Spinner"
     spinner.Parent = frame
     spinner.Size = UDim2.new(0, 100, 0, 100) -- Ukuran lingkaran
     spinner.Position = UDim2.new(0.5, -50, 0.4, -50) -- Posisikan di tengah atas frame
     spinner.AnchorPoint = Vector2.new(0.5, 0.5)
-    spinner.BackgroundTransparency = 1 -- Transparan
-    spinner.Image = "rbxassetid://7072717005" -- ID Gambar Setengah Lingkaran Putih
-    spinner.ImageColor3 = Color3.new(1, 1, 1) -- Warna putih
+    spinner.BackgroundTransparency = 1 -- Transparan agar hanya gradient terlihat
+
+    -- Membuat Gradient untuk Spinner
+    gradient.Parent = spinner
+    gradient.Rotation = 90 -- Awal rotasi gradient
+    gradient.Color = ColorSequence.new({
+        ColorSequenceKeypoint.new(0, Color3.new(1, 1, 1)), -- Warna putih di awal
+        ColorSequenceKeypoint.new(0.5, Color3.new(1, 1, 1)), -- Tetap putih di tengah
+        ColorSequenceKeypoint.new(1, Color3.new(0, 0, 0)) -- Transparan di akhir
+    })
+    gradient.Transparency = NumberSequence.new({
+        NumberSequenceKeypoint.new(0, 0),
+        NumberSequenceKeypoint.new(0.5, 0),
+        NumberSequenceKeypoint.new(1, 1)
+    })
 
     -- Teks "Loading"
     textLabel.Name = "LoadingText"
@@ -292,7 +305,7 @@ local function createLoadingGUI(duration, onComplete)
     end)
 
     -- Durasi Loading
-    task.delay(duration or 5, function()
+    task.delay(duration or 10, function()
         -- Hentikan animasi dan hapus GUI Loading
         connection:Disconnect()
         gui:Destroy()
