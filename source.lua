@@ -242,64 +242,31 @@ end
 end)
 end
 
--- Fungsi Membuat GUI Loading dengan Spinner Setengah Lingkaran
-local function createLoadingGUI(duration, onComplete)
+-- Fungsi Membuat GUI Loading
+local function createLoadingGUI()
     local gui = Instance.new("ScreenGui")
     local frame = Instance.new("Frame")
-    local spinner = Instance.new("Frame")
-    local stroke = Instance.new("UIStroke")
-    local textLabel = Instance.new("TextLabel")
-
-    -- Properti GUI Loading (Warna dan ukuran tetap sama seperti sebelumnya)
+    local loadingLabel = Instance.new("TextLabel")
+    -- Properti GUI
     gui.Name = "LoadingGUI"
     gui.Parent = game.CoreGui or game:GetService("CoreGui")
-
-    -- Frame Utama
+    -- Frame
     frame.Name = "LoadingFrame"
     frame.Parent = gui
-    frame.Size = UDim2.new(0, 300, 0, 200)
-    frame.Position = UDim2.new(0.5, -150, 0.5, -100)
-    frame.BackgroundColor3 = Color3.new(0, 0, 0) -- Warna hitam
+    frame.Size = UDim2.new(0, 300, 0, 150)
+    frame.Position = UDim2.new(0.5, -150, 0.5, -75)
+    frame.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
     frame.BorderSizePixel = 3
     frame.BorderColor3 = Color3.fromRGB(255, 0, 0)
-
-    -- Membuat Spinner Setengah Lingkaran
-    spinner.Name = "Spinner"
-    spinner.Parent = frame
-    spinner.Size = UDim2.new(0, 100, 0, 100) -- Ukuran lingkaran
-    spinner.Position = UDim2.new(0.5, -50, 0.5, -50)
-    spinner.AnchorPoint = Vector2.new(0.5, 0.5)
-    spinner.BackgroundTransparency = 1 -- Transparan agar hanya garis yang terlihat
-
-    -- Menambahkan UIStroke untuk membuat spinner
-    stroke.Parent = spinner
-    stroke.Color = Color3.fromRGB(255, 255, 255) -- Warna putih
-    stroke.Thickness = 5 -- Ketebalan garis
-    stroke.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
-    stroke.LineJoinMode = Enum.LineJoinMode.Round -- Garis melengkung
-    stroke.Transparency = 0 -- Tidak transparan
-    stroke.Arc = 180 -- Membuat spinner hanya setengah lingkaran
-
-    -- Membuat animasi berputar pada spinner
-    local rotation = 0
-    local runService = game:GetService("RunService")
-
-    -- Animasi menggunakan RenderStepped
-    local connection = runService.RenderStepped:Connect(function()
-        rotation = rotation + 3 -- Kecepatan rotasi
-        spinner.Rotation = rotation
-    end)
-
-    -- Teks "Loading"
-    textLabel.Name = "LoadingText"
-    textLabel.Parent = frame
-    textLabel.Text = "Loading..."
-    textLabel.TextColor3 = Color3.new(1, 1, 1) -- Warna putih
-    textLabel.BackgroundTransparency = 1
-    textLabel.Size = UDim2.new(1, 0, 0, 40)
-    textLabel.Position = UDim2.new(0, 10, 0, 110)
-    textLabel.Font = Enum.Font.SourceSansBold
-    textLabel.TextScaled = true
+    -- Loading Label
+    loadingLabel.Name = "LoadingLabel"
+    loadingLabel.Parent = frame
+    loadingLabel.Size = UDim2.new(1, 0, 1, 0)
+    loadingLabel.BackgroundTransparency = 1
+    loadingLabel.Font = Enum.Font.SourceSansBold
+    loadingLabel.Text = "Loading... Silakan tunggu"
+    loadingLabel.TextSize = 24
+    loadingLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
 
 -- Durasi Loading
 task.delay(8, function()
