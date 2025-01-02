@@ -142,7 +142,7 @@ local function createLoadingGUI(duration, onComplete)
     loadingCircle.Parent = frame
     loadingCircle.BackgroundColor3 = Color3.new(1, 1, 1) -- Warna putih
     loadingCircle.Size = UDim2.new(0.1, 0, 0.1, 0)
-    loadingCircle.Position = UDim2.new(0, 10, 0, 110)
+    loadingCircle.Position = UDim2.new(0, 10, 0, 150)
 
     local rotation = 0
     game:GetService("RunService").RenderStepped:Connect(function()
