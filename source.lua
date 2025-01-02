@@ -289,7 +289,6 @@ textLabel.Font = Enum.Font.SourceSansBold
 textLabel.TextScaled = true
 
 -- Durasi Loading
-task.delay(duration or 3, function()
 task.delay(8, function()
 gui:Destroy()
 connection:Disconnect()
