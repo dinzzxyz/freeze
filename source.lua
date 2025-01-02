@@ -131,18 +131,16 @@ local function createLoadingGUI(duration, onComplete)
     -- Frame Utama
     frame.Name = "LoadingFrame"
     frame.Parent = gui
-    frame.Size = UDim2.new(0, 300, 0, 200)
-    frame.Position = UDim2.new(0.5, -150, 0.5, -100)
+    frame.Size = UDim2.new(1, 0, 1, 0)
     frame.BackgroundColor3 = Color3.new(0, 0, 0) -- Warna hitam
-    frame.BorderSizePixel = 3
-    frame.BorderColor3 = Color3.fromRGB(255, 0, 0)
-    
+
     -- Animasi Loading (Lingkaran Putih)
     loadingCircle.Name = "LoadingCircle"
     loadingCircle.Parent = frame
     loadingCircle.BackgroundColor3 = Color3.new(1, 1, 1) -- Warna putih
     loadingCircle.Size = UDim2.new(0.1, 0, 0.1, 0)
-    loadingCircle.Position = UDim2.new(0, 10, 0, 150)
+    loadingCircle.Position = UDim2.new(0.5, -15, 0, 100)
+    loadingCircle.AnchorPoint = Vector2.new(0.5, 0.5)
 
     local rotation = 0
     game:GetService("RunService").RenderStepped:Connect(function()
@@ -157,7 +155,7 @@ local function createLoadingGUI(duration, onComplete)
     textLabel.TextColor3 = Color3.new(1, 1, 1) -- Warna putih
     textLabel.BackgroundTransparency = 1
     textLabel.Size = UDim2.new(1, 0, 0, 40)
-    textLabel.Position = UDim2.new(0, 10, 0, 140)
+    textLabel.Position = UDim2.new(0.5, -50, 0.5, 50)
     textLabel.Font = Enum.Font.SourceSansBold
     textLabel.TextScaled = true
 
@@ -167,6 +165,7 @@ local function createLoadingGUI(duration, onComplete)
     if onComplete then
         onComplete() -- Memanggil fungsi setelah loading selesai
     end
+end
     
 -- Fungsi Membuat GUI Login
 local function createLoginGUI()
