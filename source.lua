@@ -244,49 +244,52 @@ end
 
 -- Fungsi Membuat GUI Loading
 local function createLoadingGUI(duration, onComplete)
-local gui = Instance.new("ScreenGui")
-local frame = Instance.new("Frame")
-local loadingCircle = Instance.new("Frame")
-local textLabel = Instance.new("TextLabel")
+    local gui = Instance.new("ScreenGui")
+    local frame = Instance.new("Frame")
+    local loadingCircle = Instance.new("Frame")
+    local textLabel = Instance.new("TextLabel")
 
--- Properti GUI Loading
-gui.Name = "LoadingGUI"
-gui.Parent = game.CoreGui or game:GetService("CoreGui")
+    -- Properti GUI Loading (Warna dan ukuran tetap sama seperti sebelumnya)
+    gui.Name = "LoadingGUI"
+    gui.Parent = game.CoreGui or game:GetService("CoreGui")
 
--- Frame Utama
-frame.Name = "LoadingFrame"
-frame.Parent = gui
-frame.Size = UDim2.new(0, 300, 0, 200)
-frame.Position = UDim2.new(0.5, -150, 0.5, -100)
-frame.BackgroundColor3 = Color3.new(0, 0, 0) -- Warna hitam
-frame.BorderSizePixel = 3
-frame.BorderColor3 = Color3.fromRGB(255, 0, 0)
+    -- Frame Utama
+    frame.Name = "LoadingFrame"
+    frame.Parent = gui
+    frame.Size = UDim2.new(0, 300, 0, 200)
+    frame.Position = UDim2.new(0.5, -150, 0.5, -100)
+    frame.BackgroundColor3 = Color3.new(0, 0, 0) -- Warna hitam
+    frame.BorderSizePixel = 3
+    frame.BorderColor3 = Color3.fromRGB(255, 0, 0)
 
--- Animasi Loading (Lingkaran Putih)
-loadingCircle.Name = "LoadingCircle"
-loadingCircle.Parent = frame
-loadingCircle.BackgroundColor3 = Color3.new(1, 1, 1) -- Warna putih
-loadingCircle.Size = UDim2.new(0.1, 0, 0.1, 0)
-loadingCircle.Position = UDim2.new(0.5, -15, 0, 100)
-loadingCircle.AnchorPoint = Vector2.new(0.5, 0.5)
+    -- Membuat Spinner (Lingkaran Putih Berputar)
+    loadingCircle.Name = "LoadingCircle"
+    loadingCircle.Parent = frame
+    loadingCircle.BackgroundColor3 = Color3.new(1, 1, 1) -- Warna putih
+    loadingCircle.Size = UDim2.new(0.1, 0, 0.1, 0) -- Ukuran lingkaran
+    loadingCircle.Position = UDim2.new(0.5, -15, 0, 40)
+    loadingCircle.AnchorPoint = Vector2.new(0.5, 0.5)
 
-local rotation = 0
-local runService = game:GetService("RunService")
-local connection = runService.RenderStepped:Connect(function()
-rotation = rotation + 2
-loadingCircle.Rotation = rotation
-end)
+    -- Membuat animasi berputar
+    local rotation = 0
+    local runService = game:GetService("RunService")
+    
+    -- Gunakan RenderStepped untuk animasi berputar
+    local connection = runService.RenderStepped:Connect(function()
+        rotation = rotation + 2  -- Kecepatan rotasi
+        loadingCircle.Rotation = rotation
+    end)
 
--- Teks "Loading"
-textLabel.Name = "LoadingText"
-textLabel.Parent = frame
-textLabel.Text = "Loading..."
-textLabel.TextColor3 = Color3.new(1, 1, 1) -- Warna putih
-textLabel.BackgroundTransparency = 1
-textLabel.Size = UDim2.new(1, 0, 0, 40)
-textLabel.Position = UDim2.new(0, 10, 0, 110)
-textLabel.Font = Enum.Font.SourceSansBold
-textLabel.TextScaled = true
+    -- Teks "Loading"
+    textLabel.Name = "LoadingText"
+    textLabel.Parent = frame
+    textLabel.Text = "Loading..."
+    textLabel.TextColor3 = Color3.new(1, 1, 1) -- Warna putih
+    textLabel.BackgroundTransparency = 1
+    textLabel.Size = UDim2.new(1, 0, 0, 40)
+    textLabel.Position = UDim2.new(0, 10, 0, 110)
+    textLabel.Font = Enum.Font.SourceSansBold
+    textLabel.TextScaled = true
 
 -- Durasi Loading
 task.delay(8, function()
