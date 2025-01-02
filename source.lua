@@ -155,7 +155,7 @@ local function createLoadingGUI(duration, onComplete)
     -- Teks "Loading"
     textLabel.Name = "LoadingText"
     textLabel.Parent = frame
-    textLabel.Text = "Loading... Please Wait"
+    textLabel.Text = "Loading..."
     textLabel.TextColor3 = Color3.new(1, 1, 1) -- Warna putih
     textLabel.BackgroundTransparency = 1
     textLabel.Size = UDim2.new(1, 0, 0, 40)
