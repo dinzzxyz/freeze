@@ -137,7 +137,7 @@ local function createLoadingGUI(duration, onComplete)
     frame.BorderSizePixel = 3
     frame.BorderColor3 = Color3.fromRGB(255, 0, 0)
 
-    -- Animasi Loading (Lingkaran Putih)
+    -- Animasi Loading (Lingkaran)
     loadingCircle.Name = "LoadingCircle"
     loadingCircle.Parent = frame
     loadingCircle.BackgroundColor3 = Color3.new(1, 1, 1) -- Warna putih
@@ -169,12 +169,6 @@ local function createLoadingGUI(duration, onComplete)
         onComplete() -- Memanggil fungsi setelah loading selesai
     end
 end
-
--- Memanggil fungsi dengan durasi 8 detik
-createLoadingGUI(8, function()
-    print("Loading selesai!")
-end)
-
 -- Fungsi Membuat GUI Login
 local function createLoginGUI()
     local gui = Instance.new("ScreenGui")
