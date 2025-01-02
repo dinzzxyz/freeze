@@ -226,6 +226,7 @@ local function createLoginGUI()
     passwordBox.TextSize = 14
     passwordBox.BackgroundColor3 = Color3.fromRGB(40, 40, 40)
     passwordBox.TextColor3 = Color3.fromRGB(255, 255, 255)
+    passwordBox.Password = true -- Teks pada kotak akan disensor
 
     -- Login Button
     loginButton.Name = "LoginButton"
