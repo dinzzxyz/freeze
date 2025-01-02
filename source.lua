@@ -154,7 +154,7 @@ local switchState = false
 switchButton.MouseButton1Click:Connect(function()
 switchState = not switchState
 if switchState then
-switchButton.BackgroundColor3 = Color3.fromRGB(0, 255, 0) -- Hijau (Aktif)
+switchButton.BackgroundColor3 = Color3.fromRGB(255, 0, 0) -- Merah (Aktif)
 else
 switchButton.BackgroundColor3 = Color3.fromRGB(255, 255, 255) -- Putih (Nonaktif)
 end
