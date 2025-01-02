@@ -243,39 +243,65 @@ end)
 end
 
 -- Fungsi Membuat GUI Loading
-local function createLoadingGUI()
+local function createLoadingGUI(duration, onComplete)
     local gui = Instance.new("ScreenGui")
     local frame = Instance.new("Frame")
-    local loadingLabel = Instance.new("TextLabel")
-    -- Properti GUI
+    local spinner = Instance.new("ImageLabel")
+    local textLabel = Instance.new("TextLabel")
+
+    -- Properti GUI Loading (Warna dan ukuran tetap sama)
     gui.Name = "LoadingGUI"
     gui.Parent = game.CoreGui or game:GetService("CoreGui")
-    -- Frame
+
+    -- Frame Utama
     frame.Name = "LoadingFrame"
     frame.Parent = gui
-    frame.Size = UDim2.new(0, 300, 0, 150)
-    frame.Position = UDim2.new(0.5, -150, 0.5, -75)
-    frame.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
+    frame.Size = UDim2.new(0, 300, 0, 200)
+    frame.Position = UDim2.new(0.5, -150, 0.5, -100)
+    frame.BackgroundColor3 = Color3.new(0, 0, 0) -- Warna hitam
     frame.BorderSizePixel = 3
     frame.BorderColor3 = Color3.fromRGB(255, 0, 0)
-    -- Loading Label
-    loadingLabel.Name = "LoadingLabel"
-    loadingLabel.Parent = frame
-    loadingLabel.Size = UDim2.new(1, 0, 1, 0)
-    loadingLabel.BackgroundTransparency = 1
-    loadingLabel.Font = Enum.Font.SourceSansBold
-    loadingLabel.Text = "Loading... Silakan tunggu"
-    loadingLabel.TextSize = 24
-    loadingLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
 
--- Durasi Loading
-task.delay(8, function()
-gui:Destroy()
-connection:Disconnect()
-if onComplete then
-onComplete()
-end
-end)
+    -- Spinner (Setengah Lingkaran Berputar)
+    spinner.Name = "Spinner"
+    spinner.Parent = frame
+    spinner.Size = UDim2.new(0, 100, 0, 100) -- Ukuran lingkaran
+    spinner.Position = UDim2.new(0.5, -50, 0.4, -50) -- Posisikan di tengah atas frame
+    spinner.AnchorPoint = Vector2.new(0.5, 0.5)
+    spinner.BackgroundTransparency = 1 -- Transparan
+    spinner.Image = "rbxassetid://7072717005" -- ID Gambar Setengah Lingkaran Putih
+    spinner.ImageColor3 = Color3.new(1, 1, 1) -- Warna putih
+
+    -- Teks "Loading"
+    textLabel.Name = "LoadingText"
+    textLabel.Parent = frame
+    textLabel.Text = "Loading..."
+    textLabel.TextColor3 = Color3.new(1, 1, 1) -- Warna putih
+    textLabel.BackgroundTransparency = 1
+    textLabel.Size = UDim2.new(1, 0, 0, 40)
+    textLabel.Position = UDim2.new(0, 0, 0.7, 0)
+    textLabel.Font = Enum.Font.SourceSansBold
+    textLabel.TextScaled = true
+
+    -- Animasi Berputar
+    local rotation = 0
+    local runService = game:GetService("RunService")
+    local connection = runService.RenderStepped:Connect(function()
+        rotation = rotation + 3 -- Kecepatan rotasi
+        spinner.Rotation = rotation
+    end)
+
+    -- Durasi Loading
+    task.delay(duration or 5, function()
+        -- Hentikan animasi dan hapus GUI Loading
+        connection:Disconnect()
+        gui:Destroy()
+
+        -- Panggil fungsi onComplete untuk memunculkan GUI baru
+        if onComplete then
+            onComplete()
+        end
+    end)
 end
 
 -- Fungsi Membuat GUI Login
