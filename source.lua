@@ -242,61 +242,48 @@ end
 end)
 end
 
--- Fungsi Membuat GUI Loading
 local function createLoadingGUI(duration, onComplete)
     local gui = Instance.new("ScreenGui")
-    local frame = Instance.new("Frame")
-    local spinner = Instance.new("Frame")
-    local gradient = Instance.new("UIGradient")
-    local textLabel = Instance.new("TextLabel")
-
-    -- Properti GUI Loading
     gui.Name = "LoadingGUI"
-    gui.Parent = game.CoreGui or game:GetService("CoreGui")
+    gui.Parent = game.CoreGui
 
-    -- Frame Utama
+    local frame = Instance.new("Frame")
     frame.Name = "LoadingFrame"
     frame.Parent = gui
     frame.Size = UDim2.new(0, 300, 0, 200)
     frame.Position = UDim2.new(0.5, -150, 0.5, -100)
-    frame.BackgroundColor3 = Color3.new(0, 0, 0) -- Warna hitam
+    frame.BackgroundColor3 = Color3.new(0, 0, 0)
     frame.BorderSizePixel = 3
-    frame.BorderColor3 = Color3.fromRGB(255, 0, 0) -- Border merah
+    frame.BorderColor3 = Color3.fromRGB(255, 0, 0)
 
-    -- Spinner Setengah Lingkaran
+    local spinner = Instance.new("Frame")
     spinner.Name = "Spinner"
     spinner.Parent = frame
-    spinner.Size = UDim2.new(0, 100, 0, 100) -- Ukuran lingkaran
-    spinner.Position = UDim2.new(0.5, -50, 0.4, -50) -- Posisikan di tengah atas frame
+    spinner.Size = UDim2.new(0, 100, 0, 100)
+    spinner.Position = UDim2.new(0.5, -50, 0.4, -50)
     spinner.AnchorPoint = Vector2.new(0.5, 0.5)
-    spinner.BackgroundTransparency = 1 -- Transparan agar hanya gradient terlihat
+    spinner.BackgroundTransparency = 1
 
-    -- Membuat Gradient untuk Spinner
+    local gradient = Instance.new("UIGradient")
     gradient.Parent = spinner
-    gradient.Rotation = 90 -- Awal rotasi gradient
+    gradient.Rotation = 90
     gradient.Color = ColorSequence.new({
-        ColorSequenceKeypoint.new(0, Color3.new(1, 1, 1)), -- Warna putih di awal
-        ColorSequenceKeypoint.new(0.5, Color3.new(1, 1, 1)), -- Tetap putih di tengah
-        ColorSequenceKeypoint.new(1, Color3.new(0, 0, 0)) -- Transparan di akhir
-    })
-    gradient.Transparency = NumberSequence.new({
-        NumberSequenceKeypoint.new(0, 0),
-        NumberSequenceKeypoint.new(0.5, 0),
-        NumberSequenceKeypoint.new(1, 1)
+        ColorSequenceKeypoint.new(0, Color3.new(1, 1, 1)),
+        ColorSequenceKeypoint.new(1, Color3.new(0, 0, 0))
     })
 
-    -- Teks "Loading"
+    local textLabel = Instance.new("TextLabel")
     textLabel.Name = "LoadingText"
     textLabel.Parent = frame
     textLabel.Text = "Loading..."
-    textLabel.TextColor3 = Color3.new(1, 1, 1) -- Warna putih
+    textLabel.TextColor3 = Color3.new(1, 1, 1)
     textLabel.BackgroundTransparency = 1
     textLabel.Size = UDim2.new(1, 0, 0, 40)
     textLabel.Position = UDim2.new(0, 0, 0.7, 0)
-    textLabel.Font = Enum.Font.SourceSansBold
+    textLabel.Font = Enum.FontSourceSansBold
     textLabel.TextScaled = true
 
-    -- Animasi Berputar
+       -- Animasi Berputar
     local rotation = 0
     local runService = game:GetService("RunService")
     local connection = runService.RenderStepped:Connect(function()
@@ -306,15 +293,12 @@ local function createLoadingGUI(duration, onComplete)
 
     -- Durasi Loading
     task.delay(duration or 10, function()
-        -- Hentikan animasi dan hapus GUI Loading
         connection:Disconnect()
         gui:Destroy()
-
-        -- Panggil fungsi onComplete untuk memunculkan GUI baru
         if onComplete then
             onComplete()
         end
-    end)
+    end)
 end
 
 -- Fungsi Membuat GUI Login
