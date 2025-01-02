@@ -137,18 +137,17 @@ local function createLoadingGUI(duration, onComplete)
     frame.BorderSizePixel = 3
     frame.BorderColor3 = Color3.fromRGB(255, 0, 0)
     
-    -- Animasi Loading (Kotak Putih)
+    -- Animasi Loading (Lingkaran Putih)
     loadingCircle.Name = "LoadingCircle"
     loadingCircle.Parent = frame
     loadingCircle.BackgroundColor3 = Color3.new(1, 1, 1) -- Warna putih
-    loadingCircle.Size = UDim2.new(0.1, 0, 0.1, 0) -- Ukuran kotak
-    loadingCircle.Position = UDim2.new(0.5, -15, 0, 100) -- Di atas teks
+    loadingCircle.Size = UDim2.new(0.1, 0, 0.1, 0)
+    loadingCircle.Position = UDim2.new(0.5, -15, 0, 120)
 
-    -- Animasi Rotasi
     local rotation = 0
     game:GetService("RunService").RenderStepped:Connect(function()
-        rotation = rotation + 2 -- Percepat rotasi
-        loadingCircle.Rotation = rotation -- Update rotasi kotak
+        rotation = rotation + 2
+        loadingCircle.Rotation = rotation
     end)
 
     -- Teks "Loading"
@@ -158,12 +157,12 @@ local function createLoadingGUI(duration, onComplete)
     textLabel.TextColor3 = Color3.new(1, 1, 1) -- Warna putih
     textLabel.BackgroundTransparency = 1
     textLabel.Size = UDim2.new(1, 0, 0, 40)
-    textLabel.Position = UDim2.new(0, 10, 0, 140) -- Posisi teks
+    textLabel.Position = UDim2.new(0, 10, 0, 140)
     textLabel.Font = Enum.Font.SourceSansBold
     textLabel.TextScaled = true
 
     -- Durasi Loading
-    task.wait(8) -- Gunakan durasi yang diberikan (default 8 detik)
+    task.wait(8)
     gui:Destroy()
     if onComplete then
         onComplete() -- Memanggil fungsi setelah loading selesai
