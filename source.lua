@@ -242,7 +242,7 @@ end
 end)
 end
 
--- Fungsi Membuat GUI Loading
+-- Fungsi Membuat GUI Loading dengan Spinner Berputar
 local function createLoadingGUI(duration, onComplete)
     local gui = Instance.new("ScreenGui")
     local frame = Instance.new("Frame")
@@ -262,15 +262,23 @@ local function createLoadingGUI(duration, onComplete)
     frame.BorderSizePixel = 3
     frame.BorderColor3 = Color3.fromRGB(255, 0, 0)
 
-    -- Membuat Spinner (Lingkaran Putih Berputar)
+    -- Membuat Spinner Berbentuk Lingkaran
     loadingCircle.Name = "LoadingCircle"
     loadingCircle.Parent = frame
     loadingCircle.BackgroundColor3 = Color3.new(1, 1, 1) -- Warna putih
-    loadingCircle.Size = UDim2.new(0.1, 0, 0.1, 0) -- Ukuran lingkaran
-    loadingCircle.Position = UDim2.new(0.5, -15, 0, 40)
+    loadingCircle.Size = UDim2.new(0.2, 0, 0.2, 0)  -- Ukuran lingkaran
+    loadingCircle.Position = UDim2.new(0.5, -25, 0, 40)
     loadingCircle.AnchorPoint = Vector2.new(0.5, 0.5)
+    loadingCircle.BackgroundTransparency = 1
 
-    -- Membuat animasi berputar
+    -- Menambahkan UIStroke untuk membuat border lingkaran
+    local stroke = Instance.new("UIStroke")
+    stroke.Parent = loadingCircle
+    stroke.Color = Color3.fromRGB(255, 255, 255)  -- Warna putih
+    stroke.Thickness = 5  -- Ketebalan border
+    stroke.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
+
+    -- Membuat animasi berputar pada lingkaran
     local rotation = 0
     local runService = game:GetService("RunService")
     
