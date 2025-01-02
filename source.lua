@@ -131,7 +131,8 @@ local function createLoadingGUI(duration, onComplete)
     -- Frame Utama
     frame.Name = "LoadingFrame"
     frame.Parent = gui
-    frame.Size = UDim2.new(1, 0, 1, 0)
+    frame.Size = UDim2.new(0, 300, 0, 200)
+    frame.Position = UDim2.new(0.5, -150, 0.5, -100)
     frame.BackgroundColor3 = Color3.new(0, 0, 0) -- Warna hitam
 
     -- Animasi Loading (Lingkaran Putih)
@@ -139,7 +140,7 @@ local function createLoadingGUI(duration, onComplete)
     loadingCircle.Parent = frame
     loadingCircle.BackgroundColor3 = Color3.new(1, 1, 1) -- Warna putih
     loadingCircle.Size = UDim2.new(0.1, 0, 0.1, 0)
-    loadingCircle.Position = UDim2.new(0.5, -50, 0.4, -50)
+    loadingCircle.Position = UDim2.new(0.5, -150, 0.5, -100)
     loadingCircle.AnchorPoint = Vector2.new(0.5, 0.5)
 
     local rotation = 0
