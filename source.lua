@@ -242,11 +242,12 @@ end
 end)
 end
 
--- Fungsi Membuat GUI Loading dengan Spinner Berputar
+-- Fungsi Membuat GUI Loading dengan Spinner Setengah Lingkaran
 local function createLoadingGUI(duration, onComplete)
     local gui = Instance.new("ScreenGui")
     local frame = Instance.new("Frame")
-    local loadingCircle = Instance.new("Frame")
+    local spinner = Instance.new("Frame")
+    local stroke = Instance.new("UIStroke")
     local textLabel = Instance.new("TextLabel")
 
     -- Properti GUI Loading (Warna dan ukuran tetap sama seperti sebelumnya)
@@ -262,30 +263,31 @@ local function createLoadingGUI(duration, onComplete)
     frame.BorderSizePixel = 3
     frame.BorderColor3 = Color3.fromRGB(255, 0, 0)
 
-    -- Membuat Spinner Berbentuk Lingkaran
-    loadingCircle.Name = "LoadingCircle"
-    loadingCircle.Parent = frame
-    loadingCircle.BackgroundColor3 = Color3.new(1, 1, 1) -- Warna putih
-    loadingCircle.Size = UDim2.new(0.2, 0, 0.2, 0)  -- Ukuran lingkaran
-    loadingCircle.Position = UDim2.new(0.5, -25, 0, 40)
-    loadingCircle.AnchorPoint = Vector2.new(0.5, 0.5)
-    loadingCircle.BackgroundTransparency = 1
+    -- Membuat Spinner Setengah Lingkaran
+    spinner.Name = "Spinner"
+    spinner.Parent = frame
+    spinner.Size = UDim2.new(0, 100, 0, 100) -- Ukuran lingkaran
+    spinner.Position = UDim2.new(0.5, -50, 0.5, -50)
+    spinner.AnchorPoint = Vector2.new(0.5, 0.5)
+    spinner.BackgroundTransparency = 1 -- Transparan agar hanya garis yang terlihat
 
-    -- Menambahkan UIStroke untuk membuat border lingkaran
-    local stroke = Instance.new("UIStroke")
-    stroke.Parent = loadingCircle
-    stroke.Color = Color3.fromRGB(255, 255, 255)  -- Warna putih
-    stroke.Thickness = 5  -- Ketebalan border
+    -- Menambahkan UIStroke untuk membuat spinner
+    stroke.Parent = spinner
+    stroke.Color = Color3.fromRGB(255, 255, 255) -- Warna putih
+    stroke.Thickness = 5 -- Ketebalan garis
     stroke.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
+    stroke.LineJoinMode = Enum.LineJoinMode.Round -- Garis melengkung
+    stroke.Transparency = 0 -- Tidak transparan
+    stroke.Arc = 180 -- Membuat spinner hanya setengah lingkaran
 
-    -- Membuat animasi berputar pada lingkaran
+    -- Membuat animasi berputar pada spinner
     local rotation = 0
     local runService = game:GetService("RunService")
-    
-    -- Gunakan RenderStepped untuk animasi berputar
+
+    -- Animasi menggunakan RenderStepped
     local connection = runService.RenderStepped:Connect(function()
-        rotation = rotation + 2  -- Kecepatan rotasi
-        loadingCircle.Rotation = rotation
+        rotation = rotation + 3 -- Kecepatan rotasi
+        spinner.Rotation = rotation
     end)
 
     -- Teks "Loading"
