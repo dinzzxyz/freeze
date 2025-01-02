@@ -131,8 +131,11 @@ local function createLoadingGUI(duration, onComplete)
     -- Frame Utama
     frame.Name = "LoadingFrame"
     frame.Parent = gui
-    frame.Size = UDim2.new(1, 0, 1, 0)
+    frame.Size = UDim2.new(0, 300, 0, 200)
+    frame.Position = UDim2.new(0.5, -150, 0.5, -100)
     frame.BackgroundColor3 = Color3.new(0, 0, 0) -- Warna hitam
+    frame.BorderSizePixel = 3
+    frame.BorderColor3 = Color3.fromRGB(255, 0, 0)
 
     -- Animasi Loading (Lingkaran Putih)
     loadingCircle.Name = "LoadingCircle"
@@ -155,7 +158,7 @@ local function createLoadingGUI(duration, onComplete)
     textLabel.TextColor3 = Color3.new(1, 1, 1) -- Warna putih
     textLabel.BackgroundTransparency = 1
     textLabel.Size = UDim2.new(1, 0, 0, 40)
-    textLabel.Position = UDim2.new(0.5, -50, 0.5, 50)
+    textLabel.Position = UDim2.new(0, 10, 0, 110)
     textLabel.Font = Enum.Font.SourceSansBold
     textLabel.TextScaled = true
 
