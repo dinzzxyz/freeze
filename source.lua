@@ -226,7 +226,7 @@ local function createLoginGUI()
     passwordBox.TextSize = 14
     passwordBox.BackgroundColor3 = Color3.fromRGB(40, 40, 40)
     passwordBox.TextColor3 = Color3.fromRGB(255, 255, 255)
-    passwordBox.Password = true -- Teks pada kotak akan disensor
+    passwordBox.Password = true -- Teks tersensor
 
     -- Login Button
     loginButton.Name = "LoginButton"
@@ -238,6 +238,7 @@ local function createLoginGUI()
     loginButton.TextSize = 16
     loginButton.BackgroundColor3 = Color3.fromRGB(0, 150, 0)
     loginButton.TextColor3 = Color3.fromRGB(255, 255, 255)
+    loginButton.Visible = true
 
     -- Fungsi Login Button
     loginButton.MouseButton1Click:Connect(function()
