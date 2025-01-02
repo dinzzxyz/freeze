@@ -105,6 +105,7 @@ switchButton.Size = UDim2.new(0, 50, 0, 30)
 switchButton.Position = UDim2.new(0.8, 0, 0.5, -15)
 switchButton.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
 switchButton.Text = ""
+switchButton.BorderSizePixel = 3
 switchButton.BorderColor3 = Color3.fromRGB(255, 0, 0)
 
 -- Dragging Functionality
@@ -154,7 +155,7 @@ local switchState = false
 switchButton.MouseButton1Click:Connect(function()
 switchState = not switchState
 if switchState then
-switchButton.BackgroundColor3 = Color3.fromRGB(255, 0, 0) -- Merah (Aktif)
+switchButton.BackgroundColor3 = Color3.fromRGB(0, 255, 0) -- Merah (Aktif)
 else
 switchButton.BackgroundColor3 = Color3.fromRGB(255, 255, 255) -- Putih (Nonaktif)
 end
@@ -242,63 +243,61 @@ end
 end)
 end
 
+-- Fungsi Membuat GUI Loading
 local function createLoadingGUI(duration, onComplete)
-    local gui = Instance.new("ScreenGui")
-    gui.Name = "LoadingGUI"
-    gui.Parent = game.CoreGui
+local gui = Instance.new("ScreenGui")
+local frame = Instance.new("Frame")
+local loadingCircle = Instance.new("Frame")
+local textLabel = Instance.new("TextLabel")
 
-    local frame = Instance.new("Frame")
-    frame.Name = "LoadingFrame"
-    frame.Parent = gui
-    frame.Size = UDim2.new(0, 300, 0, 200)
-    frame.Position = UDim2.new(0.5, -150, 0.5, -100)
-    frame.BackgroundColor3 = Color3.new(0, 0, 0)
-    frame.BorderSizePixel = 3
-    frame.BorderColor3 = Color3.fromRGB(255, 0, 0)
+-- Properti GUI Loading
+gui.Name = "LoadingGUI"
+gui.Parent = game.CoreGui or game:GetService("CoreGui")
 
-    local spinner = Instance.new("Frame")
-    spinner.Name = "Spinner"
-    spinner.Parent = frame
-    spinner.Size = UDim2.new(0, 100, 0, 100)
-    spinner.Position = UDim2.new(0.5, -50, 0.4, -50)
-    spinner.AnchorPoint = Vector2.new(0.5, 0.5)
-    spinner.BackgroundTransparency = 1
+-- Frame Utama
+frame.Name = "LoadingFrame"
+frame.Parent = gui
+frame.Size = UDim2.new(0, 300, 0, 200)
+frame.Position = UDim2.new(0.5, -150, 0.5, -100)
+frame.BackgroundColor3 = Color3.new(0, 0, 0) -- Warna hitam
+frame.BorderSizePixel = 3
+frame.BorderColor3 = Color3.fromRGB(255, 0, 0)
 
-    local gradient = Instance.new("UIGradient")
-    gradient.Parent = spinner
-    gradient.Rotation = 90
-    gradient.Color = ColorSequence.new({
-        ColorSequenceKeypoint.new(0, Color3.new(1, 1, 1)),
-        ColorSequenceKeypoint.new(1, Color3.new(0, 0, 0))
-    })
+-- Animasi Loading (Lingkaran Putih)
+loadingCircle.Name = "LoadingCircle"
+loadingCircle.Parent = frame
+loadingCircle.BackgroundColor3 = Color3.new(1, 1, 1) -- Warna putih
+loadingCircle.Size = UDim2.new(0.1, 0, 0.1, 0)
+loadingCircle.Position = UDim2.new(0.5, -15, 0, 100)
+loadingCircle.AnchorPoint = Vector2.new(0.5, 0.5)
 
-    local textLabel = Instance.new("TextLabel")
-    textLabel.Name = "LoadingText"
-    textLabel.Parent = frame
-    textLabel.Text = "Loading..."
-    textLabel.TextColor3 = Color3.new(1, 1, 1)
-    textLabel.BackgroundTransparency = 1
-    textLabel.Size = UDim2.new(1, 0, 0, 40)
-    textLabel.Position = UDim2.new(0, 0, 0.7, 0)
-    textLabel.Font = Enum.FontSourceSansBold
-    textLabel.TextScaled = true
+local rotation = 0
+local runService = game:GetService("RunService")
+local connection = runService.RenderStepped:Connect(function()
+rotation = rotation + 2
+loadingCircle.Rotation = rotation
+end)
 
-       -- Animasi Berputar
-    local rotation = 0
-    local runService = game:GetService("RunService")
-    local connection = runService.RenderStepped:Connect(function()
-        rotation = rotation + 3 -- Kecepatan rotasi
-        spinner.Rotation = rotation
-    end)
+-- Teks "Loading"
+textLabel.Name = "LoadingText"
+textLabel.Parent = frame
+textLabel.Text = "Loading..."
+textLabel.TextColor3 = Color3.new(1, 1, 1) -- Warna putih
+textLabel.BackgroundTransparency = 1
+textLabel.Size = UDim2.new(1, 0, 0, 40)
+textLabel.Position = UDim2.new(0, 10, 0, 110)
+textLabel.Font = Enum.Font.SourceSansBold
+textLabel.TextScaled = true
 
-    -- Durasi Loading
-    task.delay(duration or 10, function()
-        connection:Disconnect()
-        gui:Destroy()
-        if onComplete then
-            onComplete()
-        end
-    end)
+-- Durasi Loading
+task.delay(duration or 3, function()
+task.delay(8, function()
+gui:Destroy()
+connection:Disconnect()
+if onComplete then
+onComplete()
+end
+end)
 end
 
 -- Fungsi Membuat GUI Login
