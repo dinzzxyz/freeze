@@ -428,21 +428,23 @@ local function createLoginGUI()
         excludeBannedUsers = true
     })
 
+    -- Debugging: Log username input
+    print("Username yang dikirim:", username)
+
     -- Kirim permintaan ke API
     local success, response = pcall(function()
         return HttpService:PostAsync(apiURL, requestBody, Enum.HttpContentType.ApplicationJson)
     end)
 
-    -- Jika permintaan gagal
     if not success then
-        warn("Gagal mengirim permintaan ke API Roblox:", response)
+        warn("Gagal mengirim permintaan ke API:", response)
         return false
     end
 
-    -- Debug: Log respons API
-    print("Respons dari API Roblox:", response)
+    -- Debugging: Log respons API
+    print("Respons API dalam bentuk string:", response)
 
-    -- Coba decode respons
+    -- Decode respons API
     local data
     local decodeSuccess, decodeError = pcall(function()
         data = HttpService:JSONDecode(response)
@@ -453,13 +455,13 @@ local function createLoginGUI()
         return false
     end
 
-    -- Debug: Periksa isi data
-    if data and data.data and #data.data > 0 then
-        print("Username ditemukan:", data.data[1].name)
-        return true -- Username ditemukan
+    -- Debugging: Log struktur data
+    if data and data.data then
+        print("Data ditemukan:", HttpService:JSONEncode(data.data))
+        return #data.data > 0 -- True jika username ditemukan
     else
-        print("Username tidak ditemukan.")
-        return false -- Username tidak ditemukan
+        print("Data tidak ditemukan atau salah struktur.")
+        return false
     end
 end
 
