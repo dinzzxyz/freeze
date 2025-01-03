@@ -420,39 +420,25 @@ local function createLoginGUI()
     errorLabel.TextColor3 = Color3.fromRGB(255, 0, 0)
 
     -- Fungsi untuk memeriksa username
- local function validateUsername(username)
+   local function validateUsername(username)
     local HttpService = game:GetService("HttpService")
     local apiURL = "https://users.roblox.com/v1/usernames/users"
     local requestBody = HttpService:JSONEncode({
         usernames = { username },
         excludeBannedUsers = true
     })
-
-    -- Kirim permintaan ke API Roblox
-    local success, response = pcall(function()
+        local success, response = pcall(function()
         return HttpService:PostAsync(apiURL, requestBody, Enum.HttpContentType.ApplicationJson)
     end)
 
-    -- Debugging jika gagal
-    if not success then
-        warn("Gagal memeriksa username:", response)
-        return false
+        if success then
+            local data = HttpService:JSONDecode(response)
+            return #data.data > 0 -- True jika username ditemukan
+        else
+            warn("Gagal memeriksa username:", response)
+            return false
+        end
     end
-
-    -- Decode respons API
-    local data = HttpService:JSONDecode(response)
-
-    -- Debugging untuk melihat hasil API
-    print("Respons API:", response)
-
-    -- Periksa apakah username ditemukan
-    return #data.data > 0 -- True jika username ditemukan
-end
-else
-    warn("Gagal memeriksa username:", response)
-    return false
-   end
-end
 
     -- Login Button
     loginButton.Name = "LoginButton"
