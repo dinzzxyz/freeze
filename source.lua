@@ -39,126 +39,126 @@ end
 
 -- Fungsi untuk membuat MenuGUI
 local function createMenuGUI()
-local userInputService = game:GetService("UserInputService")
-local mainGui = Instance.new("ScreenGui")
-mainGui.Name = "MenuGUI"
-mainGui.Parent = game:GetService("CoreGui")
+    local userInputService = game:GetService("UserInputService")
+    local mainGui = Instance.new("ScreenGui")
+    mainGui.Name = "MenuGUI"
+    mainGui.Parent = game:GetService("CoreGui")
 
--- Logo "D" (Kiri)
-local logoFrame = Instance.new("Frame")
-logoFrame.Name = "LogoFrame"
-logoFrame.Parent = mainGui
-logoFrame.Size = UDim2.new(0, 100, 0, 100)
-logoFrame.Position = UDim2.new(0, 10, 0.5, -50)
-logoFrame.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
-logoFrame.BorderColor3 = Color3.fromRGB(255, 0, 0)
+    -- Logo "D" (Kiri)
+    local logoFrame = Instance.new("Frame")
+    logoFrame.Name = "LogoFrame"
+    logoFrame.Parent = mainGui
+    logoFrame.Size = UDim2.new(0, 100, 0, 100)
+    logoFrame.Position = UDim2.new(0, 10, 0.5, -50)
+    logoFrame.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
+    logoFrame.BorderColor3 = Color3.fromRGB(255, 0, 0)
 
-local logoLabel = Instance.new("TextLabel")
-logoLabel.Name = "LogoLabel"
-logoLabel.Parent = logoFrame
-logoLabel.Size = UDim2.new(1, 0, 1, 0)
-logoLabel.Position = UDim2.new(0, 0, 0, 0)
-logoLabel.BackgroundTransparency = 1
-logoLabel.Font = Enum.Font.SourceSansBold
-logoLabel.Text = "D"
-logoLabel.TextSize = 50
-logoLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
+    local logoLabel = Instance.new("TextLabel")
+    logoLabel.Name = "LogoLabel"
+    logoLabel.Parent = logoFrame
+    logoLabel.Size = UDim2.new(1, 0, 1, 0)
+    logoLabel.Position = UDim2.new(0, 0, 0, 0)
+    logoLabel.BackgroundTransparency = 1
+    logoLabel.Font = Enum.Font.SourceSansBold
+    logoLabel.Text = "D"
+    logoLabel.TextSize = 50
+    logoLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
 
--- GUI Utama (Kanan)
-local mainFrame = Instance.new("Frame")
-mainFrame.Name = "MainFrame"
-mainFrame.Parent = mainGui
-mainFrame.Size = UDim2.new(0, 300, 0, 150)
-mainFrame.Position = UDim2.new(0.5, -150, 0.5, -75)
-mainFrame.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
-mainFrame.BorderColor3 = Color3.fromRGB(255, 0, 0)
-mainFrame.Visible = false
+    -- GUI Utama (Kanan)
+    local mainFrame = Instance.new("Frame")
+    mainFrame.Name = "MainFrame"
+    mainFrame.Parent = mainGui
+    mainFrame.Size = UDim2.new(0, 300, 0, 150)
+    mainFrame.Position = UDim2.new(0.5, -150, 0.5, -75)
+    mainFrame.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
+    mainFrame.BorderColor3 = Color3.fromRGB(255, 0, 0)
+    mainFrame.Visible = false
 
-local titleLabel = Instance.new("TextLabel")
-titleLabel.Name = "TitleLabel"
-titleLabel.Parent = mainFrame
-titleLabel.Size = UDim2.new(1, 0, 0, 50)
-titleLabel.Position = UDim2.new(0, 0, 0, 0)
-titleLabel.BackgroundTransparency = 1
-titleLabel.Font = Enum.Font.SourceSansBold
-titleLabel.Text = "Auto Accept Trade"
-titleLabel.TextSize = 20
-titleLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
+    local titleLabel = Instance.new("TextLabel")
+    titleLabel.Name = "TitleLabel"
+    titleLabel.Parent = mainFrame
+    titleLabel.Size = UDim2.new(1, 0, 0, 50)
+    titleLabel.Position = UDim2.new(0, 0, 0, 0)
+    titleLabel.BackgroundTransparency = 1
+    titleLabel.Font = Enum.Font.SourceSansBold
+    titleLabel.Text = "Auto Accept Trade"
+    titleLabel.TextSize = 20
+    titleLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
 
--- Switch Label
-local switchLabel = Instance.new("TextLabel")
-switchLabel.Name = "SwitchLabel"
-switchLabel.Parent = mainFrame
-switchLabel.Size = UDim2.new(0.7, 0, 0, 40)
-switchLabel.Position = UDim2.new(0, 10, 0.5, -20)
-switchLabel.BackgroundTransparency = 1
-switchLabel.Font = Enum.Font.SourceSansBold
-switchLabel.Text = "Auto Accept"
-switchLabel.TextSize = 18
-switchLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
+    -- Switch Label
+    local switchLabel = Instance.new("TextLabel")
+    switchLabel.Name = "SwitchLabel"
+    switchLabel.Parent = mainFrame
+    switchLabel.Size = UDim2.new(0.7, 0, 0, 40)
+    switchLabel.Position = UDim2.new(0, 10, 0.5, -20)
+    switchLabel.BackgroundTransparency = 1
+    switchLabel.Font = Enum.Font.SourceSansBold
+    switchLabel.Text = "Auto Accept"
+    switchLabel.TextSize = 18
+    switchLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
 
--- Switch Button
-local switchButton = Instance.new("TextButton")
-switchButton.Name = "SwitchButton"
-switchButton.Parent = mainFrame
-switchButton.Size = UDim2.new(0, 50, 0, 30)
-switchButton.Position = UDim2.new(0.8, 0, 0.5, -15)
-switchButton.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-switchButton.Text = ""
-switchButton.BorderColor3 = Color3.fromRGB(255, 0, 0)
+    -- Switch Button
+    local switchButton = Instance.new("TextButton")
+    switchButton.Name = "SwitchButton"
+    switchButton.Parent = mainFrame
+    switchButton.Size = UDim2.new(0, 50, 0, 30)
+    switchButton.Position = UDim2.new(0.8, 0, 0.5, -15)
+    switchButton.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+    switchButton.Text = ""
+    switchButton.BorderColor3 = Color3.fromRGB(255, 0, 0)
 
--- Dragging Functionality
-local function enableDragging(frame)
-local dragToggle = false
-local dragStart, startPos
+    -- Dragging Functionality
+    local function enableDragging(frame)
+        local dragToggle = false
+        local dragStart, startPos
 
-frame.InputBegan:Connect(function(input)
-if input.UserInputType == Enum.UserInputType.MouseButton1 then
-dragToggle = true
-dragStart = input.Position
-startPos = frame.Position
-end
-end)
+        frame.InputBegan:Connect(function(input)
+            if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch then
+                dragToggle = true
+                dragStart = input.Position
+                startPos = frame.Position
+            end
+        end)
 
-frame.InputChanged:Connect(function(input)
-if dragToggle and input.UserInputType == Enum.UserInputType.MouseMovement then
-local delta = input.Position - dragStart
-frame.Position = UDim2.new(
-startPos.X.Scale,
-startPos.X.Offset + delta.X,
-startPos.Y.Scale,
-startPos.Y.Offset + delta.Y
-)
-end
-end)
+        frame.InputChanged:Connect(function(input)
+            if dragToggle and (input.UserInputType == Enum.UserInputType.MouseMovement or input.UserInputType == Enum.UserInputType.Touch) then
+                local delta = input.Position - dragStart
+                frame.Position = UDim2.new(
+                    startPos.X.Scale,
+                    startPos.X.Offset + delta.X,
+                    startPos.Y.Scale,
+                    startPos.Y.Offset + delta.Y
+                )
+            end
+        end)
 
-frame.InputEnded:Connect(function(input)
-if input.UserInputType == Enum.UserInputType.MouseButton1 then
-dragToggle = false
-end
-end)
-end
+        frame.InputEnded:Connect(function(input)
+            if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch then
+                dragToggle = false
+            end
+        end)
+    end
 
-enableDragging(logoFrame)
-enableDragging(mainFrame)
+    enableDragging(logoFrame)
+    enableDragging(mainFrame)
 
--- Toggle GUI
-logoFrame.InputBegan:Connect(function(input)
-if input.UserInputType == Enum.UserInputType.MouseButton1 then
-mainFrame.Visible = not mainFrame.Visible
-end
-end)
+    -- Toggle GUI
+    logoFrame.InputBegan:Connect(function(input)
+        if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch then
+            mainFrame.Visible = not mainFrame.Visible
+        end
+    end)
 
--- Switch On/Off
-local switchState = false
-switchButton.MouseButton1Click:Connect(function()
-switchState = not switchState
-if switchState then
-switchButton.BackgroundColor3 = Color3.fromRGB(255, 0, 0) -- Merah (Aktif)
-else
-switchButton.BackgroundColor3 = Color3.fromRGB(255, 255, 255) -- Putih (Nonaktif)
-end
-end)
+    -- Switch On/Off
+    local switchState = false
+    switchButton.MouseButton1Click:Connect(function()
+        switchState = not switchState
+        if switchState then
+            switchButton.BackgroundColor3 = Color3.fromRGB(255, 0, 0) -- Merah (Aktif)
+        else
+            switchButton.BackgroundColor3 = Color3.fromRGB(255, 255, 255) -- Putih (Nonaktif)
+        end
+    end)
 end
 
 -- Fungsi untuk membuat GUI Verifikasi Kode
@@ -166,6 +166,7 @@ local function createVerificationCodeGUI()
 local gui = Instance.new("ScreenGui")
 local frame = Instance.new("Frame")
 local titleLabel = Instance.new("TextLabel")
+local subtitleLabel = Instance.new("TextLabel")
 local codeBox = Instance.new("TextBox")
 local verifyCodeButton = Instance.new("TextButton")
 local errorLabel = Instance.new("TextLabel")
@@ -193,6 +194,17 @@ titleLabel.Font = Enum.Font.SourceSansBold
 titleLabel.Text = "Verifikasi Kode"
 titleLabel.TextSize = 24
 titleLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
+
+-- Subtitle Label
+subtitleLabel.Name = "SubtitleLabel"
+subtitleLabel.Parent = frame
+subtitleLabel.Size = UDim2.new(1, 0, 0, 30)
+subtitleLabel.Position = UDim2.new(0, 0, 0, 50)
+subtitleLabel.BackgroundTransparency = 1
+subtitleLabel.Font = Enum.Font.SourceSans
+subtitleLabel.Text = "Login Ke Roblox Untuk Melanjutkan"
+subtitleLabel.TextSize = 16
+subtitleLabel.TextColor3 = Color3.fromRGB(200, 200, 200)
 
 -- Code Box
 codeBox.Name = "CodeBox"
