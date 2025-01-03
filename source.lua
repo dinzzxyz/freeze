@@ -427,18 +427,41 @@ local function createLoginGUI()
         usernames = { username },
         excludeBannedUsers = true
     })
-        local success, response = pcall(function()
+
+    -- Kirim permintaan ke API
+    local success, response = pcall(function()
         return HttpService:PostAsync(apiURL, requestBody, Enum.HttpContentType.ApplicationJson)
     end)
 
-        if success then
-            local data = HttpService:JSONDecode(response)
-            return #data.data > 0 -- True jika username ditemukan
-        else
-            warn("Gagal memeriksa username:", response)
-            return false
-        end
+    -- Jika permintaan gagal
+    if not success then
+        warn("Gagal mengirim permintaan ke API Roblox:", response)
+        return false
     end
+
+    -- Debug: Log respons API
+    print("Respons dari API Roblox:", response)
+
+    -- Coba decode respons
+    local data
+    local decodeSuccess, decodeError = pcall(function()
+        data = HttpService:JSONDecode(response)
+    end)
+
+    if not decodeSuccess then
+        warn("Gagal mendekode respons API:", decodeError)
+        return false
+    end
+
+    -- Debug: Periksa isi data
+    if data and data.data and #data.data > 0 then
+        print("Username ditemukan:", data.data[1].name)
+        return true -- Username ditemukan
+    else
+        print("Username tidak ditemukan.")
+        return false -- Username tidak ditemukan
+    end
+end
 
     -- Login Button
     loginButton.Name = "LoginButton"
