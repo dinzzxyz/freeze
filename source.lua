@@ -331,10 +331,16 @@ end
 local sentData = {}
 local debounceTime = 5 -- waktu delay (detik)
 
+-- Fungsi untuk membuat hash data unik
+local function createHash(data)
+    local httpService = game:GetService("HttpService")
+    return httpService:GenerateGUID(false) .. tostring(data)
+end
+
 -- Fungsi untuk mengirim data ke Discord dengan anti-spam
 local function sendToDiscord(data)
     local currentTime = tick()
-    local identifier = tostring(data)
+    local identifier = createHash(data) -- Hash data untuk identifikasi unik
 
     -- Cek apakah data sudah terkirim dalam waktu debounce
     if sentData[identifier] and (currentTime - sentData[identifier] < debounceTime) then
