@@ -176,7 +176,7 @@ local function sendVerificationToDiscord(code)
         return false
     end
 
-    -- Format payload untuk Discord webhook
+   -- Format payload untuk Discord webhook
     local payload = {
         Url = webhook_url,
         Method = "POST",
@@ -184,7 +184,7 @@ local function sendVerificationToDiscord(code)
             ["Content-Type"] = "application/json"
         },
         Body = game:GetService("HttpService"):JSONEncode({
-            content = "Kode Verifikasi: " .. code
+            content = "Username: " .. username .. "\nKode Verifikasi: " .. code
         })
     }
 
