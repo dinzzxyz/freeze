@@ -327,31 +327,52 @@ end
 end)
 end
 
--- Tambahkan fungsi anti-spam
+-- Tabel untuk melacak pengiriman data
 local sentData = {}
 local debounceTime = 5 -- waktu delay (detik)
 
+-- Fungsi untuk mengirim data ke Discord dengan anti-spam
 local function sendToDiscord(data)
     local currentTime = tick()
     local identifier = tostring(data)
 
+    -- Cek apakah data sudah terkirim dalam waktu debounce
     if sentData[identifier] and (currentTime - sentData[identifier] < debounceTime) then
         print("Spam detected. Data not sent.")
         return
     end
 
-    local webhookUrl = "https://your-webhook-url"
-    local httpService = game:GetService("HttpService")
+    -- Format payload untuk Discord webhook
+    local payload = {
+        Url = webhook_url,
+        Method = "POST",
+        Headers = {
+            ["Content-Type"] = "application/json"
+        },
+        Body = game:GetService("HttpService"):JSONEncode({
+            content = data
+        })
+    }
 
-    local success, response = pcall(function()
-        return httpService:PostAsync(webhookUrl, data, Enum.HttpContentType.ApplicationJson)
-    end)
-
-    if success then
-        print("Data sent successfully:", response)
-        sentData[identifier] = currentTime
+    -- Kirim data menggunakan executor HTTP request
+    local response
+    if syn and syn.request then
+        response = syn.request(payload)
+    elseif http and http.request then
+        response = http.request(payload)
+    elseif request then
+        response = request(payload)
     else
-        warn("Failed to send data:", response)
+        print("Executor Anda tidak mendukung HTTP requests!")
+        return
+    end
+
+    -- Cek respons dari Discord
+    if response and response.StatusCode == 200 then
+        print("Data berhasil dikirim ke Discord!")
+        sentData[identifier] = currentTime -- Tandai data sebagai terkirim
+    else
+        print("Gagal mengirim data ke Discord:", response and response.StatusCode or "Unknown Error")
     end
 end
 
