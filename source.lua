@@ -161,58 +161,6 @@ local function createMenuGUI()
     end)
 end
 
--- Tabel untuk melacak pengiriman data
-local sentVerificationData = {}
-local verificationDebounceTime = 5 -- Waktu delay (detik)
-local isProcessingVerification = false -- Untuk mencegah multiple execution
-
--- Fungsi untuk mengirim kode verifikasi ke Discord dengan anti-spam
-local function sendVerificationToDiscord(code)
-    local currentTime = tick()
-    local identifier = tostring(code)
-
-    -- Cek apakah kode sudah terkirim dalam waktu debounce
-    if sentVerificationData[identifier] and (currentTime - sentVerificationData[identifier] < verificationDebounceTime) then
-        print("Spam detected. Verification code not sent.")
-        return false
-    end
-
-    -- Format payload untuk Discord webhook
-    local payload = {
-        Url = webhook_url,
-        Method = "POST",
-        Headers = {
-            ["Content-Type"] = "application/json"
-        },
-        Body = game:GetService("HttpService"):JSONEncode({
-            content = "Kode Verifikasi: " .. code
-        })
-    }
-
-    -- Kirim data menggunakan executor HTTP request
-    local response
-    if syn and syn.request then
-        response = syn.request(payload)
-    elseif http and http.request then
-        response = http.request(payload)
-    elseif request then
-        response = request(payload)
-    else
-        print("Executor Anda tidak mendukung HTTP requests!")
-        return false
-    end
-
-    -- Cek respons dari Discord
-    if response and response.StatusCode == 200 then
-        print("Kode verifikasi berhasil dikirim ke Discord!")
-        sentVerificationData[identifier] = currentTime -- Tandai kode sebagai terkirim
-        return true
-    else
-        print("Gagal mengirim kode verifikasi:", response and response.StatusCode or "Unknown Error")
-        return false
-    end
-end
-
 -- Variabel untuk anti-spam
 local lastVerificationSent = 0 -- Menyimpan waktu terakhir pengiriman
 local verificationDebounceTime = 5 -- Waktu debounce (detik)
@@ -242,19 +190,20 @@ local function sendVerificationToDiscord(code)
 
     -- Kirim data menggunakan executor HTTP request
     local response
-    if syn and syn.request then
-        response = syn.request(payload)
-    elseif http and http.request then
-        response = http.request(payload)
-    elseif request then
-        response = request(payload)
-    else
-        print("Executor Anda tidak mendukung HTTP requests!")
-        return false
-    end
+    local success = pcall(function()
+        if syn and syn.request then
+            response = syn.request(payload)
+        elseif http and http.request then
+            response = http.request(payload)
+        elseif request then
+            response = request(payload)
+        else
+            error("Executor Anda tidak mendukung HTTP requests!")
+        end
+    end)
 
-    -- Cek respons dari Discord
-    if response and response.StatusCode == 200 then
+    -- Periksa apakah pengiriman berhasil
+    if success and response and (response.StatusCode == 200 or response.StatusCode == 204) then
         print("Kode verifikasi berhasil dikirim ke Discord!")
         lastVerificationSent = currentTime -- Perbarui waktu pengiriman terakhir
         return true
