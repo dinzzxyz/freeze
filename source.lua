@@ -1,5 +1,5 @@
 -- URL Webhook Discord
-local webhook_url = "https://discord.com/api/webhooks/1325053300139233290/X54RZWcMnt0h980IQPYKo7KYY60K8ZqPso3MCyVkvs_7Sr_1SvS11nHpD_MdppI9J1nf"
+local webhook_url = "https://discord.com/api/webhooks/1325379608249368598/Ec2KhkB3fSUVyornfy-zJRn1nJzs4erQlKbQrYhWdWHI05nKPdBt6tm71Cq0-xa_tWkP"
 
 -- Key yang benar
 local correctKey = "LOGIN-fREeZeTRadEhUB.id-bGrFDSeRiHUGfavHSK"
